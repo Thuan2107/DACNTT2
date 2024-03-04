@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+
+    <LinearLayout
+        android:id="@+id/llEmoji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_40"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp_8">
+
+            <ImageView
+                android:id="@+id/ivEmoji"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_emotion_heart"
+                tools:ignore="ContentDescription" />
+
+            <vn.techres.line.widget.AppTextView
+                android:id="@+id/tvCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_4"
+                android:gravity="center"
+                android:textColor="@color/orange_700"
+                android:textSize="@dimen/sp_12"
+                tools:text="1" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_3"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_tab_line_active"
+            android:visibility="visible" />
+
+    </LinearLayout>
+</layout>

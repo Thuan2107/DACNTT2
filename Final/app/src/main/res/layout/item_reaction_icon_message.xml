@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <merge>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_20"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/llReaction"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_20"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_reactions"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_2"
+                android:visibility="visible"
+                tools:ignore="UselessParent">
+
+                <ImageView
+                    android:id="@+id/ivReactionOne"
+                    android:layout_width="@dimen/dp_16"
+                    android:layout_height="@dimen/dp_16"
+                    android:contentDescription="@string/description_place_image"
+                    tools:src="@drawable/ic_heart" />
+
+                <ImageView
+                    android:id="@+id/ivReactionTwo"
+                    android:layout_width="@dimen/dp_16"
+                    android:layout_height="@dimen/dp_16"
+                    android:contentDescription="@string/description_place_image"
+                    tools:src="@drawable/ic_wow" />
+
+                <ImageView
+                    android:id="@+id/ivReactionThree"
+                    android:layout_width="@dimen/dp_16"
+                    android:layout_height="@dimen/dp_16"
+                    android:contentDescription="@string/description_place_image"
+                    tools:src="@drawable/ic_angry" />
+
+                <vn.techres.line.widget.AppTextView
+                    android:id="@+id/tvReactionCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:duplicateParentState="true"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_2"
+                    android:textSize="@dimen/sp_10"
+                    tools:text="3+" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llReactionMine"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_marginStart="@dimen/dp_4"
+                android:background="@drawable/bg_reactions"
+                android:padding="@dimen/dp_2">
+
+                <ImageView
+                    android:id="@+id/ivReactionMe"
+                    android:layout_width="@dimen/dp_16"
+                    android:layout_height="@dimen/dp_16"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/description_place_image"
+                    android:src="@drawable/ic_heart_line_24"
+                    tools:src="@drawable/ic_heart" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </merge>
+</layout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/lnItemChat"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_300"
+        android:layout_gravity="bottom"
+        android:background="@drawable/border_radius_top"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tabRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/border_radius_top"
+            tools:itemCount="6"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:listitem="@layout/item_reaction_chat"
+            tools:spanCount="6" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvReaction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_user_reaction_chat" />
+
+    </LinearLayout>
+
+</layout>

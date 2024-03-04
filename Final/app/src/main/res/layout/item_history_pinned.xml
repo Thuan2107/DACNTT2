@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_8"
+        android:elevation="@dimen/dp_0_1"
+        app:cardCornerRadius="@dimen/dp_8"
+        app:cardElevation="@dimen/dp_0_1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_8">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_4">
+
+                <ImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="@dimen/dp_32"
+                    android:layout_height="@dimen/dp_32"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_user_default"
+                    tools:ignore="ContentDescription" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dp_4"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <vn.techres.line.widget.AppTextViewBold
+                        android:id="@+id/tvName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray_900"
+                        android:textSize="@dimen/sp_14"
+                        android:textStyle="bold" />
+
+                    <vn.techres.line.widget.AppTextView
+                        android:id="@+id/tvTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray_500"
+                        android:textSize="@dimen/sp_10" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivMore"
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dp_4"
+                    android:src="@drawable/ic_more_horizontal"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_4"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/dp_1"
+                    android:layout_height="match_parent"
+                    android:background="@color/orange_900" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_4"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/dp_4"
+                    android:paddingBottom="@dimen/dp_4">
+
+                    <vn.techres.line.widget.AppTextViewBold
+                        android:id="@+id/tvTile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/gray_900"
+                        android:textSize="@dimen/sp_14"
+                        android:textStyle="bold" />
+
+                    <vn.techres.line.widget.AppTextView
+                        android:id="@+id/tvContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_4"
+                        android:textColor="@color/gray_700"
+                        android:textSize="@dimen/sp_12" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/llPinnedLink"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/ivLink"
+                                android:layout_width="@dimen/dp_32"
+                                android:layout_height="@dimen/dp_32"
+                                android:src="@drawable/ic_document_mark_green"
+                                tools:ignore="ContentDescription" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/dp_4"
+                                android:orientation="vertical">
+
+                                <vn.techres.line.widget.AppTextView
+                                    android:id="@+id/tvLinkTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:textColor="@color/gray_900"
+                                    android:textSize="@dimen/sp_12"
+                                    tools:text="Tên tệp tin.docx" />
+
+                                <vn.techres.line.widget.AppTextView
+                                    android:id="@+id/tvLink"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:textColor="@color/gray_500"
+                                    android:textSize="@dimen/sp_10"
+                                    tools:text="link.goolge.com" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llPinnedImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/ivVote"
+                                android:layout_width="@dimen/dp_24"
+                                android:layout_height="@dimen/dp_24"
+                                android:src="@drawable/ic_pinned_vote_border"
+                                android:visibility="gone"
+                                tools:ignore="ContentDescription" />
+
+                            <LinearLayout
+                                android:id="@+id/llAudio"
+                                android:layout_width="@dimen/dp_40"
+                                android:layout_height="@dimen/dp_40"
+                                android:layout_marginEnd="@dimen/dp_8"
+                                android:background="@drawable/border_gray_50dp"
+                                android:backgroundTint="@color/gray_300"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="@dimen/dp_8"
+                                    android:src="@drawable/ic_voice_input_off"
+                                    app:tint="@color/gray_600"
+                                    tools:ignore="ContentDescription" />
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/ivThumbImage"
+                                android:layout_width="@dimen/dp_32"
+                                android:layout_height="@dimen/dp_32"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginEnd="@dimen/dp_8"
+                                android:contentDescription="@string/description_place_image"
+                                android:scaleType="centerCrop"
+                                android:visibility="gone" />
+
+                            <vn.techres.line.widget.AppTextViewBold
+                                android:id="@+id/tvLogoFile"
+                                android:layout_width="@dimen/dp_32"
+                                android:layout_height="@dimen/dp_32"
+                                android:layout_gravity="center"
+                                android:background="@drawable/logo_mp3"
+                                android:gravity="center_horizontal|top"
+                                android:paddingTop="@dimen/dp_4"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/sp_10"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                tools:ignore="ContentDescription"
+                                tools:text="mp3" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center">
+
+                                <vn.techres.line.widget.AppTextView
+                                    android:id="@+id/tvContentImage"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center_vertical"
+                                    android:text="dkgákdfkd"
+                                    android:textColor="@color/gray_900"
+                                    android:textSize="@dimen/sp_12" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>

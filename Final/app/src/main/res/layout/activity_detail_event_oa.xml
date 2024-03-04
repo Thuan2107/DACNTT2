@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_100"
+        android:orientation="vertical">
+
+        <com.hjq.bar.TitleBar
+            android:id="@+id/tbHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_16"
+            app:titleStyle="normal"
+            tools:title="Tiêu đề event" />
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/smartRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="visible">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <include layout="@layout/item_detail_event_oa_shimmer" />
+
+                        </LinearLayout>
+
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/ivEventCover"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_150"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_default_post"
+                            tools:ignore="ContentDescription" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/dp_16">
+
+                            <vn.techres.line.widget.AppTextViewBold
+                                android:id="@+id/tvTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/dp_8"
+                                android:gravity="center"
+                                android:textColor="@color/gray_900"
+                                android:textSize="@dimen/sp_16"
+                                android:textStyle="bold"
+                                tools:text="Sự kiện trồng cây xanh phủ kín Aloline và thế giới" />
+
+                            <LinearLayout
+                                android:id="@+id/llTimeStartEvent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="@dimen/dp_8"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                                <vn.techres.line.widget.AppTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:text="@string/start_at"
+                                    android:textColor="@color/gray_600"
+                                    android:textSize="@dimen/sp_12" />
+
+                                <vn.techres.line.widget.AppTextView
+                                    android:id="@+id/tvTimeStartEvent"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dp_4"
+                                    android:layout_weight="1"
+                                    android:gravity="start"
+                                    android:textColor="@color/gray_600"
+                                    android:textSize="@dimen/sp_12"
+                                    tools:text="14:00 19/09/2023" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/llOpenGift"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="@dimen/dp_8"
+                                    android:orientation="horizontal">
+
+                                    <vn.techres.line.widget.AppTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="start"
+                                        android:text="@string/expire_at"
+                                        android:textColor="@color/gray_600"
+                                        android:textSize="@dimen/sp_12"
+                                        tools:ignore="TooDeepLayout" />
+
+                                    <vn.techres.line.widget.AppTextView
+                                        android:id="@+id/tvTimeEndEvent"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/dp_4"
+                                        android:layout_weight="1"
+                                        android:gravity="start"
+                                        android:textColor="@color/gray_600"
+                                        android:textSize="@dimen/sp_12"
+                                        tools:text="14:00 19/09/2023" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="@dimen/dp_8"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/dp_16"
+                                        android:layout_height="@dimen/dp_16"
+                                        android:src="@drawable/ic_check_white_green"
+                                        tools:ignore="ContentDescription" />
+
+                                    <vn.techres.line.widget.AppTextViewBold
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/dp_4"
+                                        android:layout_weight="1"
+                                        android:gravity="start"
+                                        android:text="@string/already_add_to_gift"
+                                        android:textColor="@color/green_600"
+                                        android:textSize="@dimen/sp_12"
+                                        android:textStyle="bold"
+                                        app:emojiSize="@dimen/dp_18" />
+
+                                </LinearLayout>
+
+                                <vn.techres.line.widget.AppTextView
+                                    android:id="@+id/btnOpenGift"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/bg_border_button_orange_900_8dp"
+                                    android:drawableEnd="@drawable/ic_next"
+                                    android:drawablePadding="@dimen/dp_4"
+                                    android:drawableTint="@color/white"
+                                    android:gravity="center"
+                                    android:paddingVertical="@dimen/dp_8"
+                                    android:paddingStart="@dimen/dp_8"
+                                    android:paddingEnd="@dimen/dp_4"
+                                    android:text="@string/open_gift"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/sp_14"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/llOpenLink"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+                                <vn.techres.line.widget.AppTextView
+                                    android:id="@+id/tvNote"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/dp_8"
+                                    android:gravity="center"
+                                    android:text="@string/message_note"
+                                    android:textColor="@color/gray_600"
+                                    android:textSize="@dimen/sp_12" />
+
+                                <vn.techres.line.widget.AppTextView
+                                    android:id="@+id/btnGoToLink"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/bg_border_button_orange_900_8dp"
+                                    android:drawableEnd="@drawable/ic_next"
+                                    android:drawablePadding="@dimen/dp_4"
+                                    android:drawableTint="@color/white"
+                                    android:gravity="center"
+                                    android:paddingVertical="@dimen/dp_8"
+                                    android:paddingStart="@dimen/dp_8"
+                                    android:paddingEnd="@dimen/dp_4"
+                                    android:text="@string/go_to_link"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/sp_14"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/llTimeStartEnd"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/dp_8"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+                                <LinearLayout
+                                    android:id="@+id/llTimeStart"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/dp_8"
+                                    android:orientation="horizontal"
+                                    android:visibility="visible"
+                                    android:weightSum="3">
+
+                                    <vn.techres.line.widget.AppTextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="start"
+                                        android:text="@string/start_at"
+                                        android:textColor="@color/gray_600"
+                                        android:textSize="@dimen/sp_12" />
+
+                                    <vn.techres.line.widget.AppTextView
+                                        android:id="@+id/tvTimeStart"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/dp_4"
+                                        android:layout_weight="2"
+                                        android:gravity="start"
+                                        android:textColor="@color/gray_600"
+                                        android:textSize="@dimen/sp_12"
+                                        tools:text="14:00 19/09/2023" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/llTimeEnd"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/dp_8"
+                                    android:orientation="horizontal"
+                                    android:visibility="visible"
+                                    android:weightSum="3">
+
+                                    <vn.techres.line.widget.AppTextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="start"
+                                        android:text="@string/end_at"
+                                        android:textColor="@color/gray_600"
+                                        android:textSize="@dimen/sp_12" />
+
+                                    <vn.techres.line.widget.AppTextView
+                                        android:id="@+id/tvTimeEnd"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/dp_4"
+                                        android:layout_weight="2"
+                                        android:gravity="start"
+                                        android:textColor="@color/gray_600"
+                                        android:textSize="@dimen/sp_12"
+                                        tools:text="14:00 19/09/2023" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/llDayApply"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:visibility="visible"
+                                    android:weightSum="3">
+
+                                    <vn.techres.line.widget.AppTextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="start"
+                                        android:text="@string/days_apply"
+                                        android:textColor="@color/gray_600"
+                                        android:textSize="@dimen/sp_12" />
+
+                                    <vn.techres.line.widget.AppTextView
+                                        android:id="@+id/tvDayApply"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/dp_4"
+                                        android:layout_weight="2"
+                                        android:gravity="start"
+                                        android:textColor="@color/gray_600"
+                                        android:textSize="@dimen/sp_12"
+                                        tools:text="T2, T3, T4, T5, T6, T7, CN" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llApply"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="vertical"
+                            android:padding="@dimen/dp_16"
+                            android:visibility="gone">
+
+                            <vn.techres.line.widget.AppTextViewBold
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/dp_8"
+                                android:gravity="center_vertical"
+                                android:text="@string/apply_in"
+                                android:textColor="@color/gray_900"
+                                android:textSize="@dimen/sp_14"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:id="@+id/lnSaveBranch"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_form_item"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/imvSaveBranch"
+                                        android:layout_width="@dimen/dp_52"
+                                        android:layout_height="@dimen/dp_52"
+                                        android:layout_marginLeft="@dimen/dp_8"
+                                        android:layout_marginTop="@dimen/dp_8"
+                                        android:layout_marginRight="@dimen/dp_8"
+                                        android:scaleType="centerCrop"
+                                        android:src="@drawable/ic_default"
+                                        tools:ignore="ContentDescription" />
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/btnLevel"
+                                        android:layout_width="@dimen/dp_52"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/dp_8"
+                                        android:layout_marginTop="@dimen/dp_4"
+                                        android:layout_marginRight="@dimen/dp_8"
+                                        android:background="@drawable/bg_btn_lvl"
+                                        android:gravity="center"
+                                        android:padding="@dimen/dp_4"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/sp_12"
+                                        tools:text="Level 1" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dp_8"
+                                    android:orientation="vertical">
+
+                                    <androidx.constraintlayout.widget.ConstraintLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <vn.techres.line.widget.AppTextViewBold
+                                            android:id="@+id/tvNameSaveBranch"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:textColor="@color/black"
+                                            android:textSize="@dimen/sp_14"
+                                            android:textStyle="bold"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            tools:ignore="TooDeepLayout"
+                                            tools:text="123-Zô" />
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginEnd="@dimen/dp_16"
+                                            android:orientation="horizontal"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintRight_toRightOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent">
+
+                                            <ImageView
+                                                android:id="@+id/ivDisableLike"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:contentDescription="@string/default_image"
+                                                android:src="@drawable/ic_bookmark_gray"
+                                                tools:ignore="TooDeepLayout" />
+
+                                            <ImageView
+                                                android:id="@+id/ivEnableLike"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:contentDescription="@string/default_image"
+                                                android:src="@drawable/ic_bookmark_orange_bold"
+                                                android:visibility="gone" />
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="8dp"
+                                            android:orientation="horizontal"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toBottomOf="@+id/tvNameSaveBranch">
+
+                                            <com.willy.ratingbar.BaseRatingBar
+                                                android:id="@+id/ratingService"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                app:srb_clickable="false"
+                                                app:srb_rating="4.5"
+                                                app:srb_scrollable="false"
+                                                app:srb_starHeight="@dimen/dp_12"
+                                                app:srb_starPadding="@dimen/dp_0_5"
+                                                app:srb_starWidth="@dimen/dp_12"
+                                                app:srb_stepSize="0.1" />
+
+                                            <vn.techres.line.widget.AppTextView
+                                                android:id="@+id/tvRatingBranch"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center_vertical"
+                                                android:layout_marginLeft="@dimen/dp_4"
+                                                android:gravity="center"
+                                                android:maxLines="2"
+                                                android:textColor="@color/blue_text"
+                                                android:textSize="@dimen/sp_10"
+                                                tools:text="@string/rating" />
+
+                                        </LinearLayout>
+
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical"
+                                        android:paddingRight="@dimen/dp_8">
+
+                                        <include
+                                            android:id="@+id/llAddressOne"
+                                            layout="@layout/item_branch_address_chat" />
+
+                                        <include
+                                            android:id="@+id/llAddressTwo"
+                                            layout="@layout/item_branch_address_chat" />
+
+                                        <include
+                                            android:id="@+id/llAddressThree"
+                                            layout="@layout/item_branch_address_chat" />
+
+                                    </LinearLayout>
+
+                                    <vn.techres.line.widget.AppTextViewBold
+                                        android:id="@+id/tvMore"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:layout_marginTop="@dimen/dp_8"
+                                        android:drawableEnd="@drawable/ic_next"
+                                        android:gravity="center"
+                                        android:text="@string/more"
+                                        android:textColor="@color/main_bg"
+                                        app:drawableTint="@color/main_bg" />
+
+                                    <View
+                                        android:id="@+id/viewItemBrand"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_marginTop="@dimen/dp_8"
+                                        android:layout_marginRight="@dimen/dp_4"
+                                        android:background="#FFE3C2" />
+
+                                    <vn.techres.line.widget.AppTextView
+                                        android:id="@+id/tvBrandOf"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/dp_8"
+                                        android:layout_marginRight="@dimen/dp_8"
+                                        android:layout_marginBottom="@dimen/dp_8"
+                                        android:maxLines="1"
+                                        tools:text="@string/brand_of" />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                        <androidx.appcompat.widget.AppCompatTextView
+                                            android:id="@+id/tvDonate"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:background="@drawable/bg_form_dollar"
+                                            android:drawableLeft="@drawable/ic_sack_dollar"
+                                            android:drawablePadding="@dimen/dp_4"
+                                            android:gravity="center_vertical"
+                                            android:padding="@dimen/dp_8"
+                                            android:text="@string/donate"
+                                            android:textColor="@color/green_500" />
+
+                                        <androidx.appcompat.widget.AppCompatTextView
+                                            android:id="@+id/tvAccumulation"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="@dimen/dp_4"
+                                            android:background="@drawable/bg_form_piggy_bank"
+                                            android:drawableLeft="@drawable/ic_piggy_bank"
+                                            android:drawablePadding="@dimen/dp_4"
+                                            android:gravity="center_vertical"
+                                            android:padding="@dimen/dp_8"
+                                            android:text="@string/accumulation"
+                                            android:textColor="@color/blue_700" />
+
+                                    </LinearLayout>
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/tvPromotion"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/dp_4"
+                                        android:layout_marginBottom="@dimen/dp_8"
+                                        android:background="@drawable/bg_form_promotion"
+                                        android:drawableLeft="@drawable/ic_promotion"
+                                        android:drawablePadding="@dimen/dp_4"
+                                        android:gravity="center_vertical"
+                                        android:padding="@dimen/dp_8"
+                                        android:text="@string/promotion"
+                                        android:textColor="@color/red_700" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_8"
+                            android:background="@color/white"
+                            android:orientation="vertical"
+                            android:padding="@dimen/dp_16">
+
+                            <vn.techres.line.widget.AppTextViewBold
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/dp_8"
+                                android:gravity="center_vertical"
+                                android:text="@string/detail"
+                                android:textColor="@color/gray_900"
+                                android:textSize="@dimen/sp_14"
+                                android:textStyle="bold" />
+
+                            <com.aghajari.emojiview.view.AXEmojiTextView
+                                android:id="@+id/tvDescription"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:autoLink="web"
+                                android:gravity="start|center_vertical"
+                                android:textColor="@color/gray_800"
+                                android:textColorLink="@color/color_link"
+                                android:textSize="@dimen/sp_14"
+                                app:emojiSize="@dimen/dp_18"
+                                tools:text="Đây là quà tặng đến từ chương trình mua 1 tặng 1 của Nhà hàng 123-Zô nhân dịp quán khai trương chi nhánh mới và là dịp sinh nhật thứ 10 của thương hiệu nhà hàng quán nhậu số 1 Việt Nam. Ngoài ra nhà hàng còn tặng thêm cho các khác hàng lâu năm của quán nhiều phần quà hấp dẫn." />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+    </LinearLayout>
+
+</layout>

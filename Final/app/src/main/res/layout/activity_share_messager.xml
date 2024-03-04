@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/itemViewTop"
+            layout="@layout/item_view_top_share_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/lnBottomView"
+            app:layout_constraintTop_toBottomOf="@+id/itemViewTop">
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/sflMyFriend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/item_friend_shimmer" />
+
+                    <include layout="@layout/item_friend_shimmer" />
+
+                    <include layout="@layout/item_friend_shimmer" />
+
+                    <include layout="@layout/item_friend_shimmer" />
+
+                    <include layout="@layout/item_friend_shimmer" />
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nsvView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/llGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <vn.techres.line.widget.AppTextViewBold
+                            android:id="@+id/tvGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@color/white"
+                            android:padding="@dimen/dp_16"
+                            android:text="Nhóm trò chuyện"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp_15" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcvGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llMyFriend"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <vn.techres.line.widget.AppTextViewBold
+                            android:id="@+id/tvMyFriend"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@color/white"
+                            android:padding="@dimen/dp_16"
+                            android:text="@string/friend"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp_15" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcvMyFriend"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/lnBottomView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_radius_top_8dp"
+            android:elevation="@dimen/dp_8"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/llChooseItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp_8"
+                    android:visibility="gone">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvChooseItem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dp_8">
+
+                    <vn.techres.line.widget.AppTextView
+                        android:id="@+id/tvTitleMessenger"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nội dung tin nhắn"
+                        android:textColor="@color/gray_900"
+                        android:textSize="@dimen/sp_16" />
+
+                    <LinearLayout
+                        android:id="@+id/llType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:background="@drawable/border_gray_4dp"
+                        android:backgroundTint="@color/gray_200"
+                        android:padding="@dimen/dp_6"
+                        android:visibility="gone">
+
+                        <RelativeLayout
+                            android:layout_width="@dimen/dp_32"
+                            android:layout_height="@dimen/dp_32">
+
+                            <ImageView
+                                android:id="@+id/ivMessage"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_default" />
+
+                            <ImageView
+                                android:id="@+id/ivVideo"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="@dimen/dp_8"
+                                android:src="@drawable/ic_play_video"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
+
+                        <vn.techres.line.widget.AppTextView
+                            android:id="@+id/tvTypeMessage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/dp_8"
+                            android:text="Hình ảnh" />
+                    </LinearLayout>
+
+                    <vn.techres.line.widget.AppEditText
+                        android:id="@+id/edtMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:background="@null"
+                        android:gravity="top"
+                        android:hint="Thêm mô tả.."
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray_600" />
+
+                    <vn.techres.line.widget.AppTextViewBold
+                        android:id="@+id/tvShareMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/dp_4"
+                        android:background="@drawable/border_gray_8dp"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:padding="@dimen/dp_12"
+                        android:text="Chia sẻ"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.aghajari.emojiview.view.AXEmojiPopupLayout
+                android:id="@+id/layoutKeyboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

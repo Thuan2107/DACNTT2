@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/llClick"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvChat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:descendantFocusability="afterDescendants"
+                android:divider="@null"
+                android:dividerHeight="0dp"
+                android:listSelector="@android:color/transparent"
+                android:paddingTop="@dimen/dp_8"
+                android:paddingBottom="@dimen/dp_8"
+                android:scrollbars="vertical"
+                tools:listitem="@layout/item_message_text_left"
+                android:transcriptMode="normal"
+                android:visibility="visible"
+                app:reverseLayout="true"
+                app:stackFromEnd="true" />
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/headerBackground"
+            layout="@layout/item_header_background" />
+
+        <include
+            android:id="@+id/pinned"
+            layout="@layout/item_pinned" />
+
+        <RelativeLayout
+            android:id="@+id/rlnImageClip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="@dimen/dp_8"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/lnView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:visibility="visible">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/imageCLip2"
+                    android:layout_width="@dimen/dp_90"
+                    android:layout_height="@dimen/dp_120"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="top|end|center_vertical|center_horizontal|center"
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:layout_marginEnd="@dimen/dp_40"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/bg_9patch_suggest_multiphoto"
+                    android:scaleType="centerCrop"
+                    app:riv_border_color="@color/white"
+                    app:riv_border_width="1.7dp"
+                    app:riv_corner_radius="@dimen/dp_8" />
+
+                <FrameLayout
+                    android:id="@+id/lnView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_marginEnd="@dimen/dp_24"
+                    android:adjustViewBounds="true">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/imageCLip"
+                        android:layout_width="@dimen/dp_90"
+                        android:layout_height="@dimen/dp_120"
+                        android:layout_gravity="top|end|center_vertical|center_horizontal|center"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/bg_9patch_suggest_multiphoto"
+                        android:scaleType="centerCrop"
+                        app:riv_border_color="@color/white"
+                        app:riv_border_width="1.7dp"
+                        app:riv_corner_radius="@dimen/dp_8" />
+                </FrameLayout>
+
+                <vn.techres.line.widget.AppTextView
+                    android:id="@+id/sendPhotoClip"
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="@dimen/dp_42"
+                    android:layout_below="@+id/lnView1"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginEnd="@dimen/dp_24"
+                    android:background="@drawable/bg_btn_send_orange"
+                    android:gravity="center"
+                    android:text="@string/send_now"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12" />
+
+                <ImageView
+                    android:id="@+id/ivImageClipDelete"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_alignEnd="@+id/lnView1"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="top|end|center_vertical|center_horizontal|center"
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:layout_marginEnd="@dimen/dp_16"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/description_place_image"
+                    android:padding="@dimen/dp_3"
+                    android:src="@drawable/ic_suggest_remove" />
+
+                <LinearLayout
+                    android:layout_width="@dimen/dp_160"
+                    android:layout_height="@dimen/dp_170"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/openImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/description_place_image"
+                        app:srcCompat="@drawable/ic_suggest_expand" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rltListImageClip"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_175"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/lnListImageClip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_135"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/closeImage"
+                        android:layout_width="@dimen/dp_32"
+                        android:layout_height="@dimen/dp_32"
+                        android:contentDescription="@string/description_place_image"
+                        android:src="@drawable/ic_suggest_collapse" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rclListImageClip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/dp_8"
+                        android:layout_marginEnd="@dimen/dp_8" />
+                </LinearLayout>
+
+                <vn.techres.line.widget.AppTextView
+                    android:id="@+id/sendListImageClip"
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="@dimen/dp_42"
+                    android:layout_below="@+id/lnListImageClip"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginEnd="@dimen/dp_40"
+                    android:background="@drawable/bg_btn_send_orange"
+                    android:gravity="center"
+                    android:minWidth="@dimen/dp_100"
+                    android:padding="@dimen/dp_8"
+                    android:text="@string/send_now"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12" />
+
+                <vn.techres.line.widget.AppTextView
+                    android:id="@+id/cancelListImageClip"
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="@dimen/dp_42"
+                    android:layout_below="@+id/lnListImageClip"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginEnd="@dimen/dp_150"
+                    android:background="@drawable/bg_btn_cancel_gray"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_8"
+                    android:paddingLeft="@dimen/dp_15"
+                    android:paddingRight="@dimen/dp_15"
+                    android:text="@string/cancel"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/lnTyping"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_24"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:background="@drawable/bg_user_typing"
+            android:gravity="center_vertical"
+            android:layoutAnimation="@anim/layout_fall_down"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvTypingOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_4"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_typing_on" />
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/spin_kit"
+                style="@style/SpinKitView.Small.ThreeBounce"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/dp_8"
+                android:paddingEnd="@dimen/dp_8"
+                app:SpinKit_Color="@color/main_bg" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/scrollMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:contentDescription="@string/description_place_image"
+            android:src="@drawable/ic_jump_last"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/lnNewMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dp_200"
+            android:visibility="gone">
+
+            <include layout="@layout/item_chat_new_message_arrow_down" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lnUnreadMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/dp_80"
+            android:visibility="gone">
+
+            <include layout="@layout/item_chat_first_unread_arrow_up" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lnUnreadTagName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/dp_120"
+            android:visibility="gone">
+
+            <include layout="@layout/item_chat_first_unread_tag_name" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/llAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_2">
+
+        <vn.techres.line.widget.AppTextViewBold
+            android:id="@+id/btnKm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_branch_km"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingHorizontal="@dimen/dp_8"
+            android:paddingVertical="@dimen/dp_2"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12"
+            tools:text="2 km" />
+
+        <vn.techres.line.widget.AppTextView
+            android:id="@+id/tvBranchAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_8"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:padding="@dimen/dp_2"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12"
+            tools:text="303 Phạm Văn Đồng, P.1, Quận Gò Vấp, Tp. Hồ Chí Minh" />
+
+    </LinearLayout>
+
+</layout>

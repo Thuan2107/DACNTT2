@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/dp_8"
+        android:paddingEnd="@dimen/dp_8">
+
+        <View
+            android:id="@+id/unsafeArea"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginVertical="@dimen/dp_8"
+            android:background="@drawable/border_orange_8dp"
+            android:backgroundTint="@color/white"
+            android:orientation="vertical">
+
+            <vn.techres.line.widget.AppTextView
+                android:id="@+id/tvContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/dp_16"
+                android:ellipsize="end"
+                android:maxLength="120"
+                android:maxLines="2"
+                android:paddingVertical="@dimen/dp_16"
+                android:textColor="@color/gray_900"
+                android:textSize="@dimen/sp_16"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_300"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/llPinnedChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dp_12"
+                android:paddingBottom="@dimen/dp_12"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/ivIconPinned"
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:contentDescription="@string/default_image"
+                    android:padding="@dimen/dp_2"
+                    android:src="@drawable/ic_pinned" />
+
+                <vn.techres.line.widget.AppTextView
+                    android:id="@+id/tvPinned"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:text="@string/pin_to_the_top_conversation"
+                    android:textColor="@color/gray_900"
+                    android:textSize="@dimen/sp_14" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llUnPinnedChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dp_8"
+                android:paddingBottom="@dimen/dp_8"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:contentDescription="@string/default_image"
+                    android:padding="@dimen/dp_2"
+                    android:src="@drawable/ic_send_input_off"
+                    app:tint="@color/gray_600" />
+
+                <vn.techres.line.widget.AppTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:text="@string/send_to_the_group"
+                    android:textColor="@color/gray_900"
+                    android:textSize="@dimen/sp_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llLockVote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dp_12"
+                android:paddingBottom="@dimen/dp_12"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:contentDescription="@string/default_image"
+                    android:padding="@dimen/dp_2"
+                    android:src="@drawable/ic_baseline_lock_open"
+                    app:tint="@color/gray_600" />
+
+                <vn.techres.line.widget.AppTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:text="@string/block_vote"
+                    android:textColor="@color/gray_900"
+                    android:textSize="@dimen/sp_14" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llNews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dp_12"
+                android:paddingBottom="@dimen/dp_12"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:contentDescription="@string/default_image"
+                    android:padding="@dimen/dp_2"
+                    android:src="@drawable/ic_voted"
+                    app:tint="@color/gray_600" />
+
+                <vn.techres.line.widget.AppTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:text="@string/news"
+                    android:textColor="@color/gray_900"
+                    android:textSize="@dimen/sp_14" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

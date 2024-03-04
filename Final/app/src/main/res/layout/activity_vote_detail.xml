@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.VoteDetailActivity">
+
+        <com.hjq.bar.TitleBar
+            android:id="@+id/headerTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main_bg"
+            app:leftIcon="@drawable/ic_back_black"
+            app:leftIconTint="@color/black"
+            app:lineDrawable="@color/gray_300"
+            app:lineSize="1dp"
+            app:rightIcon="@drawable/ic_more_vote"
+            app:title="@string/vote"
+            app:titleSize="@dimen/sp_14" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:id="@+id/rlRootDetailVote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/llDetailVote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/dp_8"
+                    android:orientation="vertical">
+
+                    <vn.techres.line.widget.AppTextView
+                        android:id="@+id/tvTitleVote"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_8"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_17"
+                        tools:text="Tiêu đề cuộc bình chọn" />
+
+                    <vn.techres.line.widget.AppTextView
+                        android:id="@+id/tvUser"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_8"
+                        android:paddingVertical="@dimen/dp_8"
+                        android:visibility="visible"
+                        tools:text="Nguyễn Trọng Luân • 2 giờ" />
+
+                    <vn.techres.line.widget.AppTextView
+                        android:id="@+id/tvLock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_8"
+                        android:drawableStart="@drawable/ic_clock"
+                        android:drawablePadding="@dimen/dp_8"
+                        android:gravity="center_vertical"
+                        android:visibility="visible"
+                        tools:text="Đã kết thúc vào 17/12/2023 lúc 20:00" />
+
+                    <vn.techres.line.widget.AppTextView
+                        android:id="@+id/tvOptions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_8"
+                        android:drawableStart="@drawable/ic_list"
+                        android:drawablePadding="@dimen/dp_8"
+                        android:gravity="center_vertical"
+                        android:visibility="visible"
+                        tools:text="Chọn nhiều phương án" />
+
+                    <vn.techres.line.widget.AppTextView
+                        android:id="@+id/tvQualityVote"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_8"
+                        android:drawableEnd="@drawable/ic_scroll"
+                        android:drawablePadding="@dimen/dp_4"
+                        android:textColor="@color/main_bg"
+                        android:textSize="@dimen/sp_12"
+                        tools:text="77 người đã bình chọn " />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvOption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
+
+                <vn.techres.line.widget.AppTextView
+                    android:id="@+id/tvAddOption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginVertical="@dimen/dp_8"
+                    android:drawableLeft="@drawable/ic_plus"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:padding="@dimen/dp_4"
+                    android:text="@string/add_vote"
+                    android:textColor="@color/gray_600"
+                    android:textSize="@dimen/sp_15"
+                    app:drawableTint="@color/gray_600" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <vn.techres.line.widget.AppButtonBold
+            android:id="@+id/btnVote"
+            style="@style/ButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:background="@drawable/button_orange_selector"
+            android:foreground="@null"
+            android:paddingStart="@dimen/dp_100"
+            android:paddingEnd="@dimen/dp_100"
+            android:text="@string/vote"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/llInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:baselineAligned="false"
+            android:elevation="16dp"
+            android:gravity="center_vertical"
+            android:padding="@dimen/dp_8"
+            android:visibility="gone">
+
+            <vn.techres.line.widget.AppEditText
+                android:id="@+id/edtOption"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_weight="2"
+                android:background="@color/white"
+                android:hint="@string/add_vote"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLength="120"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_600" />
+
+            <ImageView
+                android:id="@+id/ivClose"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:layout_weight="0.2"
+                android:src="@drawable/ic_close_chat"
+                android:visibility="invisible"
+                app:tint="@color/gray_main"
+                tools:ignore="ContentDescription" />
+
+            <vn.techres.line.widget.AppTextView
+                android:id="@+id/btnAdd"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_32"
+                android:layout_weight="0.5"
+                android:background="@drawable/bg_btn_lvl"
+                android:backgroundTint="@color/main_bg"
+                android:gravity="center"
+                android:text="@string/title_cancel"
+                android:textColor="@color/white"
+                app:textAllCaps="true"
+                app:tint="@color/gray_main" />
+        </LinearLayout>
+
+        <com.aghajari.emojiview.view.AXEmojiPopupLayout
+            android:id="@+id/layoutKeyboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/llLock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_400"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <vn.techres.line.widget.AppTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawablePadding="@dimen/dp_4"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_16"
+                android:text="@string/voting_locked"
+                android:textColor="@color/white"
+                app:drawableTint="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

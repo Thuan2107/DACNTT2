@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_8"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/dp_16">
+
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="@dimen/dp_56"
+            android:layout_height="@dimen/dp_56"
+            android:background="@drawable/bg_shimmer_25"
+            android:contentDescription="@string/description_place_image" />
+
+        <vn.techres.line.widget.AppTextView
+            android:id="@+id/txtFullName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_4"
+            android:background="@drawable/bg_shimmer"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxWidth="72dp"
+            android:maxLines="1"
+            android:minWidth="72dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12" />
+
+    </LinearLayout>
+</layout>

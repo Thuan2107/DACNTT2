@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/llContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_4"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/new_message"
+            layout="@layout/item_new_message_header_chat" />
+
+        <include
+            android:id="@+id/time"
+            layout="@layout/item_time_header_message" />
+
+        <LinearLayout
+            android:id="@+id/llContent"
+            android:layout_width="@dimen/dp_250"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:background="@drawable/bg_chat_group_right"
+            android:orientation="vertical">
+
+            <com.aghajari.emojiview.view.AXEmojiTextView
+                android:id="@id/tvMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:lineSpacingExtra="@dimen/dp_3"
+                android:maxWidth="@dimen/dp_260"
+                android:minWidth="@dimen/dp_65"
+                android:padding="@dimen/dp_8"
+                android:textColor="@color/color_text_chat"
+                android:textColorLink="@color/color_link"
+                android:textSize="@dimen/sp_16"
+                android:visibility="gone"
+                app:emojiSize="@dimen/dp_20"
+                tools:text="https://aloline.vn/u/Giadiwossjkl và các mội dung khác" />
+
+            <include
+                android:id="@+id/groupInfo"
+                layout="@layout/item_message_group_info" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

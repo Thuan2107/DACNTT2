@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ctlContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_4"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/new_message"
+            layout="@layout/item_new_message_header_chat" />
+
+        <include
+            android:id="@+id/time"
+            layout="@layout/item_time_header_message" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ctlMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <LinearLayout
+                android:id="@+id/llAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="@dimen/dp_10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent">
+
+                <ImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="@dimen/dp_32"
+                    android:layout_height="@dimen/dp_32"
+                    android:contentDescription="@string/description_place_image"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_user_default" />
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_8"
+                android:gravity="start"
+                android:orientation="vertical"
+                tools:ignore="RtlSymmetry,UselessParent"
+                app:layout_constraintLeft_toRightOf="@+id/llAvatar"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <vn.techres.line.widget.AppTextViewBold
+                    android:id="@+id/tvNameMedia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_4"
+                    android:background="@drawable/border_gray_100"
+                    android:inputType="textMultiLine|textNoSuggestions"
+                    android:paddingHorizontal="@dimen/dp_8"
+                    android:paddingVertical="@dimen/dp_2"
+                    android:textColor="@color/gray_900"
+                    android:textSize="@dimen/sp_14"
+                    tools:text="Tên người chat"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ctlMessageWrapper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    app:layout_constraintTop_toBottomOf="@+id/tvNameMedia"
+                    app:layout_constraintLeft_toLeftOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ctlText"
+                        android:layout_width="@dimen/dp_270"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_chat_group_left"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.aghajari.emojiview.view.AXEmojiTextView
+                            android:id="@id/tvMessage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:autoLink="web"
+                            android:lineSpacingExtra="@dimen/dp_3"
+                            android:maxWidth="@dimen/dp_260"
+                            android:minWidth="@dimen/dp_90"
+                            android:paddingStart="@dimen/dp_8"
+                            android:paddingTop="@dimen/dp_8"
+                            android:paddingBottom="@dimen/dp_8"
+                            android:textColor="@color/color_text_chat"
+                            android:textColorLink="@color/color_link"
+                            android:textSize="@dimen/sp_16"
+                            app:emojiSize="@dimen/dp_20"
+                            tools:text="https://aloline.com.vn"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"/>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/ctlLink"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent">
+
+                             <include
+                                android:id="@+id/link"
+                                layout="@layout/item_link_message"
+                                tools:ignore="TooDeepLayout" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                app:layout_constraintTop_toBottomOf="@+id/link"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                >
+
+                                <vn.techres.line.widget.AppTextView
+                                    android:id="@+id/tvTime"
+                                    style="@style/ChatTimeStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:minWidth="@dimen/sp_12"
+                                    android:paddingStart="@dimen/dp_8"
+                                    android:paddingEnd="@dimen/dp_8"
+                                    android:paddingBottom="@dimen/dp_8"
+                                    android:textColor="@color/color_time_chat"
+                                    android:textSize="@dimen/sp_12"
+                                    tools:text="15:39" />
+                            </LinearLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@+id/ctlText"
+                        android:layout_marginTop="@dimen/dp_m_10"
+                        app:layout_constraintEnd_toEndOf="@+id/ctlText"
+                        app:layout_constraintTop_toBottomOf="@+id/ctlText">
+
+                        <include
+                            android:id="@+id/reaction"
+                            layout="@layout/item_reaction_icon_message" />
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

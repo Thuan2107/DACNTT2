@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ivEventCover"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_150"
+            android:background="@color/shimmer"
+            android:scaleType="centerCrop"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_16">
+
+            <vn.techres.line.widget.AppTextViewBold
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:background="@drawable/bg_shimmer_10"
+                android:gravity="center"
+                android:textColor="@color/shimmer"
+                android:textSize="@dimen/sp_16"
+                android:textStyle="bold"
+                tools:text="Sự kiện trồng cây xanh phủ kín Aloline" />
+
+            <LinearLayout
+                android:id="@+id/llTimeStartEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/llTimeStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_8"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    android:weightSum="3">
+
+                    <vn.techres.line.widget.AppTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_shimmer_10"
+                        android:gravity="start"
+                        android:text="@string/start_at"
+                        android:textColor="@color/shimmer"
+                        android:textSize="@dimen/sp_12" />
+
+                    <vn.techres.line.widget.AppTextView
+                        android:id="@+id/tvTimeStart"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_4"
+                        android:layout_weight="2"
+                        android:background="@drawable/bg_shimmer_10"
+                        android:gravity="start"
+                        android:textColor="@color/shimmer"
+                        android:textSize="@dimen/sp_12"
+                        tools:text="14:00 19/09/2023" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llTimeEnd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_8"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    android:weightSum="3">
+
+                    <vn.techres.line.widget.AppTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_shimmer_10"
+                        android:gravity="start"
+                        android:text="@string/end_at"
+                        android:textColor="@color/shimmer"
+                        android:textSize="@dimen/sp_12" />
+
+                    <vn.techres.line.widget.AppTextView
+                        android:id="@+id/tvTimeEnd"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_4"
+                        android:layout_weight="2"
+                        android:background="@drawable/bg_shimmer_10"
+                        android:gravity="start"
+                        android:textColor="@color/shimmer"
+                        android:textSize="@dimen/sp_12"
+                        tools:text="14:00 19/09/2023" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llDayApply"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    android:weightSum="3">
+
+                    <vn.techres.line.widget.AppTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_shimmer_10"
+                        android:gravity="start"
+                        android:text="@string/days_apply"
+                        android:textColor="@color/shimmer"
+                        android:textSize="@dimen/sp_12" />
+
+                    <vn.techres.line.widget.AppTextView
+                        android:id="@+id/tvDayApply"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_4"
+                        android:layout_weight="2"
+                        android:background="@drawable/bg_shimmer_10"
+                        android:gravity="start"
+                        android:textColor="@color/shimmer"
+                        android:textSize="@dimen/sp_12"
+                        tools:text="T2, T3, T4, T5, T6, T7, CN" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_16">
+
+            <vn.techres.line.widget.AppTextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:background="@drawable/bg_shimmer_10"
+                android:gravity="center_vertical"
+                android:text="@string/describe"
+                android:textColor="@color/shimmer"
+                android:textSize="@dimen/sp_14"
+                android:textStyle="bold" />
+
+            <com.aghajari.emojiview.view.AXEmojiTextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_100"
+                android:autoLink="web"
+                android:background="@drawable/bg_shimmer_10"
+                android:gravity="start|center_vertical"
+                android:textColor="@color/shimmer"
+                android:textColorLink="@color/color_link"
+                android:textSize="@dimen/sp_14"
+                app:emojiSize="@dimen/dp_18" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llApply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_16"
+            android:visibility="visible">
+
+            <vn.techres.line.widget.AppTextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:background="@drawable/bg_shimmer_10"
+                android:gravity="center_vertical"
+                android:text="@string/apply_in"
+                android:textColor="@color/shimmer"
+                android:textSize="@dimen/sp_14"
+                android:textStyle="bold" />
+
+            <com.aghajari.emojiview.view.AXEmojiTextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_100"
+                android:autoLink="web"
+                android:background="@drawable/bg_shimmer_10"
+                android:gravity="start|center_vertical"
+                android:textColor="@color/shimmer"
+                android:textColorLink="@color/color_link"
+                android:textSize="@dimen/sp_14"
+                app:emojiSize="@dimen/dp_18" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
