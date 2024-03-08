@@ -9,7 +9,6 @@
         android:layout_width="@dimen/dp_16"
         android:layout_height="@dimen/dp_16"
         android:background="@drawable/ic_avatar"
-        android:contentDescription="@string/description_place_image"
         android:src="@drawable/ic_user_default"
         android:visibility="visible" />
 

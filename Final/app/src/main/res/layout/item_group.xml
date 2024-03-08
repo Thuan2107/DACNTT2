@@ -23,7 +23,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
-                android:contentDescription="@string/description_place_image"
                 android:src="@drawable/ic_user_default" />
 
             <ImageView
@@ -33,7 +32,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:background="@drawable/ic_online"
-                android:contentDescription="@string/description_place_image"
                 android:visibility="gone" />
         </RelativeLayout>
 
@@ -51,7 +49,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <vn.techres.line.widget.AppTextView
+                <TextView
                     android:id="@+id/tvName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -62,18 +60,17 @@
                     android:maxLines="1"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_14"
-                    tools:text="Nguyễn Trọng Luân" />
+                    tools:text="Nguyễn Minh Thuận" />
 
                 <ImageView
                     android:id="@+id/imvNotify"
                     android:layout_width="@dimen/dp_18"
                     android:layout_height="@dimen/dp_18"
                     android:layout_marginEnd="@dimen/dp_8"
-                    android:contentDescription="@string/description_place_image"
                     android:src="@drawable/ic_turn_off_notification"
                     android:visibility="visible" />
 
-                <vn.techres.line.widget.AppTextView
+                <TextView
                     android:id="@+id/tvTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -89,7 +86,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <com.hjq.shape.view.ShapeTextView
+                <TextView
                     android:id="@+id/tvContent"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -99,7 +96,6 @@
                     android:maxLines="1"
                     android:textColor="@color/gray_500"
                     android:textSize="@dimen/sp_12"
-                    app:shape_textSelectedColor="@color/black"
                     tools:text="@string/content_empty" />
 
                 <ImageView
@@ -107,11 +103,10 @@
                     android:layout_width="@dimen/dp_18"
                     android:layout_height="@dimen/dp_18"
                     android:layout_marginEnd="@dimen/dp_8"
-                    android:contentDescription="@string/description_place_image"
                     android:src="@drawable/ic_pinned_bold_gray"
                     android:visibility="visible" />
 
-                <vn.techres.line.widget.AppTextViewBold
+                <TextView
                     android:id="@+id/tvCountChat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

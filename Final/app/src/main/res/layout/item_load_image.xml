@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <com.luck.picture.lib.widget.SquareRelativeLayout
+    <com.example.chatapplication.other.SquareRelativeLayout
         android:layout_width="@dimen/dp_90"
         android:layout_height="@dimen/dp_90">
 
@@ -13,6 +13,6 @@
             android:scaleType="centerCrop"
             tools:ignore="ContentDescription"
             tools:src="@drawable/ic_empty_media" />
-    </com.luck.picture.lib.widget.SquareRelativeLayout>
+    </com.example.chatapplication.other.SquareRelativeLayout>
 
 </layout>

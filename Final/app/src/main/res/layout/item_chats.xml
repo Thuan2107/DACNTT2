@@ -37,9 +37,6 @@
 
         </LinearLayout>
 
-        <include
-            android:id="@+id/headerBackground"
-            layout="@layout/item_header_background" />
 
         <include
             android:id="@+id/pinned"
@@ -97,7 +94,7 @@
                         app:riv_corner_radius="@dimen/dp_8" />
                 </FrameLayout>
 
-                <vn.techres.line.widget.AppTextView
+                <TextView
                     android:id="@+id/sendPhotoClip"
                     android:layout_width="@dimen/dp_100"
                     android:layout_height="@dimen/dp_42"
@@ -121,7 +118,6 @@
                     android:layout_marginTop="@dimen/dp_4"
                     android:layout_marginEnd="@dimen/dp_16"
                     android:adjustViewBounds="true"
-                    android:contentDescription="@string/description_place_image"
                     android:padding="@dimen/dp_3"
                     android:src="@drawable/ic_suggest_remove" />
 
@@ -135,7 +131,6 @@
                         android:id="@+id/openImage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/description_place_image"
                         app:srcCompat="@drawable/ic_suggest_expand" />
                 </LinearLayout>
 
@@ -160,7 +155,6 @@
                         android:id="@+id/closeImage"
                         android:layout_width="@dimen/dp_32"
                         android:layout_height="@dimen/dp_32"
-                        android:contentDescription="@string/description_place_image"
                         android:src="@drawable/ic_suggest_collapse" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -172,7 +166,7 @@
                         android:layout_marginEnd="@dimen/dp_8" />
                 </LinearLayout>
 
-                <vn.techres.line.widget.AppTextView
+                <TextView
                     android:id="@+id/sendListImageClip"
                     android:layout_width="@dimen/dp_100"
                     android:layout_height="@dimen/dp_42"
@@ -189,7 +183,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_12" />
 
-                <vn.techres.line.widget.AppTextView
+                <TextView
                     android:id="@+id/cancelListImageClip"
                     android:layout_width="@dimen/dp_100"
                     android:layout_height="@dimen/dp_42"
@@ -230,15 +224,7 @@
                 tools:itemCount="3"
                 tools:listitem="@layout/item_typing_on" />
 
-            <com.github.ybq.android.spinkit.SpinKitView
-                android:id="@+id/spin_kit"
-                style="@style/SpinKitView.Small.ThreeBounce"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dp_8"
-                android:paddingEnd="@dimen/dp_8"
-                app:SpinKit_Color="@color/main_bg" />
+
         </LinearLayout>
 
         <ImageView
@@ -249,48 +235,8 @@
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="@dimen/dp_8"
             android:layout_marginBottom="@dimen/dp_8"
-            android:contentDescription="@string/description_place_image"
             android:src="@drawable/ic_jump_last"
             android:visibility="gone" />
-
-        <LinearLayout
-            android:id="@+id/lnNewMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/dp_200"
-            android:visibility="gone">
-
-            <include layout="@layout/item_chat_new_message_arrow_down" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lnUnreadMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/dp_80"
-            android:visibility="gone">
-
-            <include layout="@layout/item_chat_first_unread_arrow_up" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lnUnreadTagName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/dp_120"
-            android:visibility="gone">
-
-            <include layout="@layout/item_chat_first_unread_tag_name" />
-
-        </LinearLayout>
 
     </RelativeLayout>
 

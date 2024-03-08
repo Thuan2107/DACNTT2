@@ -83,6 +83,37 @@ dependencies {
     implementation("com.github.getActivity:GsonFactory:6.5")
     implementation("com.jakewharton.timber:timber:4.7.1")
 
+    implementation("org.greenrobot:eventbus:3.3.1")
 
+    // https://github.com/getActivity/XXPermissions
+    implementation("com.github.getActivity:XXPermissions:18.5")
+
+    // Shape：https://github.com/getActivity/ShapeView
+//    api("com.github.getActivity:ShapeView:6.0")
+    // https://github.com/getActivity/ToastUtils
+    implementation("com.github.getActivity:ToastUtils:10.5")
+    // https://github.com/getActivity/TitleBar
+    implementation("com.github.getActivity:TitleBar:9.2")
+    // https://github.com/gyf-dev/ImmersionBar
+    implementation("com.geyifeng.immersionbar:immersionbar:3.2.2")
+    // https://github.com/bumptech/glide
+    api("com.github.bumptech.glide:glide:4.14.2")
+    // MMKV：https://github.com/Tencent/MMKV
+    api("com.tencent:mmkv-static:1.2.14")
+    //https://github.com/socketio/socket.io-client-java
+    api("io.socket:socket.io-client:2.0.1")
+    //https://github.com/gotev/android-upload-service
+    api("net.gotev:uploadservice:4.7.0")
+
+    api("com.github.chuckerteam.chucker:library:3.5.2")
+    //https://github.com/square/retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    //https://github.com/MarkoMilos/Paginate
+    api("com.github.markomilos:paginate:1.0.0")
+    //https://github.com/PierfrancescoSoffritti/android-youtube-player
+    api("com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0")
+
+    implementation("com.makeramen:roundedimageview:2.3.0")
 
 }

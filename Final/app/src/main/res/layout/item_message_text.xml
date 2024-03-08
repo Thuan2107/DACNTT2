@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:padding="@dimen/dp_8">
 
-        <com.aghajari.emojiview.view.AXEmojiTextView
+        <TextView
             android:id="@+id/tvMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,10 +28,9 @@
             android:textColor="@color/gray_900"
             android:textColorLink="@color/color_link"
             android:textSize="@dimen/sp_14"
-            app:emojiSize="@dimen/dp_18"
             tools:text="Nội dung message ở đây" />
 
-        <vn.techres.line.widget.AppTextView
+        <TextView
             android:id="@+id/tvTime"
             style="@style/ChatTimeStyle"
             android:layout_width="match_parent"

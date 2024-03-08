@@ -14,9 +14,6 @@
         android:layout_marginBottom="@dimen/dp_4"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/new_message"
-            layout="@layout/item_new_message_header_chat" />
 
         <include
             android:id="@+id/time"
@@ -44,7 +41,6 @@
                     android:id="@+id/ivAvatar"
                     android:layout_width="@dimen/dp_32"
                     android:layout_height="@dimen/dp_32"
-                    android:contentDescription="@string/description_place_image"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_user_default" />
 
@@ -59,7 +55,7 @@
                 app:layout_constraintLeft_toRightOf="@id/llAvatar"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <vn.techres.line.widget.AppTextViewBold
+                <TextView
                     android:id="@+id/tvNameMedia"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -118,7 +114,6 @@
                                     android:layout_width="@dimen/dp_160"
                                     android:layout_height="@dimen/dp_160"
                                     android:adjustViewBounds="true"
-                                    android:contentDescription="@string/description_place_image"
                                     android:maxWidth="@dimen/dp_280"
                                     android:scaleType="centerCrop"
                                     tools:src="@drawable/ic_default" />
@@ -170,7 +165,7 @@
                         app:layout_constraintStart_toStartOf="@+id/rltVideo"
                         app:layout_constraintTop_toBottomOf="@+id/rltVideo">
 
-                        <vn.techres.line.widget.AppTextView
+                        <TextView
                             android:id="@+id/tvTime"
                             style="@style/ChatTimeStyle"
                             android:layout_width="wrap_content"
@@ -185,19 +180,6 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignEnd="@+id/rltVideo"
-                        android:layout_marginTop="@dimen/dp_m_10"
-                        app:layout_constraintEnd_toEndOf="@+id/rltVideo"
-                        app:layout_constraintTop_toBottomOf="@+id/rltVideo">
-
-                        <include
-                            android:id="@+id/reaction"
-                            layout="@layout/item_reaction_icon_message" />
-
-                    </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

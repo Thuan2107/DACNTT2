@@ -34,7 +34,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@drawable/bg_ripple_animation_button_back"
-                    android:contentDescription="@string/description_place_image"
                     android:padding="@dimen/dp_8"
                     android:src="@drawable/ic_back_black" />
 
@@ -59,7 +58,6 @@
                             android:layout_marginTop="@dimen/cardview_compat_inset_shadow"
                             android:layout_marginEnd="@dimen/cardview_compat_inset_shadow"
                             android:layout_marginBottom="@dimen/cardview_compat_inset_shadow"
-                            android:contentDescription="@string/description_place_image"
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_user_default" />
 
@@ -70,7 +68,6 @@
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentBottom="true"
                             android:background="@drawable/ic_online"
-                            android:contentDescription="@string/description_place_image"
                             android:visibility="gone" />
 
                     </RelativeLayout>
@@ -82,7 +79,7 @@
                         android:layout_marginStart="@dimen/dp_4"
                         android:orientation="vertical">
 
-                        <vn.techres.line.widget.AppTextViewBold
+                        <TextView
                             android:id="@+id/tvGroupName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -92,7 +89,7 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/sp_16" />
 
-                        <vn.techres.line.widget.AppTextView
+                        <TextView
                             android:id="@+id/tvStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -114,31 +111,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/ibCallAudio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_8"
-                    android:background="@drawable/circle_orange_900"
-                    android:backgroundTint="@color/gray_300"
-                    android:contentDescription="@string/description_place_image"
-                    android:padding="@dimen/dp_5"
-                    android:src="@drawable/ic_call_chat"
-                    android:visibility="gone"
-                    app:tint="@color/gray_600" />
 
-                <ImageButton
-                    android:id="@+id/ibCallVideo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_8"
-                    android:background="@drawable/circle_orange_900"
-                    android:backgroundTint="@color/gray_300"
-                    android:contentDescription="@string/description_place_image"
-                    android:padding="@dimen/dp_5"
-                    android:src="@drawable/ic_call_video_chat"
-                    android:visibility="gone"
-                    app:tint="@color/gray_600" />
 
                 <ImageButton
                     android:id="@+id/ibSearch"
@@ -147,7 +120,6 @@
                     android:layout_marginStart="@dimen/dp_8"
                     android:background="@drawable/circle_orange_900"
                     android:backgroundTint="@color/gray_300"
-                    android:contentDescription="@string/description_place_image"
                     android:padding="@dimen/dp_5"
                     android:src="@drawable/ic_search_white"
                     android:visibility="visible"
@@ -160,7 +132,6 @@
                     android:layout_marginStart="@dimen/dp_8"
                     android:background="@drawable/circle_orange_900"
                     android:backgroundTint="@color/gray_300"
-                    android:contentDescription="@string/description_place_image"
                     android:padding="@dimen/dp_5"
                     android:src="@drawable/ic_add_member_chat"
                     android:visibility="gone"
@@ -173,7 +144,6 @@
                     android:layout_marginStart="@dimen/dp_8"
                     android:background="@drawable/circle_orange_900"
                     android:backgroundTint="@color/gray_300"
-                    android:contentDescription="@string/description_place_image"
                     android:padding="@dimen/dp_5"
                     android:src="@drawable/ic_menu_chat"
                     android:visibility="visible"

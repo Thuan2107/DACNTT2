@@ -16,10 +16,6 @@
         >
 
         <include
-            android:id="@+id/new_message"
-            layout="@layout/item_new_message_header_chat" />
-
-        <include
             android:id="@+id/time"
             layout="@layout/item_time_header_message" />
 
@@ -57,19 +53,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/ctlText"
-                    android:layout_alignBottom="@+id/ctlText"
-                    android:layout_marginBottom="-12dp">
-
-                    <include
-                        android:id="@+id/reaction"
-                        layout="@layout/item_reaction_icon_message" />
-
-                </LinearLayout>
-
 
             </RelativeLayout>
 
@@ -106,7 +89,7 @@
                     android:visibility="visible"
                     tools:ignore="RtlSymmetry,UselessParent">
 
-                    <vn.techres.line.widget.AppTextView
+                    <TextView
                         android:id="@+id/tvMoreView"
                         style="@style/ChatTimeStyle"
                         android:layout_width="wrap_content"

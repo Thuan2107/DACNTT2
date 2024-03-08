@@ -3,7 +3,7 @@ package com.example.chatapplication.cache
 import com.example.chatapplication.constant.AppConstants
 import com.example.chatapplication.helper.PrefUtils.Companion.getString
 import com.example.chatapplication.helper.PrefUtils.Companion.putString
-import com.example.chatapplication.model.User
+import com.example.chatapplication.model.entity.User
 import com.google.gson.Gson
 
 class CurrentUser {
@@ -22,7 +22,7 @@ class CurrentUser {
     }
 
     fun checkLogin(): Boolean {
-        return getUserInfo().id != 0L
+        return getUserInfo().id.toLong() != 0L
     }
 
     fun saveUserInfo(user: User?) {
@@ -41,10 +41,6 @@ class CurrentUser {
         var token = ""
         if (checkLogin()) {
             token = "Bearer ${getUserInfo().accessToken}"
-        } else {
-            if (ConfigCache().getConfig().apiKey != "") {
-                token = "Basic ${ConfigCache().getConfig().session}:${ConfigCache().getConfig().apiKey}"
-            }
         }
         return token
     }

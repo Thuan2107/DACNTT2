@@ -15,10 +15,6 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/new_message"
-            layout="@layout/item_new_message_header_chat" />
-
-        <include
             android:id="@+id/time"
             layout="@layout/item_time_header_message" />
 
@@ -80,7 +76,6 @@
                                     android:layout_width="@dimen/dp_180"
                                     android:layout_height="@dimen/dp_180"
                                     android:adjustViewBounds="true"
-                                    android:contentDescription="@string/description_place_image"
                                     android:maxWidth="@dimen/dp_180"
                                     android:scaleType="centerCrop"
                                     tools:src="@drawable/ic_default" />
@@ -109,7 +104,7 @@
                         android:visibility="visible"
                         >
 
-                        <vn.techres.line.widget.AppTextView
+                        <TextView
                             android:id="@+id/tvTime"
                             style="@style/ChatTimeStyle"
                             android:layout_width="wrap_content"
@@ -119,19 +114,6 @@
                             android:paddingStart="@dimen/dp_8"
                             android:paddingEnd="@dimen/dp_8"
                             android:textColor="@color/white" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignEnd="@+id/rltVideo"
-                        android:layout_alignBottom="@+id/rltVideo"
-                        android:layout_marginBottom="-12dp">
-
-                        <include
-                            android:id="@+id/reaction"
-                            layout="@layout/item_reaction_icon_message" />
 
                     </LinearLayout>
 
@@ -171,7 +153,7 @@
                         android:visibility="visible"
                         tools:ignore="RtlSymmetry,UselessParent">
 
-                        <vn.techres.line.widget.AppTextView
+                        <TextView
                             android:id="@+id/tvMoreView"
                             style="@style/ChatTimeStyle"
                             android:layout_width="wrap_content"

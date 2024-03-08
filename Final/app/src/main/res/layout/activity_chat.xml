@@ -55,38 +55,6 @@
 
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/flAnimationHeartFly"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-            <ImageView
-                android:id="@+id/imvHeart"
-                android:layout_width="@dimen/dp_32"
-                android:layout_height="@dimen/dp_32"
-                android:contentDescription="@string/default_image"
-                android:src="@drawable/ic_heart"
-                android:visibility="gone" />
-
-            <vn.techres.line.chat.widget.DotsView
-                android:id="@+id/vDotsView"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_gravity="center" />
-
-            <vn.techres.line.widget.AppTextView
-                android:id="@+id/tvClapCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:alpha="0"
-                android:background="@drawable/circle_solid_32"
-                android:fontFamily="sans-serif"
-                android:gravity="center"
-                android:textColor="#ffffff"
-                android:visibility="visible" />
-        </FrameLayout>
 
     </RelativeLayout>
 

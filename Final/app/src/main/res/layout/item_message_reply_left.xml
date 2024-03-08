@@ -14,9 +14,6 @@
         android:layout_marginBottom="@dimen/dp_4"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/new_message"
-            layout="@layout/item_new_message_header_chat" />
 
         <include
             android:id="@+id/time"
@@ -44,7 +41,6 @@
                     android:id="@+id/ivAvatar"
                     android:layout_width="@dimen/dp_32"
                     android:layout_height="@dimen/dp_32"
-                    android:contentDescription="@string/description_place_image"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_user_default" />
 
@@ -58,7 +54,7 @@
                 app:layout_constraintLeft_toRightOf="@+id/llAvatar"
                 app:layout_constraintBottom_toBottomOf="parent">
 
-                <vn.techres.line.widget.AppTextViewBold
+                <TextView
                     android:id="@+id/tvNameMedia"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -111,20 +107,6 @@
                                 layout="@layout/item_message_text" />
 
                         </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignEnd="@+id/llText"
-                        android:layout_marginTop="@dimen/dp_m_10"
-                        app:layout_constraintEnd_toEndOf="@+id/llText"
-                        app:layout_constraintTop_toBottomOf="@+id/llText">
-
-                        <include
-                            android:id="@+id/reaction"
-                            layout="@layout/item_reaction_icon_message" />
 
                     </LinearLayout>
 
