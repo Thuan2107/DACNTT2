@@ -61,10 +61,8 @@ public final class RequestHandler implements IRequestHandler {
         }
 
         if (!response.isSuccessful()) {
-            Timber.d(mApplication.getString(R.string.http_response_error) + " " + response.code());
             Timber.d(response.message());
             Timber.d(response.toString());
-            throw new ResponseException(mApplication.getString(R.string.http_response_error), response);
         } else {
             Timber.d(response.toString());
         }
@@ -75,7 +73,6 @@ public final class RequestHandler implements IRequestHandler {
 
         ResponseBody body = response.body();
         if (body == null) {
-            throw new NullBodyException(mApplication.getString(R.string.http_response_null_body));
         }
 
         if (ResponseBody.class.equals(type)) {
@@ -161,56 +158,54 @@ public final class RequestHandler implements IRequestHandler {
         return IRequestHandler.super.downloadFail(httpRequest, throwable);
     }
 
-//    @NonNull
-//    @Override
-//    public Exception requestFail(@NonNull HttpRequest<?> httpRequest, @NonNull Exception e) {
-//        if (e instanceof HttpException) {
-//            if (e instanceof TokenException) {
-//                // Thông tin đăng nhập không hợp lệ, hãy chuyển đến trang đăng nhập
-//
-//            }
-//            return e;
-//        }
-//
-//        if (e instanceof SocketTimeoutException) {
-//            return new TimeoutException(mApplication.getString(R.string.http_server_out_time), e);
-//        }
-//
-//        if (e instanceof UnknownHostException) {
-//            NetworkInfo info = ((ConnectivityManager) mApplication.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-//            // Xác định xem mạng đã được kết nối chưa
-//            if (info != null && info.isConnected()) {
-//                // Kết nối là vấn đề với máy chủ
-//                return new ServerException(mApplication.getString(R.string.http_server_error), e);
-//            }
-//            // Không có kết nối là lỗi mạng
-//            return new NetworkException(mApplication.getString(R.string.http_network_error), e);
-//        }
-//
-//        if (e instanceof IOException) {
-//            return new CancelException(mApplication.getString(R.string.http_request_cancel), e);
-//        }
-//
-//        return new HttpException(e.getMessage(), e);
-//    }
+    @NonNull
+    public Exception requestFail(@NonNull HttpRequest<?> httpRequest, @NonNull Exception e) {
+        if (e instanceof HttpException) {
+            if (e instanceof TokenException) {
+                // Thông tin đăng nhập không hợp lệ, hãy chuyển đến trang đăng nhập
 
-//    @SuppressLint("StringFormatInvalid")
-//    @NonNull
-//    @Override
-//    public Exception downloadFail(@NonNull HttpRequest<?> httpRequest, @NonNull Exception e) {
-//        if (e instanceof ResponseException) {
-//            ResponseException responseException = ((ResponseException) e);
-//            Response response = responseException.getResponse();
+            }
+            return e;
+        }
+
+        if (e instanceof SocketTimeoutException) {
+//            return new TimeoutException(mApplication.getString(R.string.http_server_out_time), e);
+        }
+
+        if (e instanceof UnknownHostException) {
+            NetworkInfo info = ((ConnectivityManager) mApplication.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+            // Xác định xem mạng đã được kết nối chưa
+            if (info != null && info.isConnected()) {
+                // Kết nối là vấn đề với máy chủ
+//                return new ServerException(mApplication.getString(R.string.http_server_error), e);
+            }
+            // Không có kết nối là lỗi mạng
+//            return new NetworkException(mApplication.getString(R.string.http_network_error), e);
+        }
+
+        if (e instanceof IOException) {
+//            return new CancelException(mApplication.getString(R.string.http_request_cancel), e);
+        }
+
+        return new HttpException(e.getMessage(), e);
+    }
+
+    @SuppressLint("StringFormatInvalid")
+    @NonNull
+    public Exception downloadFail(@NonNull HttpRequest<?> httpRequest, @NonNull Exception e) {
+        if (e instanceof ResponseException) {
+            ResponseException responseException = ((ResponseException) e);
+            Response response = responseException.getResponse();
 //            responseException.setMessage(String.format(mApplication.getString(R.string.http_response_error),
 //                    response.code(), response.message()));
-//            return responseException;
-//        } else if (e instanceof NullBodyException) {
-//            NullBodyException nullBodyException = ((NullBodyException) e);
+            return responseException;
+        } else if (e instanceof NullBodyException) {
+            NullBodyException nullBodyException = ((NullBodyException) e);
 //            nullBodyException.setMessage(mApplication.getString(R.string.http_response_null_body));
-//            return nullBodyException;
-//        }
-//        return requestFail(httpRequest, e);
-//    }
+            return nullBodyException;
+        }
+        return requestFail(httpRequest, e);
+    }
 
     @Nullable
     @Override

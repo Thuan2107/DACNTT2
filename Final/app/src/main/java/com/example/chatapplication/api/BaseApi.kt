@@ -36,7 +36,7 @@ open class BaseApi : IRequestApi, IRequestType, IRequestHost, IRequestIntercepto
     }
 
     override fun getHost():String{
-        return "http://localhost:3000/"
+        return AppConstants.IP_ADDRESS
     }
 
     override fun interceptArguments(

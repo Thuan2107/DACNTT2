@@ -11,9 +11,9 @@ class ConversationTypeConstants {
         const val TYPE_AUDIO = 4
         const val TYPE_FILE = 5
         const val TYPE_LINK = 1
-        const val PERMISSION_MEMBER = "0"
-        const val PERMISSION_DEPUTY = "1"
-        const val PERMISSION_OWNER = "2"
+        const val PERMISSION_MEMBER = 0
+        const val PERMISSION_DEPUTY = 1
+        const val PERMISSION_OWNER = 2
         const val PERMISSION_VOTE = "PERMISSION_VOTE"
         const val VIDEO_TYPE = 1
     }

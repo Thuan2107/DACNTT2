@@ -5,7 +5,7 @@ package com.example.chatapplication.router
 object ApiRouterOauth {
 
     fun API_LOGIN(): String {
-        return "http://localhost:3000/auth/sign-in"
+        return "auth/sign-in"
     }
 
     fun API_LOGOUT(): String {

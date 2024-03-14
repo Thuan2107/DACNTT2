@@ -17,7 +17,7 @@ class MediaList {
     var createdAt: String = ""
 
     @SerializedName("original")
-    var original: Original = Original()
+    var original: String = ""
 
     @SerializedName("medium")
     var medium: Medium = Medium()
@@ -44,20 +44,19 @@ class MediaList {
 
     constructor()
 
-    constructor(original: Original, type: Int) {
+    constructor(original: String, type: Int) {
         this.original = original
         this.type = type
     }
 
-    constructor(mediaId: String, original: Original) {
+    constructor(mediaId: String, original: String) {
         this.mediaId = mediaId
         this.original = original
     }
 
     constructor(url: String, pathLocal: String, name: String, type: Int) {
-        this.original.url = url
+        this.original = url
         this.pathLocal = pathLocal
-        this.original.name = name
         this.type = type
     }
 }

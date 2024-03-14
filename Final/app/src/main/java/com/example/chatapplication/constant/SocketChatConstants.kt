@@ -37,12 +37,17 @@ class SocketChatConstants {
         const val EMIT_REMOVE_MEMBER = "remove-member-conversation$version"
 
         //typing on
-        const val ON_TYPING_ON = "listen-typing-on$version"
-        const val EMIT_TYPING_ON = "typing-on$version"
+        const val ON_TYPING_ON = "typing-on"
+        const val EMIT_TYPING_ON = "typing-on"
 
         //typing off
-        const val ON_TYPING_OFF = "listen-typing-off$version"
-        const val EMIT_TYPING_OFF = "typing-off$version"
+        const val ON_TYPING_OFF = "typing-off"
+        const val EMIT_TYPING_OFF = "typing-off"
+
+        //message
+        const val EMIT_MESSAGE = "message"
+        const val ON_MESSAGE = "message"
+
 
         //Chat text
         const val EMIT_CHAT_TEXT = "message-text$version"

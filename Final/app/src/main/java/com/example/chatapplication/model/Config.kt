@@ -3,6 +3,10 @@ package com.example.chatapplication.model
 import com.google.gson.annotations.SerializedName
 
 class Config {
+
+    @SerializedName("api_connection")
+    var apiConnection: String = ""
+
     @SerializedName("realtime_domain")
     var realtimeDomain = ""
 
@@ -18,8 +22,6 @@ class Config {
     @SerializedName("api_upload_short")
     var apiUploadV2 = ""
 
-    @SerializedName("api_oauth_node")
-    var apiOauthNode = ""
 
     @SerializedName("session")
     var session = ""

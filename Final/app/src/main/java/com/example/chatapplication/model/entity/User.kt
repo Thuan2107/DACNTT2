@@ -7,7 +7,7 @@ class User {
     var id: String = ""
 
     @SerializedName("user_id")
-    var userId: Int = 0
+    var userId: String = ""
 
     @SerializedName("full_name")
     var fullName: String = ""

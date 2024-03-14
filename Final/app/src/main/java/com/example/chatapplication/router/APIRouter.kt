@@ -1,7 +1,11 @@
 package com.example.chatapplication.router
 
 object APIRouter {
-    fun API_TEST(): String{
-        return "https://pokeapi.co/api/v2/pokemon/ditto"
+    fun API_SEARCH_BY_PHONE(): String{
+        return "user/find-phone"
+    }
+
+    fun API_CHANGE_PASSWORD(): String {
+        return "auth/change-password"
     }
 }

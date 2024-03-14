@@ -25,7 +25,7 @@ class NavigationAdapter(context: Context) :
     BaseAdapter.OnItemClickListener {
 
     /** Điểm đến hiện được chọn */
-    private var selectedPosition: Int = 2
+    private var selectedPosition: Int = 0
 
     /** Thanh điều hướng nhấp vào trình nghe */
     private var listener: OnNavigationListener? = null
@@ -84,21 +84,7 @@ class NavigationAdapter(context: Context) :
             getItem(position).apply {
                 binding.imgIcon.setImageDrawable(getDrawable())
 
-                if (getTitle()!!.title == "") {
-                    binding.txtTitle.hide()
-                    // Set lại kích cỡ cho imageView
-                    binding.imgIcon.layoutParams.width =
-                        getResources().getDimensionPixelSize(R.dimen.dp_48)
-                    binding.imgIcon.layoutParams.height =
-                        getResources().getDimensionPixelSize(R.dimen.dp_48)
-                } else {
-                    binding.txtTitle.show()
-                    // Set lại kích cỡ cho imageView
-                    binding.imgIcon.layoutParams.width =
-                        getResources().getDimensionPixelSize(R.dimen.dp_20)
-                    binding.imgIcon.layoutParams.height =
-                        getResources().getDimensionPixelSize(R.dimen.dp_20)
-                }
+
                 binding.txtTitle.text = getTitle()!!.title
                 binding.imgIcon.isSelected = (selectedPosition == position)
                 binding.txtTitle.isSelected = (selectedPosition == position)

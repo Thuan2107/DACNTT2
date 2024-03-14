@@ -12,7 +12,11 @@ object AppConstants {
     const val PUSH_TOKEN = "PUSH_TOKEN"
     const val CACHE_HTTP_LOG = "CACHE_HTTP_LOG"
     const val ID_USER = "ID_USER"
-
+    const val FOLDER_APP = "Final"
+    const val IP_ADDRESS = "http://192.168.1.2:3000/"
+    const val DOWNLOAD_CACHE = "DOWNLOAD_CACHE"
+    const val FILE_DOWNLOAD = "FILE_DOWNLOAD"
+    const val TYPE_DOWNLOAD = "TYPE_DOWNLOAD"
 
 
     const val TYPE_SYSTEM = 0 // nhắn tin cho mình
@@ -31,6 +35,10 @@ object AppConstants {
     const val STATUS_ACTIVE = 1// Đang hoạt động
 
     const val DATA_MEDIA = "DATA_MEDIA"
+    const val USER_DATA = "USER_DATA"
+    const val VOLUME_INFO = "VOLUME_INFO"
+
+
     const val POSITION_MEDIA = "POSITION_MEDIA"
     const val MEDIA_COUNT_VISIBLE = "MEDIA_COUNT_VISIBLE"
     const val GROUP_DATA = "GROUP_DATA"

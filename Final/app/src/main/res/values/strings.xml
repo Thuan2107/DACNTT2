@@ -3,11 +3,13 @@
     <string name="title_activity_login">LoginActivity</string>
     <!-- Chat -->
     <string name="chat" translatable="false">Trò chuyện</string>
+    <string name="message1" translatable="false">Nhắn tin</string>
     <string name="phone_book" translatable="false">Danh bạ</string>
     <string name="create_group" translatable="false">Tạo nhóm</string>
     <!--String detail chat-->
     <string name="page_user" translatable="false">Trang\ncá nhân</string>
     <string name="page_group" translatable="false">Thêm thành viên</string>
+    <string name="friend" translatable="false">Bạn bè</string>
     <string name="image" translatable="false">Ảnh</string>
     <string name="titleFile" translatable="false">File</string>
     <string name="link" translatable="false">Link</string>
@@ -35,6 +37,7 @@
     <string name="send_a_reply" translatable="false">đã trả lời tin nhắn</string>
     <string name="send_a_audio" translatable="false">đã gửi hội thoại</string>
     <string name="pinned_user" translatable="false">đã ghim tin nhắn</string>
+    <string name="send_message" translatable="false">Gửi tin nhắn</string>
     <string name="kick_member" translatable="false">đã mời một người ra khỏi group</string>
     <string name="authorize_member" translatable="false">nhường quyền trưởng nhóm</string>
     <string name="last_remove_pinned" translatable="false">đã thu hồi ghim</string>
@@ -55,6 +58,7 @@
     <string name="out" translatable="false">Thoát</string>
     <string name="next" translatable="false">Tiếp tục</string>
     <string name="txt_user_typing_without_name" translatable="false">Đang soạn tin</string>
+    <string name="downloading">Đang tải xuống</string>
     <string name="new_message" translatable="false">Tin nhắn mới</string>
     <string name="unread_messages" translatable="false">Tin chưa đọc</string>
     <string name="message_reminds" translatable="false">Nhắc đến bạn</string>
@@ -65,7 +69,6 @@
     <string name="long_press_record" translatable="false">Nhấn và giữ để ghi âm</string>
     <string name="number_group_chat_content" translatable="false">%s thành viên</string>
     <string name="access_time" translatable="false">Đang hoạt động</string>
-    <string name="received" translatable="false">Đã nhận</string>
     <string name="sending" translatable="false">Đang gửi</string>
     <string name="error" translatable="false">Gửi lỗi</string>
     <string name="open" translatable="false">Mở</string>
@@ -341,7 +344,6 @@
     <string name="successfully_change_password" translatable="false">Bạn đã đổi mật khẩu thành công</string>
     <string name="error_message" translatable="false">Lỗi </string>
     <string name="http_response_error">Máy chủ phản hồi bất thường, vui lòng thử lại sau</string>
-    <string name="http_response_null_body">Dữ liệu máy chủ trả về ngoại lệ, vui lòng thử lại sau</string>
     <string name="home_nav_message">Tin nhắn</string>
     <string name="home_nav_directory">Danh bạ</string>
     <string name="home_nav_discover">Khám phá</string>
@@ -369,9 +371,126 @@
     <string name="year_comment_ago">%d năm</string>
     <string name="max">+</string>
     <string name="undefine_account">Người dùng</string>
-    <string name="http_data_explain_error">Ngoại lệ phân tích cú pháp dữ liệu, vui lòng đợi</string>
+    <string name="http_token_error">Lỗi token</string>
     <string name="has_left_the_group">đã rời khỏi nhóm</string>
+    <string name="common_network_error">Mạng hiện tại không khả dụng, vui lòng kiểm tra cài đặt mạng</string>
 
+    <string name="http_data_explain_error">Ngoại lệ phân tích cú pháp dữ liệu, vui lòng đợi</string>
+    <string name="http_server_out_time">Không có phản hồi từ máy chủ</string>
+    <string name="http_network_error">Yêu cầu không thành công, vui lòng kiểm tra cài đặt mạng</string>
+    <string name="http_server_error">Lỗi kết nối máy chủ, vui lòng thử lại sau</string>
+    <string name="http_request_cancel">Yêu cầu đã bị gián đoạn, vui lòng thử lại</string>
 
+    <string name="http_response_null_body">Dữ liệu máy chủ trả về ngoại lệ, vui lòng thử lại sau</string>
+    <string name="http_response_md5_error">Tải xuống không thành công, xác minh tệp md5 không thành công</string>
+    <string name="common_confirm">Xác nhận</string>
+    <string name="common_cancel">Hủy bỏ</string>
+    <string name="request_friend" translatable="false">Lời mời kết bạn</string>
+    <string name="empty">Hiện tại không có dữ liệu</string>
+    <string name="setting_account">Cài đặt tài khoản</string>
+    <string name="account">Tài khoản</string>
+    <string name="forgot_password">Đổi mật khẩu</string>
+    <string name="delete_account">Xoá tài khoản</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="logout_header">Xác nhận đăng xuất</string>
+    <string name="logout_message">Bạn có chắc muốn đăng xuất?</string>
+    <string name="confirm">Đồng ý</string>
+    <string name="received" translatable="false">Đã nhận</string>
+    <string name="send" translatable="false">Đã gửi</string>
 
+    <string name="agree" translatable="false">Đồng ý</string>
+    <string name="text_agree" translatable="false">ĐÃ LÀ BẠN BÈ</string>
+    <string name="refuse" translatable="false">Từ chối</string>
+    <string name="add_friend" translatable="false">Kết bạn</string>
+    <string name="remove_add_friend" translatable="false">Hủy kết bạn</string>
+    <string name="text_refuse" translatable="false">Đã từ chối kết bạn</string>
+    <string name="recall_notify" translatable="false" >Đã thu hồi kết bạn</string>
+    <string name="recall" translatable="false">Thu hồi</string>
+    <string name="un_friend">Huỷ kết bạn với</string>
+    <string name="personal_page">Xem trang cá nhân của</string>
+    <string name="message_confirm_unfriend">%1$s %2$s không?</string>
+    <string name="confirm_un_friend">Bạn có chắc chắn muốn huỷ kết bạn với</string>
+    <string name="description_place_image">A photo of the selected place</string>
+    <string name="max_members">Số lượng thành viên đã đạt tối đa</string>
+
+    <string name="ps_camera_roll">Camera cuộn</string>
+    <string name="ps_camera_roll_num">%1$s (%2$d)</string>
+    <string name="ps_cancel">Hủy bỏ</string>
+    <string name="ps_take_picture">Camera</string>
+    <string name="ps_rule">Không thể chọn hình ảnh hoặc video cùng một lúc</string>
+    <string name="ps_message_max_num">Bạn có thể chọn tối đa %1$s hình ảnh</string>
+    <string name="ps_min_video_num">Lựa chọn video tối thiểu phải có ít nhất %1$s</string>
+    <string name="ps_message_video_max_num">Bạn có thể chọn tối đa %1$s video</string>
+    <string name="ps_message_audio_max_num">Bạn có thể chọn tối đa %1$s âm thanh</string>
+    <string name="ps_preview">Xem trước</string>
+    <string name="ps_please">Xin vui lòng chờ…</string>
+    <string name="ps_done_front_num">%1$d/%2$d Hoàn thành</string>
+    <string name="ps_completed">Đã hoàn thành</string>
+    <string name="ps_done">Hoàn thành</string>
+    <string name="ps_please_select">Vui lòng chọn</string>
+    <string name="ps_empty_title">Không có video hoặc hình ảnh\n</string>
+    <string name="ps_empty_audio_title">Không có tập tin âm thanh\n</string>
+    <string name="ps_empty">Bạn có thể sử dụng máy ảnh để chụp ảnh hoặc quay video</string>
+    <string name="ps_audio_empty">Bạn có thể ghi lại âm thanh bằng cách ghi hệ thống</string>
+    <string name="ps_min_img_num">Lựa chọn tối thiểu của hình ảnh không được ít hơn %1$s</string>
+    <string name="ps_min_audio_num">Không thể chọn âm thanh tối thiểu dưới %1$s</string>
+    <string name="ps_gif_tag">gif</string>
+    <string name="ps_webp_tag">webp</string>
+    <string name="ps_jurisdiction">Đọc thẻ nhớ bị từ chối</string>
+    <string name="ps_camera">Nhận được sự cho phép của hệ thống camera</string>
+    <string name="ps_audio">Nhận quyền ghi lại hệ thống bị từ chối</string>
+    <string name="ps_video_toast">Video không thể xem trước</string>
+    <string name="ps_record_video">Quay video</string>
+    <string name="ps_photograph">Chụp ảnh</string>
+    <string name="ps_long_chart">Hình dài</string>
+    <string name="ps_warning">Không có tập tin phương tiện！</string>
+    <string name="ps_prompt">Gợi ý</string>
+    <string name="ps_prompt_image_content">Có lưu ảnh vào điện thoại không？</string>
+    <string name="ps_prompt_video_content">Lưu video vào tập ảnh？</string>
+    <string name="ps_save_image_error">Lỗi tiết kiệm image</string>
+    <string name="ps_save_video_error">Lỗi tiết kiệm video</string>
+    <string name="ps_save_success">Hình ảnh được lưu vào</string>
+    <string name="ps_all_audio">Tất cả âm thanh</string>
+    <string name="ps_tape">Ghi âm</string>
+    <string name="ps_play_audio">Chơi</string>
+    <string name="ps_stop_audio">Dừng lại</string>
+    <string name="ps_quit_audio">Thoát</string>
+    <string name="ps_pause_audio">Tạm dừng</string>
+    <string name="ps_error">Hình ảnh bị hỏng</string>
+    <string name="ps_video_error">Video bị hỏng</string>
+    <string name="ps_audio_error">Âm thanh bị hỏng</string>
+    <string name="ps_confirm">Được rồi</string>
+    <string name="ps_preview_image_num">%1$d/%2$d</string>
+    <string name="ps_not_crop_data">Không có dữ liệu cây trồng</string>
+    <string name="ps_original_image">Ảnh gốc (%1$s)</string>
+    <string name="ps_default_original_image">Ảnh gốc</string>
+    <string name="ps_send">Hoàn</string>
+    <string name="ps_send_num">Hoàn(%1$d/%2$d)</string>
+    <string name="ps_preview_num">Xem trước(%1$d)</string>
+    <string name="ps_select">Chọn</string>
+    <string name="ps_data_exception">Lấy ngoại lệ dữ liệu album…</string>
+    <string name="ps_choose_max_seconds">Bạn chỉ có thể chọn ảnh trong vòng %1$ds nhất</string>
+    <string name="ps_choose_min_seconds">Không thể chọn video dưới %1$ds giây</string>
+    <string name="ps_choose_limit_seconds"> Chỉ có thể chọn ảnh giữa %1$ds và %2$ds giây</string>
+    <string name="ps_go_setting">Chuẩn bị</string>
+    <string name="ps_know">Được rồi</string>
+    <string name="ps_data_null">không có dữ liệu…</string>
+    <string name="cancel_friend">Từ chối</string>
+    <string name="ps_editor">Soạnthảo</string>
+    <string name="ps_use_camera">Dùng máy ảnh</string>
+    <string name="ps_use_sound">Dùng chức năng ghi âm</string>
+    <string name="ps_current_week">Tuần này</string>
+    <string name="ps_current_month">Tháng này</string>
+    <string name="ps_save_audio_error">Lỗi tải tập tin âm thanh</string>
+    <string name="ps_prompt_audio_content">Cần lấy tập tin âm thanh？</string>
+    <string name="ps_select_max_size">Tập tin đã chọn lớn hơn %1$s</string>
+    <string name="ps_select_min_size">Tập tin đã chọn ít hơn %1$s</string>
+    <string name="ps_select_video_max_second">Chọn đoạn video lớn hơn %1$d giây</string>
+    <string name="ps_select_video_min_second">Chọn đoạn phim ít hơn %1$d giây</string>
+    <string name="ps_select_audio_max_second">Chọn tiếng lớn hơn %1$d giây</string>
+    <string name="ps_select_audio_min_second">Chọn tiếng dưới %1$d giây</string>
+    <string name="ps_select_no_support">Kiểu chọn không được sắp xếp</string>
+    <string name="max_size_image_video">Kích thước của hình ảnh hoặc video quá lớn, tối đa là 100MB</string>
+    <string name="type_image">[Hình ảnh]</string>
+    <string name="type_video">[Video]</string>
 </resources>

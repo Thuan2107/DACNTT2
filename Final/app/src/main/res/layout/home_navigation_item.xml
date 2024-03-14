@@ -29,7 +29,7 @@
                 tools:srcCompat="@drawable/home_home_selector" />
         </RelativeLayout>
 
-        <TextView
+        <com.hjq.shape.view.ShapeTextView
             android:id="@+id/txtTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,6 +39,8 @@
             android:gravity="center"
             android:textSize="@dimen/sp_10"
             android:visibility="visible"
+            app:shape_textColor="@color/gray_900"
+            app:shape_textSelectedColor="@color/main_bg"
             tools:text="Trang chủ" />
 
     </LinearLayout>

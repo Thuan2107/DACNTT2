@@ -1,53 +1,28 @@
 package com.example.chatapplication.activity
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.icu.text.CaseMap
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
-import android.util.Base64
 import android.view.View
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.chatapplication.R
 import com.example.chatapplication.adapter.NavigationAdapter
 import com.example.chatapplication.app.AppActivity
-import com.example.chatapplication.app.AppApplication
 import com.example.chatapplication.app.AppApplication.Companion.socketChat
 import com.example.chatapplication.app.AppFragment
 import com.example.chatapplication.base.FragmentPagerAdapter
-import com.example.chatapplication.cache.ConfigCache
 import com.example.chatapplication.cache.UserCache
 import com.example.chatapplication.constant.MessageTypeChatConstants
 import com.example.chatapplication.databinding.HomeActivityBinding
-import com.example.chatapplication.fragment.ChatManagerFragment
+import com.example.chatapplication.fragment.PhoneBookFragment
 import com.example.chatapplication.fragment.GroupFragment
+import com.example.chatapplication.fragment.SettingAccountFragment
 import com.example.chatapplication.model.entity.ChatSocket
 import com.example.chatapplication.model.entity.Title
+import com.example.chatapplication.utils.AppUtils.invisible
 import com.google.gson.Gson
-import com.gyf.immersionbar.ImmersionBar
-import com.hjq.http.EasyHttp
-import com.hjq.http.listener.HttpCallbackProxy
-import io.socket.client.IO
 import io.socket.emitter.Emitter
-import io.socket.engineio.client.transports.Polling
-import io.socket.engineio.client.transports.PollingXHR
-import io.socket.engineio.client.transports.WebSocket
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import okhttp3.Call
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import timber.log.Timber
-import java.io.ByteArrayOutputStream
-import java.io.ObjectOutputStream
-import java.util.Collections
 
 
 class HomeActivity : AppActivity(), NavigationAdapter.OnNavigationListener {
@@ -62,7 +37,7 @@ class HomeActivity : AppActivity(), NavigationAdapter.OnNavigationListener {
     companion object {
         private const val INTENT_KEY_IN_FRAGMENT_INDEX: String = "fragmentIndex"
         private const val INTENT_KEY_IN_FRAGMENT_CLASS: String = "fragmentClass"
-        var lastItem =2
+        var lastItem = 0
     }
 
     private var navigationAdapter: NavigationAdapter? = null
@@ -79,7 +54,7 @@ class HomeActivity : AppActivity(), NavigationAdapter.OnNavigationListener {
         titleMessage.title = getString(R.string.home_nav_message)
         titleDirectory.title = getString(R.string.home_nav_directory)
         titleDiscover.title = getString(R.string.home_nav_discover)
-        titleDiary.title = getString(R.string.home_nav_discover)
+        titleDiary.title = getString(R.string.home_nav_diary)
         titleIndividual.title = getString(R.string.home_nav_individual)
         navigationAdapter = NavigationAdapter(this).apply {
             addItem(
@@ -91,7 +66,7 @@ class HomeActivity : AppActivity(), NavigationAdapter.OnNavigationListener {
             addItem(
                     NavigationAdapter.MenuItem(
                         titleDirectory,
-                            ContextCompat.getDrawable(this@HomeActivity, R.drawable.ic_chat_selector)
+                            ContextCompat.getDrawable(this@HomeActivity, R.drawable.ic_contact_selector)
                     )
             )
             addItem(
@@ -103,19 +78,20 @@ class HomeActivity : AppActivity(), NavigationAdapter.OnNavigationListener {
             addItem(
                     NavigationAdapter.MenuItem(
                         titleDiary,
-                            ContextCompat.getDrawable(this@HomeActivity, R.drawable.ic_chat_selector)
+                            ContextCompat.getDrawable(this@HomeActivity, R.drawable.ic_time_fast_selector)
                     )
             )
             addItem(
                     NavigationAdapter.MenuItem(
                         titleIndividual,
-                            ContextCompat.getDrawable(this@HomeActivity, R.drawable.ic_chat_selector)
+                            ContextCompat.getDrawable(this@HomeActivity, R.drawable.ic_account_selector)
                     )
             )
             setOnNavigationListener(this@HomeActivity)
         }
 
         binding.recyclerViewNavigation.adapter = navigationAdapter
+
     }
 
     override fun initData() {
@@ -124,22 +100,21 @@ class HomeActivity : AppActivity(), NavigationAdapter.OnNavigationListener {
                 GroupFragment()
             )
             addFragment(
-                GroupFragment()
-            )
-
-            addFragment(
-                GroupFragment()
+                PhoneBookFragment()
             )
             addFragment(
                 GroupFragment()
             )
             addFragment(
                 GroupFragment()
+            )
+            addFragment(
+                SettingAccountFragment()
             )
         }
         binding.nsvPager.adapter = pagerAdapter
         binding.nsvPager.offscreenPageLimit = 4
-        switchFragment(2)
+        switchFragment(0)
 
 
         //Kiểm tra connect các socket
@@ -174,6 +149,8 @@ class HomeActivity : AppActivity(), NavigationAdapter.OnNavigationListener {
 
     override fun onResume() {
         super.onResume()
+        eventClickBtnSearch()
+        eventClickCreateGroup()
     }
 
 //    private fun registerSocketNewMessage() {
@@ -318,11 +295,21 @@ class HomeActivity : AppActivity(), NavigationAdapter.OnNavigationListener {
                 binding.nsvPager.currentItem = position
             }
 
+            4 -> {
+//                if (binding.nsvPager.currentItem == 3) {
+//                    EventBus.getDefault().post(EventBusClickScrollNotify())
+//                }
+                binding.nsvPager.currentItem = position
+            }
+
             else -> {
                 binding.nsvPager.currentItem = position
             }
         }
-        return true
+
+        binding.createGroup.isVisible = position == 0
+
+            return true
     }
 
 
@@ -420,6 +407,22 @@ class HomeActivity : AppActivity(), NavigationAdapter.OnNavigationListener {
 //            }
 //        }.start()
 //    }
+
+    private fun eventClickBtnSearch() {
+        binding.tvSearchViewForChat.setOnClickListener {
+            val intent = Intent(this, SearchManagerActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun eventClickCreateGroup() {
+        binding.createGroup.setOnClickListener {
+            val intent = Intent(this, CreateGroupChatActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+
 
 
 }

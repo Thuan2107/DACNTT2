@@ -2,7 +2,6 @@ package com.example.chatapplication.activity
 
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Build
@@ -15,38 +14,18 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.annotation.RequiresApi
 import com.example.chatapplication.R
-import com.example.chatapplication.api.ApiClient
 import com.example.chatapplication.api.LoginApi
 import com.example.chatapplication.app.AppActivity
-import com.example.chatapplication.app.AppApplication
 import com.example.chatapplication.cache.UserCache
 import com.example.chatapplication.databinding.ActivityLoginBinding
 import com.example.chatapplication.model.HttpData
 import com.example.chatapplication.model.entity.User
-import com.example.chatapplication.model.request.LoginRequest
-import com.example.chatapplication.model.response.UserResponse
 import com.example.chatapplication.other.queryAfterTextChanged
-import com.example.chatapplication.utils.ApiService
 import com.example.chatapplication.utils.AppUtils
 import com.example.chatapplication.utils.AppUtils.hide
 import com.example.chatapplication.utils.AppUtils.show
-import com.google.gson.Gson
 import com.hjq.http.EasyHttp
 import com.hjq.http.listener.HttpCallbackProxy
-import io.socket.client.IO
-import io.socket.engineio.client.transports.Polling
-import io.socket.engineio.client.transports.PollingXHR
-import io.socket.engineio.client.transports.WebSocket
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import timber.log.Timber
-import java.util.Collections
 
 
 class LoginActivity : AppActivity() {
@@ -54,8 +33,6 @@ class LoginActivity : AppActivity() {
     private var phone: String = ""
     private var password: String = ""
     private var userData: User = User()
-    private val BASE_URL = "http://192.168.1.9:3000/"
-    private lateinit var apiService: ApiService
 
     override fun getLayoutView(): View {
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -188,33 +165,37 @@ class LoginActivity : AppActivity() {
     }
 
     //Gọi api login
-    private fun onLogin(phone: String, passwordLogin: String) {
-        val loginRequest = LoginRequest()
-        loginRequest.password = passwordLogin
-        loginRequest.phone = phone
 
-        val response =  ApiClient.apiService.login(loginRequest)
-        response.enqueue(object : Callback<UserResponse>{
-            override fun onResponse(
-                call: Call<UserResponse>,
-                response: Response<UserResponse>
-            ) {
-                userData = response.body()!!.data
-                UserCache.saveUser(userData)
+    private fun onLogin(userName: String, passwordLogin: String) {
 
-                val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                startActivity(intent)
-            }
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                Timber.e(
-                    "${
-                        AppApplication.applicationContext()
-                            .getString(R.string.error_message)
-                    } ${t}"
-                )
 
-            }
-        })
+        EasyHttp.post(this).api(LoginApi.params(userName, passwordLogin)).request(/* listener = */
+            object : HttpCallbackProxy<HttpData<User?>>(this){
+                override fun onHttpSuccess(result: HttpData<User?>) {
+                    super.onHttpSuccess(result)
+                    Log.d("login", "success")
+                    userData = result.getData()!!
+                    userData.password = passwordLogin
+                    UserCache.saveUser(userData)
+
+                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                    startActivity(intent)
+                }
+
+                override fun onHttpFail(throwable: Throwable?) {
+                    super.onHttpFail(throwable)
+                    Log.d("login", "success")
+
+                }
+
+                override fun onHttpStart(call: okhttp3.Call?) {
+                    super.onHttpStart(call)
+                }
+
+                override fun onHttpEnd(call: okhttp3.Call?) {
+                    super.onHttpEnd(call)
+                }
+            })
 
     }
 

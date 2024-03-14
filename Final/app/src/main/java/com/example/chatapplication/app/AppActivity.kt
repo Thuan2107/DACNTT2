@@ -57,9 +57,9 @@ abstract class AppActivity : BaseActivity(),
                 return@Runnable
             }
 
-            if (!dialog!!.isShowing) {
-                dialog!!.show()
-            }
+//            if (!dialog!!.isShowing) {
+//                dialog!!.show()
+//            }
         }, 300)
     }
 

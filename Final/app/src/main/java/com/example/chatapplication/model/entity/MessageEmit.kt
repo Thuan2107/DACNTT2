@@ -9,29 +9,20 @@ class MessageEmit {
     @SerializedName("message")
     var message = ""
 
-    @SerializedName("message_reply_id")
-    var messageReplyId = ""
+    @SerializedName("conversation_id")
+    var conversationId = ""
 
-    @SerializedName("message_vote_id")
-    var messageVoteId = ""
-
-    @SerializedName("sticker_id")
-    var stickerId = ""
-
-
-    @SerializedName("media")
-    var media = ArrayList<String>()
-
-
-    @SerializedName("thumb")
-    var thumb = Thumbnail()
-
-    @SerializedName("key_error")
-    var keyError: String = AppUtils.getRandomString(10)
+    @SerializedName("type")
+    var type = 1
 
     @SerializedName("create_at")
     var createAt: String = createCurrentTime()
 
+    @SerializedName("key_error")
+    var keyError = ""
+
+    @SerializedName("media")
+    var media = ArrayList<String>()
 
     constructor()
 

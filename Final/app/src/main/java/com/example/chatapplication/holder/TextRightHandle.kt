@@ -2,10 +2,12 @@ package com.example.chatapplication.holder
 
 import android.view.View
 import android.view.ViewGroup
+import com.example.chatapplication.R
 import com.example.chatapplication.adapter.MessageAdapter
 import com.example.chatapplication.constant.MessageTypeChatConstants
 import com.example.chatapplication.databinding.ItemMessageTextRightBinding
 import com.example.chatapplication.model.entity.Message
+
 
 class TextRightHandle(
     private val binding: ItemMessageTextRightBinding,
@@ -16,8 +18,8 @@ class TextRightHandle(
 ) {
     fun setData() {
         if (data.type == MessageTypeChatConstants.TEXT) {
-
             //Default data
+
             adapter.checkTimeMessages(
                 data.isTimeline,
                 data.createdAt,
@@ -44,9 +46,17 @@ class TextRightHandle(
 
             val lp = binding.ctlText.layoutParams as ViewGroup.MarginLayoutParams
 
+            lp.setMargins(
+                0,
+                0,
+                0,
+                adapter.getContext().resources.getDimension(R.dimen.dp_4)
+                    .toInt()
+            )
+
 
             binding.ctlText.setOnLongClickListener {
-                chatHandle.onRevoke(
+                chatHandle!!.onRevoke(
                     data,
                     binding.ctlMessage,
                     binding.ctlMessage.y.toInt(),
@@ -54,6 +64,8 @@ class TextRightHandle(
                 )
                 true
             }
+
+
         } else {
             binding.root.visibility = View.GONE
         }

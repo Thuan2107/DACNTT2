@@ -3,7 +3,7 @@ package com.example.chatapplication.model.entity
 import com.google.gson.annotations.SerializedName
 
 class Sender {
-    @SerializedName("user_id")
+    @SerializedName("_id")
     var userId = ""
 
     @SerializedName("full_name")

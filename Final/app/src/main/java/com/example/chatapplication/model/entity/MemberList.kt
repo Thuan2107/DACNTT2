@@ -49,12 +49,11 @@ class MemberList {
         this.permission = permission
     }
 
-    constructor(userId: String, fullName: String, avatar: String, permission: Int, contactType: Int, isOnline: Int) {
+    constructor(userId: String, fullName: String, avatar: String, permission: Int, contactType: Int) {
         this.userId = userId
         this.fullName = fullName
         this.avatar = avatar
         this.permission = permission
         this.contactType = contactType
-        this.isOnline = isOnline
     }
 }

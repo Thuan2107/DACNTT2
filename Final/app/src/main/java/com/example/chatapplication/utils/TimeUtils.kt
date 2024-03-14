@@ -2,12 +2,20 @@ package com.example.chatapplication.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
+import android.text.format.DateUtils
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import com.example.chatapplication.R
 import com.example.chatapplication.model.entity.MediaStore
 import com.example.chatapplication.utils.AppUtils.hide
 import com.example.chatapplication.utils.AppUtils.show
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
@@ -68,39 +76,53 @@ object TimeUtils {
     }
 
     //Tính thời gian user chat online
-    fun formatTimeUserOnlineStatus(context: Context, date: String): String {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun formatTimeUserOnlineStatus(context: Context, timestampStr: String): String {
         return try {
-            val past = formatDateFromString(date)
-            val now = Date()
-            val calendar: Calendar = GregorianCalendar()
-            if (past != null) {
-                calendar.time = past
+            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+            val timestamp = LocalDateTime.parse(timestampStr, formatter).toEpochSecond(ZoneOffset.UTC)
+            val currentTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+            val timeDifference = currentTimestamp - timestamp
+
+            return when {
+                timeDifference < 60 -> "hoạt động $timeDifference giây trước"
+                timeDifference < 3600 -> "hoạt động ${timeDifference / 60} phút trước"
+                timeDifference < 86400 -> "hoạt động ${timeDifference / 3600} giờ trước"
+                else -> {
+                    val daysAgo = timeDifference / 86400
+                    "hoạt động $daysAgo ngày trước"
+                }
             }
-            val seconds = TimeUnit.MILLISECONDS.toSeconds(now.time - past!!.time) //giây
-            val minutes = TimeUnit.MILLISECONDS.toMinutes(now.time - past.time) //phút
-            val hours = TimeUnit.MILLISECONDS.toHours(now.time - past.time) //giờ
-            val days = TimeUnit.MILLISECONDS.toDays(now.time - past.time) // ngày
-            val year = days / 365 //năm
-            if (seconds < 60) {
-                context.getString(R.string.just_online)
-            } else if (minutes < 60) {
-                "${context.getString(R.string.tvWork)} $minutes ${context.getString(R.string.time_minute_ago)}"
-            } else if (hours < 24) {
-                "${context.getString(R.string.tvWork)} $hours ${context.getString(R.string.time_hour_ago)}"
-            }
-//            else if (days < 8) {
-//                "${context.getString(R.string.tvWork)} $days ${context.getString(R.string.time_day_ago)}"
-//            } else if (days in 8..364) {
-//                "${context.getString(R.string.tvWork)} ${days / 7} ${context.getString(R.string.time_week_ago)}"
-//            } else if (year >= 1) {
-//                "${context.getString(R.string.tvWork)} $year ${
-//                    context.getString(
-//                        R.string.time_year_ago
-//                    )
-//                }"
-//            }
-            else {
-                ""
+        } catch (j: Exception) {
+            ""
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun formatTimeUserOnlineStatus2(context: Context, timestampStr: String): String {
+        return try {
+            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+            val timestamp = LocalDateTime.parse(timestampStr, formatter).toEpochSecond(ZoneOffset.UTC)
+            val currentTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+            val timeDifference = currentTimestamp - timestamp
+
+            return when {
+                timeDifference < 60 -> "$timeDifference giây trước"
+                timeDifference < 3600 -> "${timeDifference / 60} phút trước"
+                timeDifference < 86400 -> "${timeDifference / 3600} giờ trước"
+                timeDifference < DateUtils.WEEK_IN_MILLIS / 1000 -> {
+                    // Display the day of the week
+                    val dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneOffset.UTC)
+                    val dayOfWeek = dateTime.dayOfWeek.getDisplayName(TextStyle.FULL, Locale("vi"))
+                    "$dayOfWeek"
+                }
+                else -> {
+                    // Display the specific date
+                    val dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneOffset.UTC)
+                    val dayOfMonth = dateTime.dayOfMonth
+                    val month = dateTime.month.getDisplayName(TextStyle.FULL, Locale("vi"))
+                    "$dayOfMonth $month"
+                }
             }
         } catch (j: Exception) {
             ""

@@ -2,6 +2,7 @@ package com.example.chatapplication.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.DownloadManager
 import android.content.ClipData
 import android.content.Context
 import android.content.Intent
@@ -27,12 +28,22 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import androidx.recyclerview.widget.*
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.example.chatapplication.R
+import com.example.chatapplication.activity.MediaSliderActivity
+import com.example.chatapplication.app.AppApplication
 import com.example.chatapplication.constant.AppConstants
 import com.example.chatapplication.model.entity.MediaList
 import com.example.chatapplication.model.entity.MediaShow
 import com.example.chatapplication.other.CenterLayoutManager
 import com.google.gson.Gson
+import com.hjq.toast.ToastUtils
+import com.luck.picture.lib.entity.LocalMedia
+import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -115,6 +126,12 @@ object AppUtils {
         return ""
     }
 
+    fun hideKeyboard(view: View) {
+        val inputMethodManager =
+            AppApplication.instance!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
     // Format tiền
     fun formatCurrencyDecimal(number: Float?): String {
         return String.format("%,.0f", number)
@@ -122,6 +139,21 @@ object AppUtils {
 
     fun formatCurrencyDecimal(number: Long?): String {
         return String.format("%,.0f", number)
+    }
+
+    fun downloadFile(activity: Context, fileUrl: String?, fileName: String?) {
+        val downloadManager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val uri = Uri.parse(PhotoLoadUtils.getLinkPhoto(fileUrl))
+        val request = DownloadManager.Request(uri)
+        request.setTitle(fileName)
+        request.setDescription("Tải về")
+        request.setDestinationInExternalPublicDir(
+            Environment.DIRECTORY_DOWNLOADS.toString(),
+            AppConstants.FOLDER_APP + File.separator + fileName!!.replace("%20", "")
+        )
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        downloadManager.enqueue(request)
+        ToastUtils.show(activity.getString(R.string.downloading))
     }
 
     fun getDecimalFormattedString(input: String): String {
@@ -215,6 +247,32 @@ object AppUtils {
             arrayListOf(targetHeight, maxLength)
         } else {
             arrayListOf(maxLength, maxLength)
+        }
+    }
+
+    fun resizeImageClip(url: String?, view: ImageView) {
+        try {
+            Glide.with(view)
+                .asBitmap()
+                .load(url)
+                .into(object : CustomTarget<Bitmap?>() {
+                    override fun onLoadCleared(placeholder: Drawable?) {}
+                    override fun onResourceReady(
+                        resource: Bitmap,
+                        transition: Transition<in Bitmap?>?
+                    ) {
+                        val bitmap = Bitmap.createScaledBitmap(
+                            resource,
+                            AppApplication.widthDevice / 4,
+                            AppApplication.heightDevice / 4,
+                            false
+                        )
+                        view.layoutParams.height = bitmap.height
+                        view.layoutParams.width = bitmap.width
+                        view.setImageBitmap(bitmap)
+                    }
+                })
+        } catch (ignored: java.lang.Exception) {
         }
     }
 
@@ -426,6 +484,29 @@ object AppUtils {
 //        context.startActivity(intent)
 //    }
 
+    fun showMediaNewsFeed(context: Context, data: ArrayList<String>, position: Int) {
+        val medias: ArrayList<MediaShow> = ArrayList()
+        for (i in data.indices) {
+            medias.add(
+                MediaShow(
+                    data[i])
+            )
+        }
+
+        val intent = Intent(context, MediaSliderActivity::class.java)
+        val bundle = Bundle()
+        bundle.putString(AppConstants.DATA_MEDIA, Gson().toJson(medias))
+        bundle.putInt(AppConstants.POSITION_MEDIA, position)
+
+        if (data.size == 1 && position == 0) {
+            bundle.putBoolean(AppConstants.MEDIA_COUNT_VISIBLE, false)
+        } else
+            bundle.putBoolean(AppConstants.MEDIA_COUNT_VISIBLE, true)
+
+        intent.putExtras(bundle)
+        context.startActivity(intent)
+    }
+
 
 
 
@@ -530,7 +611,26 @@ object AppUtils {
         return slug
     }
 
+    @SuppressLint("IntentWithNullActionLaunch")
+    fun showMediaAvatar(context: Context, avatar: String, position: Int) {
+        val medias: ArrayList<MediaShow> = ArrayList()
+        medias.add(MediaShow(avatar))
+        val intent = Intent(
+            context,
+            MediaSliderActivity::class.java
+        )
+        val bundle = Bundle()
+        bundle.putString(AppConstants.DATA_MEDIA, Gson().toJson(medias))
+        bundle.putInt(AppConstants.POSITION_MEDIA, position)
 
+        if (position == 0) {
+            bundle.putBoolean(AppConstants.MEDIA_COUNT_VISIBLE, false)
+        } else
+            bundle.putBoolean(AppConstants.MEDIA_COUNT_VISIBLE, true)
+
+        intent.putExtras(bundle)
+        context.startActivity(intent)
+    }
 
 
 

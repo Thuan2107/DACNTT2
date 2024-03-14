@@ -24,6 +24,10 @@ class MediaShow {
         this.type = type
     }
 
+    constructor(url: String) {
+        this.url = url
+    }
+
     constructor(url: String, isPlay: Boolean, name: String, type: Int, currentSeek: Long) {
         this.url = url
         this.isPlay = isPlay

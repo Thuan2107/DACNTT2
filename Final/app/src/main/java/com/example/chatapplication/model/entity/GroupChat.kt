@@ -2,12 +2,8 @@ package com.example.chatapplication.model.entity
 
 import com.google.gson.annotations.SerializedName
 
-/**
- * @Author: Phạm Văn Nhân
- * @Date: 03/10/2022
- */
 class GroupChat {
-    @SerializedName("_id")
+    @SerializedName("conversation_id")
     var conversationId: String = ""
 
     @SerializedName("conversation_system_id")
@@ -47,7 +43,7 @@ class GroupChat {
     var myPermission: Int = 0
 
     @SerializedName("members")
-    var members: ArrayList<String> = ArrayList()
+    var members: ArrayList<Sender> = ArrayList()
 
     @SerializedName("no_of_member")
     var noOfMember: Int = 0
@@ -76,9 +72,6 @@ class GroupChat {
     @SerializedName("link_join")
     var linkJoin: String = ""
 
-    @SerializedName("last_connect")
-    var lastConnect: String = ""
-
     @SerializedName("event")
     var event: Int = 0
 
@@ -87,6 +80,9 @@ class GroupChat {
 
     @SerializedName("status")
     var userStatus: Int = 0
+
+    @SerializedName("user_target_id")
+    var userTargetId: String = ""
 
     var checked: Int = 0
 

@@ -9,6 +9,7 @@ class ChatConstants {
         const val DATE_FORMAT = "dd/MM/yyyy"
 
         const val GROUP_DATA = "GROUP_DATA"
+        const val USER_DATA = "USER_DATA"
         const val IS_CONFIRM_NEW_MEMBER = "IS_CONFIRM_NEW_MEMBER"
 
         //property animation

@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.example.chatapplication.R
 import com.example.chatapplication.activity.ConversationDetailActivity
 import com.example.chatapplication.activity.HomeActivity
 import com.example.chatapplication.adapter.GroupAdapter
-import com.example.chatapplication.api.ApiClient
+import com.example.chatapplication.api.DeleteGroupApi
+import com.example.chatapplication.api.GroupApi
 import com.example.chatapplication.app.AppApplication
 import com.example.chatapplication.app.AppApplication.Companion.socketChat
 import com.example.chatapplication.app.AppFragment
@@ -20,24 +20,25 @@ import com.example.chatapplication.constant.ChatConstants
 import com.example.chatapplication.constant.MessageTypeChatConstants
 import com.example.chatapplication.constant.SocketChatConstants
 import com.example.chatapplication.databinding.FragmentGroupBinding
+import com.example.chatapplication.dialog.DialogOutGroup
 import com.example.chatapplication.dialog.DialogSelectionChat
+import com.example.chatapplication.model.HttpData
 import com.example.chatapplication.model.entity.GroupChat
 import com.example.chatapplication.model.entity.GroupId
 import com.example.chatapplication.model.entity.GroupSocket
 import com.example.chatapplication.model.entity.JoinAndLeaveRoom
 import com.example.chatapplication.model.entity.ListenJoinRoomSocket
+import com.example.chatapplication.model.entity.MediaList
 import com.example.chatapplication.model.entity.Message
-import com.example.chatapplication.model.response.ListConversationResponse
 import com.example.chatapplication.other.CustomLoadingListItemCreator
 import com.example.chatapplication.utils.AppUtils
 import com.example.chatapplication.utils.AppUtils.hide
 import com.example.chatapplication.utils.PictureThreadUtils.runOnUiThread
 import com.google.gson.Gson
+import com.hjq.http.EasyHttp
+import com.hjq.http.listener.HttpCallbackProxy
 import com.paginate.Paginate
 import io.socket.emitter.Emitter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import timber.log.Timber
 class GroupFragment : AppFragment<HomeActivity>(),
         GroupAdapter.GroupChatListener {
@@ -46,7 +47,6 @@ class GroupFragment : AppFragment<HomeActivity>(),
     private var adapterGroupChat: GroupAdapter? = null
     private var limitGroup: Int = 20
     private var isResume: Int = 0
-    private var limitFriendOnline: Int = 49
     private var isLoadMore: Boolean = true
     private var loading: Boolean = false
     private var paginate: Paginate? = null
@@ -81,10 +81,9 @@ class GroupFragment : AppFragment<HomeActivity>(),
 
         isResume = 1
         groupDataList.clear()
-        groupDataList.add(groups)
         adapterGroupChat?.notifyDataSetChanged()
         position = ""
-        getListConversation(position)
+        getGroupChat(position)
         paginate()
     }
 
@@ -106,16 +105,6 @@ class GroupFragment : AppFragment<HomeActivity>(),
                 SocketChatConstants.LISTEN_NEW_CONVERSATION,
                 newGroup
         )
-
-//        /**
-//         * socket bạn bè online
-//         */
-//        socketChat?.on(AppConstants.FRIEND_ONLINE, friendOnline)
-//
-//        /**
-//         * socket bạn bè offline
-//         */
-//        socketChat?.on(AppConstants.FRIEND_OFF, friendOffline)
 
         /**
          * Socket khi có tin nhắn đến
@@ -184,9 +173,6 @@ class GroupFragment : AppFragment<HomeActivity>(),
                 newGroup
         )
         socketChat?.off(SocketChatConstants.LISTEN_NEW_CONVERSATION, newGroup)
-//        socketChat?.off("${AppConstants.FRIEND_ONLINE}${UserCache.getUser().id}", friendOnline)
-//        socketChat?.off("${AppConstants.FRIEND_OFF}${UserCache.getUser().id}", friendOffline)
-
         socketChat?.off(SocketChatConstants.ON_CHAT_TEXT, onLastMessage)
         socketChat?.off(SocketChatConstants.ON_CHAT_IMAGE, onLastMessage)
         socketChat?.off(SocketChatConstants.ON_CHAT_VIDEO, onLastMessage)
@@ -239,7 +225,7 @@ class GroupFragment : AppFragment<HomeActivity>(),
                 loading = true
                 postDelayed({
                     if (isLoadMore && groupDataList.size > countNumberOfOAGroup() + 1) {
-                        getListConversation(groupDataList[groupDataList.size - 1].position)
+                        getGroupChat(groupDataList[groupDataList.size - 1].position)
                     }
                 }, 200)
             }
@@ -270,7 +256,7 @@ class GroupFragment : AppFragment<HomeActivity>(),
                 )
                 val bundle = Bundle()
                 bundle.putString(
-                        AppConstants.GROUP_DATA, Gson().toJson(clickItem)
+                    ChatConstants.GROUP_DATA, Gson().toJson(clickItem)
                 )
                 intent.putExtras(bundle)
                 startActivity(intent)
@@ -279,13 +265,6 @@ class GroupFragment : AppFragment<HomeActivity>(),
             }
         }
     }
-
-
-//    override fun clickAvatar(position: Int, avatar: MediaList) {
-//        if (avatar.original.url != "") {
-//            AppUtils.showMediaAvatar(requireActivity(), avatar, position)
-//        }
-//    }
 
     override fun onLongClickGroup(position: Int, group: GroupChat) {
         dialogSelectionChat = DialogSelectionChat.Builder(
@@ -306,19 +285,19 @@ class GroupFragment : AppFragment<HomeActivity>(),
                     }
 
 
-//                    ChatConstants.TYPE_DELETE -> {
-//                        dialog.dismiss()
-//                        DialogOutGroup.Builder(
-//                                requireContext(),
-//                                getString(vn.techres.line.R.string.common_confirm),
-//                                getString(R.string.policy_delete_group),
-//                                getString(R.string.delete_the_group)
-//                        ).setListener(object : DialogOutGroup.OnListener {
-//                            override fun onPolicyConfirm(next: Int) {
-//                                deleteGroup(idGroup)
-//                            }
-//                        }).show()
-//                    }
+                    ChatConstants.TYPE_DELETE -> {
+                        dialog.dismiss()
+                        DialogOutGroup.Builder(
+                                requireContext(),
+                                getString(R.string.common_confirm),
+                                getString(R.string.policy_delete_group),
+                                getString(R.string.delete_the_group)
+                        ).setListener(object : DialogOutGroup.OnListener {
+                            override fun onPolicyConfirm(next: Int) {
+                                deleteGroup(idGroup)
+                            }
+                        }).show()
+                    }
 //
 //                    ChatConstants.TYPE_OUT_GROUP -> {
 //                        dialog.dismiss()
@@ -353,6 +332,11 @@ class GroupFragment : AppFragment<HomeActivity>(),
 
         })
         dialogSelectionChat!!.show()
+    }
+
+    override fun clickAvatar(position: Int, avatar: String) {
+        AppUtils.showMediaAvatar(requireActivity(), avatar, position)
+
     }
 
 
@@ -547,8 +531,6 @@ class GroupFragment : AppFragment<HomeActivity>(),
                 group.lastMessage.type = lastMess.type
                 group.lastMessage.user = lastMess.user
                 group.lastMessage.userTarget = lastMess.userTarget
-                group.lastMessage.tag = lastMess.tag
-                group.lastMessage.thumb = lastMess.thumb
                 group.userStatus = AppConstants.STATUS_ACTIVE
                 val indexItem =
                         groupDataList.indexOfFirst { it.conversationId == lastMess.conversation.conversationId }
@@ -678,42 +660,38 @@ class GroupFragment : AppFragment<HomeActivity>(),
     /**
      * api xoá lịch sử trò chuyện
      */
-//    private fun deleteGroup(idGroup: String) {
-//        EasyHttp.post(this).api(DeleteGroupApi.params(idGroup))
-//                .request(object : HttpCallbackProxy<HttpData<Any>>(this) {
-//                    @SuppressLint("NotifyDataSetChanged", "NewApi")
-//                    override fun onHttpSuccess(data: HttpData<Any>) {
-//                        if (data.isRequestSucceed()) {
-//                            val index = groupDataList.indexOfFirst { it.conversationId == idGroup }
-//                            if (index != -1) {
-//                                groupDataList.removeAt(index)
-//                                adapterGroupChat?.notifyDataSetChanged()
-//
-//                            }
-//                        } else {
-//                            if (data.isRequestError()) {
-//                                toast(data.getMessage())
-//                            }
-//                            Timber.e(
-//                                    "${
-//                                        AppApplication.applicationContext()
-//                                                .getString(vn.techres.line.R.string.error_message)
-//                                    } ${data.getMessage()}"
-//                            )
-//                        }
-//                    }
-//
-//                    override fun onHttpFail(e: java.lang.Exception?) {
-//
-//                        Timber.e(
-//                                "${
-//                                    AppApplication.applicationContext()
-//                                            .getString(vn.techres.line.R.string.error_message)
-//                                } ${e?.message}"
-//                        )
-//                    }
-//                })
-//    }
+    private fun deleteGroup(idGroup: String) {
+        EasyHttp.post(this).api(DeleteGroupApi.params(idGroup))
+                .request(object : HttpCallbackProxy<HttpData<Any>>(this) {
+                    @SuppressLint("NotifyDataSetChanged", "NewApi")
+                    override fun onHttpSuccess(data: HttpData<Any>) {
+                        if (data.isRequestSucceed()) {
+                            val index = groupDataList.indexOfFirst { it.conversationId == idGroup }
+                            if (index != -1) {
+                                groupDataList.removeAt(index)
+                                adapterGroupChat?.notifyDataSetChanged()
+                            }
+                        } else {
+                            Timber.e(
+                                    "${
+                                        AppApplication.applicationContext()
+                                                .getString(R.string.error_message)
+                                    } ${data.getMessage()}"
+                            )
+                        }
+                    }
+
+                    override fun onHttpFail(throwable: Throwable?) {
+
+                        Timber.e(
+                                "${
+                                    AppApplication.applicationContext()
+                                            .getString(R.string.error_message)
+                                } ${throwable}"
+                        )
+                    }
+                })
+    }
 
     /**
      * api tạo cuộc trò chuyện
@@ -773,96 +751,61 @@ class GroupFragment : AppFragment<HomeActivity>(),
     /**
      * Gọi api lấy danh sách cuộc trò chuyện
      */
-//    @SuppressLint("HardwareIds")
-//    private fun getGroupChat(position: String) {
-//        EasyHttp.get(this).api(GroupApi.params(position, "", limitGroup))
-//                .request(object : HttpCallbackProxy<HttpData<List<GroupChat>>>(this) {
-//                    @SuppressLint("NotifyDataSetChanged")
-//                    override fun onHttpSuccess(data: HttpData<List<GroupChat>>) {
-//                        if (data.isRequestSucceed()) {
-//                            loading = false
-//                            if (data.getData() == null) {
-//                                isLoadMore = false
-//                            } else {
-//                                isLoadMore = data.getData()!!.size >= limitGroup
-//                                paginate?.setHasMoreDataToLoad(isLoadMore)
-//                                val currentSize = groupDataList.size
-//                                groupDataList.addAll(data.getData()!!)
-//                                adapterGroupChat?.notifyItemRangeInserted(
-//                                        currentSize,
-//                                        data.getData()!!.size
-//                                )
-//                            }
-//
-//                            isResume = 0
-//                            binding.rclGroupChat.suppressLayout(false)  // cho phép cuộn rcv
-//                        } else {
-//                            loading = false
-//                            if (data.isRequestError()) {
-//                                toast(data.getMessage())
-//                            }
-//                            Timber.e(
-//                                    "${
-//                                        AppApplication.applicationContext()
-//                                                .getString(vn.techres.line.R.string.error_message)
-//                                    } ${data.getMessage()}"
-//                            )
-//                            isResume = 0
-//                            binding.rclGroupChat.suppressLayout(false)  // cho phép cuộn rcv
-//                        }
-//                    }
-//
-//                    @SuppressLint("NotifyDataSetChanged")
-//                    override fun onHttpFail(e: Exception?) {
-//                        loading = false
-//                        binding.rclGroupChat.suppressLayout(false)  // cho phép cuộn rcv
-//                        adapterGroupChat?.notifyDataSetChanged()
-//                    }
-//
-//                    override fun onHttpStart(call: Call?) {
-//                        //empty
-//                    }
-//
-//                    @SuppressLint("NotifyDataSetChanged")
-//                    override fun onHttpEnd(call: Call?) {
-//                        //empty
-//                    }
-//                })
-//    }
+    @SuppressLint("HardwareIds")
+    private fun getGroupChat(position: String) {
+        EasyHttp.get(this).api(GroupApi.params(position, "", limitGroup))
+                .request(/* listener = */ object : HttpCallbackProxy<HttpData<List<GroupChat>>>(this) {
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun onHttpSuccess(data: HttpData<List<GroupChat>>) {
+                        if (data.isRequestSucceed()) {
+                            loading = false
+                            if (data.getData() == null) {
+                                isLoadMore = false
+                            } else {
+                                isLoadMore = data.getData()!!.size >= limitGroup
+                                paginate?.setHasMoreDataToLoad(isLoadMore)
+                                val currentSize = groupDataList.size
+                                groupDataList.addAll(data.getData()!!)
+                                adapterGroupChat?.notifyItemRangeInserted(
+                                        currentSize,
+                                        data.getData()!!.size
+                                )
+                            }
+                            isResume = 0
+                            binding.rclGroupChat.suppressLayout(false)  // cho phép cuộn rcv
+                        } else {
+                            loading = false
 
-    /**
-     * Gọi api lấy danh sách cuộc trò chuyện
-     */
-    private fun getListConversation(position: String){
-        val authorization = UserCache.getAccessToken()
-        val response =  ApiClient.apiService.getListConversation(limitGroup,position,authorization)
+                            Timber.e(
+                                    "${
+                                        AppApplication.applicationContext()
+                                                .getString(R.string.error_message)
+                                    } ${data.getMessage()}"
+                            )
+                            isResume = 0
+                            binding.rclGroupChat.suppressLayout(false)  // cho phép cuộn rcv
+                        }
+                    }
 
-        response.enqueue(object : Callback<ListConversationResponse> {
-            override fun onResponse(
-                call: Call<ListConversationResponse>,
-                response: Response<ListConversationResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val data = response.body()!!.data
-                    isLoadMore = data.size >= limitGroup
-                    paginate?.setHasMoreDataToLoad(isLoadMore)
-                    val currentSize = groupDataList.size
-                    groupDataList.addAll(data)
-                    adapterGroupChat?.notifyItemRangeInserted(
-                            currentSize,
-                        data.size
-                    )
-                } else {
-                    Log.e("listconversation", "Error Body: ${response.errorBody()?.string()}")
-                }
-            }
-            override fun onFailure(call: Call<ListConversationResponse>, t: Throwable) {
-                Timber.e(t
-                )
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun onHttpFail(throwable: Throwable?) {
+                        loading = false
+                        binding.rclGroupChat.suppressLayout(false)  // cho phép cuộn rcv
+                        adapterGroupChat?.notifyDataSetChanged()
+                    }
 
-            }
-        })
+                    override fun onHttpStart(call: okhttp3.Call?) {
+                        super.onHttpStart(call)
+                    }
+
+                    override fun onHttpEnd(call: okhttp3.Call?) {
+                        super.onHttpEnd(call)
+                    }
+
+                })
     }
+
+
 
 
 

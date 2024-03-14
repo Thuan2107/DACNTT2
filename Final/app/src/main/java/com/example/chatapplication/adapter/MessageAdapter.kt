@@ -2,13 +2,13 @@ package com.example.chatapplication.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -21,14 +21,13 @@ import com.example.chatapplication.constant.MessageTypeChatConstants
 import com.example.chatapplication.databinding.ItemMessageImageLeftBinding
 import com.example.chatapplication.databinding.ItemMessageImageRightBinding
 import com.example.chatapplication.databinding.ItemMessageNotificationBinding
-import com.example.chatapplication.databinding.ItemMessageReplyLeftBinding
-import com.example.chatapplication.databinding.ItemMessageReplyRightBinding
 import com.example.chatapplication.databinding.ItemMessageTextLeftBinding
 import com.example.chatapplication.databinding.ItemMessageTextRightBinding
 import com.example.chatapplication.databinding.ItemMessageVideoLeftBinding
 import com.example.chatapplication.databinding.ItemMessageVideoRightBinding
+import com.example.chatapplication.holder.TextLeftHandle
+import com.example.chatapplication.holder.TextRightHandle
 import com.example.chatapplication.model.entity.GroupChat
-import com.example.chatapplication.model.entity.MediaList
 import com.example.chatapplication.model.entity.Message
 import com.example.chatapplication.utils.AppUtils.hide
 import com.example.chatapplication.utils.AppUtils.invisible
@@ -37,44 +36,32 @@ import com.example.chatapplication.utils.TimeUtils
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import vn.techres.line.app.AppAdapter
-import com.example.chatapplication.holder.ImageLeftHandle
-import com.example.chatapplication.holder.ImageRightHandle
-import com.example.chatapplication.holder.OutGroupHandle
 import com.example.chatapplication.model.entity.MessageView
 import com.example.chatapplication.other.CustomLayoutManager
-import com.example.chatapplication.holder.TextLeftHandle
-import com.example.chatapplication.holder.TextRightHandle
 import com.example.chatapplication.utils.PhotoLoadUtils
-import com.example.chatapplication.holder.VideoLeftHandle
-import com.example.chatapplication.holder.VideoRightHandle
+import com.example.chatapplication.holder.ImageLeftHandle
+import com.example.chatapplication.holder.ImageRightHandle
+import com.example.chatapplication.utils.AppUtils
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Objects
 
-/**
- * @Author: Bùi Hữu Thắng
- * @Date: 24/10/2022
- */
+
 class MessageAdapter(
     context: Context,
-    var nameGroup: String,
-    dataCategory: ArrayList<MediaList>,
     var groupChat: GroupChat
 ) : AppAdapter<Message>(context) {
 
-    private var chatHandle: ChatHandle? = null
-    private var lifecycle: Lifecycle? = null
     private var onYoutubePlayer: OnYoutubePlayer? = null
-    private var dataCategorySticker = dataCategory
+    private var chatHandle: ChatHandle? = null
 
     fun setChatHandle(chatHandle: ChatHandle) {
         this.chatHandle = chatHandle
     }
-
-    fun setLifecycle(lifecycle: Lifecycle) {
-        this.lifecycle = lifecycle
-    }
-
     fun setOnYoutubePlayer(onYoutubePlayer: OnYoutubePlayer) {
         this.onYoutubePlayer = onYoutubePlayer
     }
@@ -106,41 +93,37 @@ class MessageAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        val message = getData()[position]
-        return if (message.type == MessageTypeChatConstants.REVOKE_MESSAGE) {
-            if (checkSenderMessage(message)) REVOKE_RIGHT
-            else REVOKE_LEFT
+        val message = getItem(position)
+
+        return if (checkSenderMessage(message)) {
+            when (message.type) {
+                MessageTypeChatConstants.TEXT -> TEXT_RIGHT //tin nhắn bên phải
+
+                MessageTypeChatConstants.IMAGE -> IMAGE_RIGHT // tin nhắn hình bên phải
+
+                MessageTypeChatConstants.VIDEO -> VIDEO_RIGHT // tin nhắn video bên phải
+
+                MessageTypeChatConstants.REPLY -> REPLY_RIGHT // tin nhắn reply bên phải
+
+                MessageTypeChatConstants.USER_OUT_GROUP -> OUT_GROUP
+
+
+                else -> 100
+            }
         } else {
-            if (checkSenderMessage(message)) {
-                when (message.type) {
-                    MessageTypeChatConstants.TEXT -> TEXT_RIGHT //tin nhắn bên phải
+            when (message.type) {
+                MessageTypeChatConstants.TEXT -> TEXT_LEFT // tin nhắn text bên trái
 
-                    MessageTypeChatConstants.IMAGE -> IMAGE_RIGHT // tin nhắn hình bên phải
+                MessageTypeChatConstants.IMAGE -> IMAGE_LEFT // tin nhắn hình bên trái
 
-                    MessageTypeChatConstants.VIDEO -> VIDEO_RIGHT // tin nhắn video bên phải
+                MessageTypeChatConstants.VIDEO -> VIDEO_LEFT // tin nhắn video bên trái
 
-                    MessageTypeChatConstants.REPLY -> REPLY_RIGHT // tin nhắn reply bên phải
+                MessageTypeChatConstants.REPLY -> REPLY_LEFT // tin nhắn reply bên trái
 
-                    MessageTypeChatConstants.USER_OUT_GROUP -> OUT_GROUP
-
-
-                    else -> 100
-                }
-            } else {
-                when (message.type) {
-                    MessageTypeChatConstants.TEXT -> TEXT_LEFT // tin nhắn text bên trái
-
-                    MessageTypeChatConstants.IMAGE -> IMAGE_LEFT // tin nhắn hình bên trái
-
-                    MessageTypeChatConstants.VIDEO -> VIDEO_LEFT // tin nhắn video bên trái
-
-                    MessageTypeChatConstants.REPLY -> REPLY_LEFT // tin nhắn reply bên trái
-
-                    MessageTypeChatConstants.USER_OUT_GROUP -> OUT_GROUP
+                MessageTypeChatConstants.USER_OUT_GROUP -> OUT_GROUP
 
 
-                    else -> 100
-                }
+                else -> 100
             }
         }
     }
@@ -177,54 +160,23 @@ class MessageAdapter(
                     ), parent, false
                 )
             )
-
-            VIDEO_RIGHT -> VideoRightHolder(
-                ItemMessageVideoRightBinding.inflate(
-                    LayoutInflater.from(
-                        parent.context
-                    ), parent, false
-                )
-            )
-
-            VIDEO_LEFT -> VideoLeftHolder(
-                ItemMessageVideoLeftBinding.inflate(
-                    LayoutInflater.from(
-                        parent.context
-                    ), parent, false
-                )
-            )
-
-//            REPLY_RIGHT -> ReplyRightHolder(
-//                ItemMessageReplyRightBinding.inflate(
+//
+//            VIDEO_RIGHT -> VideoRightHolder(
+//                ItemMessageVideoRightBinding.inflate(
 //                    LayoutInflater.from(
 //                        parent.context
 //                    ), parent, false
 //                )
 //            )
 //
-//            REPLY_LEFT -> ReplyLeftHolder(
-//                ItemMessageReplyLeftBinding.inflate(
+//            VIDEO_LEFT -> VideoLeftHolder(
+//                ItemMessageVideoLeftBinding.inflate(
 //                    LayoutInflater.from(
 //                        parent.context
 //                    ), parent, false
 //                )
 //            )
 
-            OUT_GROUP -> OutGroupHolder(
-                ItemMessageNotificationBinding.inflate(
-                    LayoutInflater.from(
-                        parent.context
-                    ), parent, false
-                )
-            )
-
-//            else -> EmptyHolder(
-//                ItemMessageNotificationBinding.inflate(
-//                    LayoutInflater.from(
-//                        parent.context
-//                    ), parent, false
-//                )
-//            )
             else -> TextRightHolder(
                 ItemMessageTextRightBinding.inflate(
                     LayoutInflater.from(
@@ -239,9 +191,52 @@ class MessageAdapter(
         AppViewHolder(binding.root) {
 
         override fun onBindView(position: Int) {
-            TextRightHandle(
-                binding, getItem(position), position, chatHandle!!, this@MessageAdapter
-            ).setData()
+            val data = getItem(position)
+            binding.message.tvMessage.text = data.message
+            checkTimeMessages(
+                data.isTimeline,
+                data.createdAt,
+                binding.time.llTimeHeader,
+                binding.time.tvTimeHeader,
+                binding.message.tvTime,
+                position
+            )
+
+            checkUserViewMessage(
+                binding.rcvUserView,
+                binding.send.llSendMessage,
+                data,
+                position,
+                binding.llView,
+                binding.llUserView,
+                binding.tvMoreView
+            )
+
+            handleStatusMessage(binding.send.tvTextUserView,data)
+
+            setMarginStart(binding.root, binding.time.llTimeHeader, position)
+
+
+            val lp = binding.ctlText.layoutParams as ViewGroup.MarginLayoutParams
+
+            lp.setMargins(
+                0,
+                0,
+                0,
+                getContext().resources.getDimension(R.dimen.dp_4)
+                    .toInt()
+            )
+
+
+            binding.ctlText.setOnLongClickListener {
+                chatHandle!!.onRevoke(
+                    data,
+                    binding.ctlMessage,
+                    binding.ctlMessage.y.toInt(),
+                    binding.message.tvMessage
+                )
+                true
+            }
         }
     }
 
@@ -249,168 +244,238 @@ class MessageAdapter(
         AppViewHolder(binding.root) {
 
         override fun onBindView(position: Int) {
-            TextLeftHandle(
-                binding, getItem(position), position, chatHandle!!, this@MessageAdapter
-            ).setData()
+            val data = getItem(position)
+            binding.message.tvMessage.text = data.message
+
+            checkTimeMessagesTheir(
+            data.isTimeline,
+            data.createdAt,
+            binding.time.llTimeHeader,
+            binding.time.tvTimeHeader,
+            binding.message.tvTime,
+            binding.tvNameMedia,
+            binding.ivAvatar,
+            position
+        )
+
+        setMarginStart(binding.root, binding.time.llTimeHeader, position)
+
+        val lp = binding.ctlText.layoutParams as ViewGroup.MarginLayoutParams
+
+        lp.setMargins(
+            0,
+            0,
+            0,
+            getContext().resources.getDimension(R.dimen.dp_4).toInt()
+        )
+
+        setProfilePersonChat(binding.tvNameMedia, binding.ivAvatar, data)
+
+        val screen = IntArray(2)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            binding.root.getLocationInSurface(screen)
+        }
+
+        binding.ctlText.setOnLongClickListener {
+            chatHandle!!.onRevoke(
+                data,
+                binding.ctlMessage,
+                binding.ctlMessage.y.toInt(),
+                binding.message.tvMessage
+            )
+            true
+        }
         }
     }
 
     inner class ImageLeftHolder(private val binding: ItemMessageImageLeftBinding) :
         AppViewHolder(binding.root) {
         override fun onBindView(position: Int) {
-            ImageLeftHandle(
-                binding, getItem(position), position, chatHandle!!, this@MessageAdapter
-            ).setData()
+            val data = getItem(position)
+            checkTimeMessagesTheir(
+                data.isTimeline,
+                data.createdAt,
+                binding.time.llTimeHeader,
+                binding.time.tvTimeHeader,
+                binding.tvTime,
+                binding.tvNameMedia,
+                binding.ivAvatar,
+                position
+            )
+
+            setMarginStart(binding.root, binding.time.llTimeHeader, position)
+
+            setProfilePersonChat(binding.tvNameMedia, binding.ivAvatar, data)
+
+            val screen = IntArray(2)
+            binding.ctlContainer.getLocationOnScreen(screen)
+
+            binding.ivOneOne.setOnLongClickListener {
+                chatHandle!!.onRevoke(data, binding.root, screen[1], null)
+                true
+            }
+            val lp = binding.rltVideo.layoutParams as ViewGroup.MarginLayoutParams
+            if (binding.tvTime.visibility == View.GONE) {
+
+                lp.setMargins(
+                    0,
+                    0,
+                    0,
+                    getContext().resources.getDimension(R.dimen.dp_4)
+                        .toInt()
+                )
+            } else {
+                lp.setMargins(
+                    0,
+                    0,
+                    0,
+                    getContext().resources.getDimension(R.dimen.dp_20).toInt()
+                )
+            }
+
+            if (data.media.size == 1) {
+                binding.ctlImageOne.show()
+                binding.llImageFourMore.hide()
+
+                PhotoLoadUtils.resizeImageClip(
+                    data.media[0],
+                    binding.ivOneOne,
+                )
+                binding.ivOneOne.setOnClickListener {
+                    AppUtils.disableClickAction(binding.ivOneOne, 500)
+                    AppUtils.showMediaNewsFeed(getContext(), data.media, position)
+                }
+            } else {
+                binding.ctlImageOne.hide()
+                binding.llImageFourMore.show()
+                setAdapterImageVideo(
+                    binding.rcvImgMore,
+                    data,
+                    screen[1],
+                    isAllowLongClick = true
+                )
+            }
         }
     }
 
     inner class ImageRightHolder(private val binding: ItemMessageImageRightBinding) :
         AppViewHolder(binding.root) {
         override fun onBindView(position: Int) {
-            ImageRightHandle(
-                binding, getItem(position), position, chatHandle!!, this@MessageAdapter
-            ).setData()
+            val data = getItem(position)
+            checkTimeMessages(
+                data.isTimeline,
+                data.createdAt,
+                binding.time.llTimeHeader,
+                binding.time.tvTimeHeader,
+                binding.tvTime,
+                position
+            )
+
+            checkUserViewMessage(
+                binding.rcvUserView,
+                binding.send.llSendMessage,
+                data,
+                position,
+                binding.llView,
+                binding.llUserView,
+                binding.tvMoreView
+            )
+
+            handleStatusMessage(binding.send.tvTextUserView, data)
+
+            setMarginStart(binding.root, binding.time.llTimeHeader, position)
+
+            val lp = binding.ctlVideo.layoutParams as ViewGroup.MarginLayoutParams
+            if (binding.tvTime.visibility == View.GONE) {
+                lp.setMargins(
+                    0,
+                    0,
+                    0,
+                    getResources().getDimension(R.dimen.dp_4)
+                        .toInt()
+                )
+            } else {
+                lp.setMargins(
+                    0,
+                    0,
+                    0,
+                    getResources().getDimension(R.dimen.dp_20)
+                        .toInt()
+                )
+            }
+
+            val screen = IntArray(2)
+            binding.ctlContainer.getLocationOnScreen(screen)
+
+            binding.ivOneOne.setOnLongClickListener {
+                chatHandle!!.onRevoke(data, binding.root, screen[1], null)
+                true
+            }
+
+            if (data.media.size == 1) {
+                binding.lnImageOne.show()
+                binding.llImageFourMore.hide()
+
+                PhotoLoadUtils.resizeImageClip(
+                    data.media[0].ifEmpty { data.media[0] },
+                    binding.ivOneOne,
+                )
+
+//                binding.ivOneOne.setOnClickListener {
+//                    AppUtils.disableClickAction(binding.ivOneOne, 500)
+//                    AppUtils.showMediaNewsFeed(getContext(), data.media, 0)
+//                }
+            } else {
+                binding.lnImageOne.hide()
+                binding.llImageFourMore.show()
+                setAdapterImageVideo(
+                    binding.rcvImgMore,
+                    data,
+                    screen[1],
+                    isAllowLongClick = true
+                )
+            }
+
+            binding.root.setOnLongClickListener {
+                chatHandle!!.onRevoke(data, binding.root, screen[1], null)
+                true
+            }
         }
     }
 
     inner class VideoRightHolder(private val binding: ItemMessageVideoRightBinding) :
         AppViewHolder(binding.root) {
         override fun onBindView(position: Int) {
-            VideoRightHandle(
-                binding, getItem(position), position, chatHandle!!, this@MessageAdapter
-            ).setData()
+
         }
     }
 
     inner class VideoLeftHolder(private val binding: ItemMessageVideoLeftBinding) :
         AppViewHolder(binding.root) {
         override fun onBindView(position: Int) {
-            VideoLeftHandle(
-                binding, getItem(position), position, chatHandle!!, this@MessageAdapter
-            ).setData()
+
         }
     }
 
     inner class OutGroupHolder(private val binding: ItemMessageNotificationBinding) :
         AppViewHolder(binding.root) {
         override fun onBindView(position: Int) {
-            OutGroupHandle(
-                binding,
-                getItem(position),
-                position,
-                this@MessageAdapter,
-                chatHandle!!
-            ).setData()
+
         }
     }
 
-//    inner class AddUserGroupHolder(private val binding: ItemMessageNotificationBinding) :
-//        AppViewHolder(binding.root) {
-//        override fun onBindView(position: Int) {
-//            AddUserGroupHandle(
-//                binding,
-//                getItem(position),
-//                position,
-//                this@MessageAdapter,
-//                chatHandle!!
-//            ).setData()
-//        }
-//    }
-//
-//
-//    inner class RemoveUserGroupHolder(private val binding: ItemMessageNotificationBinding) :
-//        AppViewHolder(binding.root) {
-//        override fun onBindView(position: Int) {
-//            RemoveUserGroupHandle(
-//                binding,
-//                getItem(position),
-//                position,
-//                this@MessageAdapter,
-//                chatHandle!!
-//            ).setData()
-//        }
-//    }
-//
-//    inner class ChangePermissionGroupHolder(private val binding: ItemMessageNotificationBinding) :
-//        AppViewHolder(binding.root) {
-//        override fun onBindView(position: Int) {
-//            ChangePermissionGroupHandle(
-//                binding,
-//                getItem(position),
-//                position,
-//                this@MessageAdapter,
-//                chatHandle!!
-//            ).setData()
-//        }
-//    }
-//
-//    inner class UpdateGroupHolder(private val binding: ItemMessageNotificationBinding) :
-//        AppViewHolder(binding.root) {
-//        override fun onBindView(position: Int) {
-//            UpdateGroupHandle(
-//                binding, getItem(position), position, this@MessageAdapter, chatHandle!!
-//            ).setData()
-//        }
-//    }
-//
-//    inner class PinnedHolder(private val binding: ItemMessagePinnedBinding) :
-//        AppViewHolder(binding.root) {
-//        override fun onBindView(position: Int) {
-//            PinnedHandle(
-//                binding, getItem(position), position, this@MessageAdapter, chatHandle!!
-//            ).setData()
-//        }
-//    }
-
-//    inner class ReplyLeftHolder(private val binding: ItemMessageReplyLeftBinding) :
-//        AppViewHolder(binding.root) {
-//
-//        override fun onBindView(position: Int) {
-//            ReplyLeftHandle(
-//                binding, getItem(position), this@MessageAdapter, position, chatHandle!!
-//            ).setData()
-//        }
-//    }
-//
-//    inner class ReplyRightHolder(private val binding: ItemMessageReplyRightBinding) :
-//        AppViewHolder(binding.root) {
-//
-//        override fun onBindView(position: Int) {
-//            ReplyRightHandle(
-//                binding, getItem(position), position, chatHandle!!, this@MessageAdapter
-//            ).setData()
-//        }
-//    }
-
-//    inner class MessageNewGroupHolder(private val binding: ItemChatNewGroupBinding) :
-//        AppViewHolder(binding.root) {
-//
-//        override fun onBindView(position: Int) {
-//            TextNewGroupHandle(
-//                binding,
-//                getItem(position),
-//                nameGroup,
-//                position,
-//                chatHandle!!,
-//                this@MessageAdapter,
-//                dataCategorySticker
-//            ).setData()
-//        }
-//    }
-
-//    inner class EmptyHolder(private val binding: ItemMessageNotificationBinding) :
-//        AppViewHolder(binding.root) {
-//        override fun onBindView(position: Int) {
-//            ChangePermissionGroupHandle(
-//                binding,
-//                getItem(position),
-//                position,
-//                this@MessageAdapter,
-//                chatHandle!!
-//            ).setData()
-//        }
-//    }
-
+    fun setAdapterImageVideo(
+        recyclerView: RecyclerView, item: Message, y: Int, isAllowLongClick: Boolean
+    ) {
+        val adapter = LoadImageAdapter(recyclerView.context, item, y, isAllowLongClick)
+        adapter.setData(item.media)
+        val layoutManager = FlexboxLayoutManager(recyclerView.context)
+        layoutManager.flexDirection = FlexDirection.ROW
+        layoutManager.justifyContent = JustifyContent.FLEX_START
+        layoutManager.alignItems = AlignItems.CENTER
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = adapter
+    }
 
     fun checkSenderMessage(message: Message): Boolean {
         return message.user.userId == UserCache.getUser().id
@@ -471,6 +536,8 @@ class MessageAdapter(
             }
         }
     }
+
+
 
     private fun handleLastMessage(
         strDate: String,

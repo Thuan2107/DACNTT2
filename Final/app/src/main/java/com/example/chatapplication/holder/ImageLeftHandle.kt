@@ -1,9 +1,15 @@
 package com.example.chatapplication.holder
 
+import android.view.View
+import android.view.ViewGroup
+import com.example.chatapplication.R
 import com.example.chatapplication.adapter.MessageAdapter
 import com.example.chatapplication.databinding.ItemMessageImageLeftBinding
 import com.example.chatapplication.model.entity.Message
-
+import com.example.chatapplication.utils.AppUtils
+import com.example.chatapplication.utils.AppUtils.hide
+import com.example.chatapplication.utils.AppUtils.show
+import com.example.chatapplication.utils.PhotoLoadUtils
 
 class ImageLeftHandle(
     private val binding: ItemMessageImageLeftBinding,
@@ -13,9 +19,7 @@ class ImageLeftHandle(
     private var adapter: MessageAdapter
 ) {
     fun setData() {
-        if (data.highlight == 1) {
-            data.highlight = 0
-        }
+
         adapter.checkTimeMessagesTheir(
             data.isTimeline,
             data.createdAt,
@@ -31,7 +35,6 @@ class ImageLeftHandle(
 
         adapter.setProfilePersonChat(binding.tvNameMedia, binding.ivAvatar, data)
 
-
         val screen = IntArray(2)
         binding.ctlContainer.getLocationOnScreen(screen)
 
@@ -39,6 +42,29 @@ class ImageLeftHandle(
             chatHandle.onRevoke(data, binding.root, screen[1], null)
             true
         }
+
+        setMarginContainer()
+
+        if (data.media.size == 1) {
+            binding.ctlImageOne.show()
+            binding.llImageFourMore.hide()
+
+            PhotoLoadUtils.resizeImageClip(
+                data.media[0],
+                binding.ivOneOne,
+            )
+            binding.ivOneOne.setOnClickListener {
+                AppUtils.disableClickAction(binding.ivOneOne, 500)
+                AppUtils.showMediaNewsFeed(adapter.getContext(), data.media, position)
+            }
+        } else {
+            binding.ctlImageOne.hide()
+            binding.llImageFourMore.show()
+        }
     }
 
+    private fun setMarginContainer() {
+
+
+    }
 }

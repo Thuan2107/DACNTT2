@@ -1,8 +1,5 @@
 package com.example.chatapplication.constant
-/**
- * @Author: HỒ QUANG TÙNG
- * @Date: 26/02/2023
- */
+
 class UploadTypeConstants {
     companion object {
         const val UPLOAD_IMAGE = 0 // type up hình

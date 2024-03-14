@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -9,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.chatapplication"
-        minSdk = 26
+        minSdk = 24
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -69,6 +70,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.core:core-ktx:+")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.3")
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
+    implementation("com.google.firebase:firebase-storage:20.3.0")
+    implementation("com.android.volley:volley:1.2.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -116,4 +121,21 @@ dependencies {
 
     implementation("com.makeramen:roundedimageview:2.3.0")
 
+    //link:https://github.com/facebook/shimmer-android
+    api("com.facebook.shimmer:shimmer:0.5.0@aar")
+
+    implementation("com.github.getActivity:ShapeView:9.0")
+    // ShapeDrawable：https://github.com/getActivity/ShapeDrawable
+    implementation("com.github.getActivity:ShapeDrawable:3.0")
+    implementation("com.github.ybq:Android-SpinKit:1.4.0")
+    implementation("com.cloudinary:cloudinary-android:2.0.0")
+//    implementation("com.linkedin.android.litr:litr:1.1.0")
+    implementation("com.google.firebase:firebase-appcheck")
+    implementation("com.google.firebase:firebase-auth:22.0.0") // Use the latest version available
+    implementation("com.google.firebase:firebase-appcheck-safetynet:16.1.2")
+    api("com.google.android.exoplayer:exoplayer:2.17.1")
+//Kéo thả màn hình: https://github.com/r0adkll/Slidr
+    api("com.r0adkll:slidableactivity:2.1.0")
+    // thu vien theo mo hinh
+    api("com.google.android.flexbox:flexbox:3.0.0")
 }
