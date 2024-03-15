@@ -197,7 +197,7 @@ class MediaSliderActivity : AppActivity(), MediaAdapter.OnVideoPrepareListener {
         if (data.first().url.contains("/"))
             binding.ivDownload.hide()
         else
-            binding.ivDownload.show()
+            binding.ivDownload.hide()
 
         binding.ivDownload.setOnClickListener {
             AppUtils.downloadFile(

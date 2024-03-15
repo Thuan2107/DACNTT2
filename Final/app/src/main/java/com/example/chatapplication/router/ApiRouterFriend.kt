@@ -7,9 +7,6 @@ package com.example.chatapplication.router
 @Suppress("FunctionName")
 object ApiRouterFriend {
     private const val FRIEND = "friend"
-    private const val REQUEST_FRIEND = "request-friend"
-    private const val SUGGEST_FRIEND = "suggest-friend"
-
     fun API_FRIEND_REQUEST_LIST(): String {
         return "REQUEST_FRIEND/list"
     }
@@ -35,7 +32,7 @@ object ApiRouterFriend {
     }
 
     fun API_NOT_ACCEPT(idUser: String): String {
-        return "REQUEST_FRIEND/denied/$idUser"
+        return "$FRIEND/denied/$idUser"
     }
 
     fun API_REMOVE_REQUEST_FRIEND(id: String): String {

@@ -41,6 +41,7 @@ import com.example.chatapplication.other.CustomLayoutManager
 import com.example.chatapplication.utils.PhotoLoadUtils
 import com.example.chatapplication.holder.ImageLeftHandle
 import com.example.chatapplication.holder.ImageRightHandle
+import com.example.chatapplication.model.entity.Conversation
 import com.example.chatapplication.utils.AppUtils
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection

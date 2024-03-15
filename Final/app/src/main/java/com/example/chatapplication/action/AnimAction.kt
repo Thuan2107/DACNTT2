@@ -20,5 +20,8 @@ interface AnimAction {
         val ANIM_LEFT: Int = R.style.LeftAnimStyle
 
         val ANIM_RIGHT: Int = R.style.RightAnimStyle
+
+        val ANIM_IOS: Int = R.style.IOSAnimStyle
+
     }
 }

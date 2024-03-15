@@ -64,6 +64,7 @@
             android:layout_marginTop="@dimen/dp_0_5"
             android:background="@color/white"
             android:orientation="horizontal"
+            android:visibility="gone"
             android:padding="@dimen/dp_16">
 
             <ImageView
@@ -185,6 +186,7 @@
             android:layout_marginTop="@dimen/dp_0_5"
             android:background="@color/white"
             android:orientation="horizontal"
+            android:visibility="gone"
             android:padding="@dimen/dp_16">
 
             <ImageView
@@ -268,6 +270,7 @@
                 android:layout_marginTop="@dimen/dp_0_5"
                 android:background="@color/white"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dp_16">
 
                 <ImageView

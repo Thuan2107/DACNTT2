@@ -2,6 +2,7 @@ package com.example.chatapplication.api
 
 import com.example.chatapplication.cache.UserCache
 import com.example.chatapplication.router.ApiRouterConversation
+import com.hjq.http.annotation.HttpIgnore
 import com.hjq.http.annotation.HttpRename
 
 class DeleteGroupApi : BaseApi() {
@@ -10,7 +11,7 @@ class DeleteGroupApi : BaseApi() {
         return ApiRouterConversation.API_DELETE_GROUP(conversationId)
     }
 
-    @HttpRename("conversation_id")
+    @HttpIgnore
     var conversationId = ""
 
     companion object {

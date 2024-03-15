@@ -48,4 +48,7 @@ class Conversation {
 
     @SerializedName("updated_at")
     var updatedAt = ""
+
+    @SerializedName("status")
+    var userStatus: Int = 0
 }

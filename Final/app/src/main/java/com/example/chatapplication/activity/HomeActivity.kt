@@ -14,6 +14,7 @@ import com.example.chatapplication.base.FragmentPagerAdapter
 import com.example.chatapplication.cache.UserCache
 import com.example.chatapplication.constant.MessageTypeChatConstants
 import com.example.chatapplication.databinding.HomeActivityBinding
+import com.example.chatapplication.fragment.EmptyFragment
 import com.example.chatapplication.fragment.PhoneBookFragment
 import com.example.chatapplication.fragment.GroupFragment
 import com.example.chatapplication.fragment.SettingAccountFragment
@@ -103,10 +104,10 @@ class HomeActivity : AppActivity(), NavigationAdapter.OnNavigationListener {
                 PhoneBookFragment()
             )
             addFragment(
-                GroupFragment()
+                EmptyFragment()
             )
             addFragment(
-                GroupFragment()
+                EmptyFragment()
             )
             addFragment(
                 SettingAccountFragment()

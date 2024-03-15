@@ -44,7 +44,6 @@ class LoginActivity : AppActivity() {
         enableLoginButton()
 
         setOnClickListener(
-            binding.txtForgotPassword,
             binding.btnLogin,
             binding.txtRegister,
         )
@@ -119,10 +118,6 @@ class LoginActivity : AppActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onClick(view: View) {
         when (view) {
-            binding.txtForgotPassword -> {
-                startActivity(ForgotPasswordActivity::class.java)
-                return
-            }
 
 //            binding.txtRegister -> {
 //                val intent = Intent(this, InputPhoneActivity::class.java)

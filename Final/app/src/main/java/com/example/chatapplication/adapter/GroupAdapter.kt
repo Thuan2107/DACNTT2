@@ -243,7 +243,7 @@ class GroupAdapter(context: Context) : AppAdapter<GroupChat>(context) {
             }
 
             binding.lnItemChat.setOnClickListener {
-                onClickGroupChat?.clickGroup(item.conversationId)
+                onClickGroupChat?.clickGroup(item.id)
             }
             binding.lnItemChat.setOnLongClickListener {
                 onClickGroupChat?.onLongClickGroup(position, item)

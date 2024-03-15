@@ -32,13 +32,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_check_black"
-                app:tint="@color/gray_800" />
+                app:tint="@color/main_bg" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/dp_8"
+                android:textColor="@color/main_bg"
                 android:text="@string/confirm"
                 android:textSize="@dimen/sp_16" />
 
@@ -58,7 +59,7 @@
                 android:layout_height="@dimen/dp_24"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_delete_white"
-                app:tint="@color/main_bg" />
+                app:tint="@color/red_500" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -66,7 +67,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/dp_8"
                 android:text="@string/cancel_friend"
-                android:textColor="@color/main_bg"
+                android:textColor="@color/red_500"
                 android:textSize="@dimen/sp_16" />
 
         </LinearLayout>

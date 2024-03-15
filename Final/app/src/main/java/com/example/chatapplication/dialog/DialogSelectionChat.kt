@@ -71,7 +71,7 @@ class DialogSelectionChat {
                     binding.llPinnedChat.hide()
                     binding.llUnPinnedChat.show()
                     listener!!.onSelectionChat(
-                        group.conversationId,
+                        group.id,
                         ChatConstants.TYPE_PINNED,
                         getDialog()!!
                     )
@@ -81,7 +81,7 @@ class DialogSelectionChat {
                     binding.llPinnedChat.show()
                     binding.llUnPinnedChat.hide()
                     listener!!.onSelectionChat(
-                        group.conversationId,
+                        group.id,
                         ChatConstants.TYPE_UN_PINNED,
                         getDialog()!!
                     )
@@ -90,7 +90,7 @@ class DialogSelectionChat {
 
                 binding.llDeleteChat -> {
                     listener!!.onSelectionChat(
-                        group.conversationId,
+                        group.id,
                         ChatConstants.TYPE_DELETE,
                         getDialog()!!
                     )
@@ -98,7 +98,7 @@ class DialogSelectionChat {
 
                 binding.llOutGroupChat -> {
                     listener!!.onSelectionChat(
-                        group.conversationId,
+                        group.id,
                         ChatConstants.TYPE_OUT_GROUP,
                         getDialog()!!
                     )

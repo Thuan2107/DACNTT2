@@ -5,12 +5,20 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.cloudinary.android.MediaManager
+import com.cloudinary.android.callback.ErrorInfo
+import com.cloudinary.android.callback.UploadCallback
 import com.example.chatapplication.R
+import com.example.chatapplication.api.ChangeAvatarGroupApi
+import com.example.chatapplication.api.ChangeBackgroundGroupApi
+import com.example.chatapplication.api.ChangeNameGroupApi
 import com.example.chatapplication.api.DeleteGroupApi
 import com.example.chatapplication.api.DetailGroupApi
+import com.example.chatapplication.api.OutGroupApi
 import com.example.chatapplication.app.AppActivity
 import com.example.chatapplication.app.AppApplication
 import com.example.chatapplication.cache.UserCache
@@ -18,8 +26,11 @@ import com.example.chatapplication.constant.AppConstants
 import com.example.chatapplication.constant.ChatConstants
 import com.example.chatapplication.constant.ConversationTypeConstants
 import com.example.chatapplication.databinding.ActivitySettingConversationdetailBinding
+import com.example.chatapplication.dialog.DialogChooseLeaderBeforeOutGroup
 import com.example.chatapplication.dialog.DialogOutGroup
+import com.example.chatapplication.eventbus.CurrentFragmentEventBus
 import com.example.chatapplication.eventbus.DeleteEventBus
+import com.example.chatapplication.eventbus.OutGroupEventBus
 import com.example.chatapplication.model.HttpData
 import com.example.chatapplication.model.entity.GroupChat
 import com.example.chatapplication.model.entity.Medias
@@ -38,6 +49,9 @@ import com.luck.picture.lib.entity.LocalMedia
 import okhttp3.Call
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
+import com.example.chatapplication.dialog.DialogChangeNameGroup
+import com.example.chatapplication.model.entity.ChangeName
+import com.example.chatapplication.utils.ChatUtils
 
 
 class SettingConversationDetailActivity : AppActivity() {
@@ -47,12 +61,14 @@ class SettingConversationDetailActivity : AppActivity() {
     private var medias: ArrayList<Medias> = ArrayList()
     private var avatar: String = ""
     private var linkAvatar: String = ""
+    private var linkBackGround: String = ""
     var groupChat: GroupChat = GroupChat()
     private var member: ArrayList<Sender> = ArrayList()
-//    private var dialogChangeNameGroup: DialogChangeNameGroup.Builder? = null
+    private var dialogChangeNameGroup: DialogChangeNameGroup.Builder? = null
     private var btnNotify = true
     private var swHide = true
     private var swPinned = true
+    private var imageType = -1
 
     override fun getLayoutView(): View {
         binding = ActivitySettingConversationdetailBinding.inflate(layoutInflater)
@@ -184,14 +200,20 @@ class SettingConversationDetailActivity : AppActivity() {
 //            startActivity(intent)
 //        }
 //
-//        binding.llChangeBackground.setOnClickListener {
-//            finish()
-//            EventBus.getDefault().post(EventbusChangeBackground(1))
-//        }
-//
-//        binding.ivAvatarGroup.setOnClickListener {
-//            AppUtils.showMediaAvatar(getContext(), groupChat.avatar, 0)
-//        }
+        binding.llChangeBackground.setOnClickListener {
+            imageType = 0
+            PhotoPickerUtils.showImagePickerChooseAvatar(
+                this, pickerImageIntent
+            )
+            PhotoLoadUtils.loadImageAvatarGroupByGlide(
+                binding.ivAvatarGroup,
+                linkBackGround
+            )
+        }
+
+        binding.ivAvatarGroup.setOnClickListener {
+            AppUtils.showMediaAvatar(getContext(), groupChat.avatar, 0)
+        }
 //
 //        binding.llSearchMess.setOnClickListener {
 //            AppUtils.disableClickAction(binding.llSearchMess, 1000)
@@ -259,13 +281,12 @@ class SettingConversationDetailActivity : AppActivity() {
     /**
      * Sự kiện thay đổi ảnh nhóm
      */
-    private var pickerImageIntent: ActivityResultLauncher<Intent> = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-    ) {
+    private var pickerImageIntent = registerForActivityResult(ActivityResultContracts.StartActivityForResult())  {
         if (it.resultCode == Activity.RESULT_OK) {
             val data: Intent = it.data!!
             localMedia = PictureSelector.obtainSelectorList(data) as ArrayList<LocalMedia>
-//            getLinkAvatarUpload(localMedia)
+            uploadToCloudinary(localMedia[0])
+            Timber.d("localMeddia %s",localMedia[0])
             when (groupChat.type) {
                 AppConstants.TYPE_PRIVATE -> {
                     PhotoLoadUtils.loadImageAvatarGroupByGlide(
@@ -284,84 +305,108 @@ class SettingConversationDetailActivity : AppActivity() {
         }
     }
 
-//    private fun getLinkAvatarUpload(listMedia: List<LocalMedia>) {
-//        medias.clear()
-//        for (i in listMedia.indices) {
-//            val media = Medias()
-////            media.type = listMedia[i].type
-//            val type = AppUtils.checkMimeTypeVideo(listMedia[i].realPath)
-//            if (type) {
-//                media.type = 1
-//            }
-//            media.name = listMedia[i].fileName
-//            media.size = listMedia[i].size
-//            media.width = listMedia[i].width
-//            media.height = listMedia[i].height
-//            media.isKeep = 1
-//            medias.add(media)
-//        }
-//        EasyHttp.post(this).api(
-//                GetLinkAvatarApi.params(medias)
-//        ).request(object : HttpCallbackProxy<HttpData<ArrayList<MediaList>>>(this) {
-//            override fun onHttpSuccess(data: HttpData<ArrayList<MediaList>>) {
-//                if (data.isRequestSucceed()) {
-//                    AppUtils.onUpload(
-//                            this@SettingConversationDetailActivity, data.getData()!!, localMedia
-//                    )
-//                    linkAvatar = data.getData()!![0].mediaId
-//                    avatar = data.getData()!![0].original.url
-//                    val mmkv: MMKV = MMKV.mmkvWithID(AppConstants.CACHE_UPLOAD_TYPE_KEY)
-//                    mmkv.putInt(AppConstants.CACHE_UPLOAD_TYPE_KEY, AppConstants.UPLOAD_AVATAR)
-//                            .commit()
-//                    changeAvatarGroup(groupChat.conversationId, linkAvatar)
-//                    val changeAvatar = ChangeAvatar()
-//                    changeAvatar.conversationId = groupChat.conversationId
-//                    changeAvatar.avatar = linkAvatar
-//                    ChatUtils.emitSocket(
-//                            SocketChatConstants.EMIT_CHANGE_AVATAR_GROUP,
-//                            changeAvatar
-//                    )
-//
-//                } else {
-//
-//                    Timber.e(
-//                            "${
-//                                AppApplication.applicationContext()
-//                                        .getString(R.string.error_message)
-//                            } ${data.getMessage()}"
-//                    )
-//                    hideDialog()
-//                }
-//            }
-//
-//            override fun onHttpFail(e: Exception?) {
-//
-//                Timber.e(
-//                        "${
-//                            AppApplication.applicationContext()
-//                                    .getString(R.string.error_message)
-//                        } ${e?.message}"
-//                )
-//                hideDialog()
-//            }
-//        })
-//    }
+    private fun uploadToCloudinary(localMedia : LocalMedia) {
+        Log.d("A", "sign up uploadToCloudinary- ")
+        MediaManager.get().upload(localMedia.realPath).callback(object : UploadCallback {
+            override fun onStart(requestId: String) {
+                Log.d("start", "start")
+            }
+
+            override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
+                Log.d("Uploading... ", "Uploading...")
+            }
+
+            override fun onSuccess(requestId: String, resultData: Map<*, *>) {
+                val url = resultData["url"].toString()
+                if(imageType == 1){
+                    changeAvatarGroup(groupChat.conversationId, url)
+                }else{
+                    changeBackgroundGroup(groupChat.conversationId, url)
+                }
+            }
+
+            override fun onError(requestId: String, error: ErrorInfo) {
+                Log.d("error " + error.description, "error")
+            }
+
+            override fun onReschedule(requestId: String, error: ErrorInfo) {
+                Log.d("Reshedule " + error.description, "Reshedule")
+            }
+        }).dispatch()
+    }
 
 
-//    private fun dialogChangeGroupChat(conversationId: String, nameGroup: String) {
-//        dialogChangeNameGroup = DialogChangeNameGroup.Builder(
-//                this, nameGroup
-//        ).setListener(object : DialogChangeNameGroup.OnListener {
-//            override fun onChangeNameGroupChat(nameGroup: String) {
-//                val changeName = ChangeName()
-//                changeName.conversationId = conversationId
-//                changeName.name = nameGroup.trim()
-//                ChatUtils.emitSocket(SocketChatConstants.EMIT_CHANGE_NAME_GROUP, changeName)
-//                changeNameGroup(groupChat.conversationId, nameGroup.trim())
-//            }
-//        })
-//        dialogChangeNameGroup!!.show()
-//    }
+
+    private fun dialogChangeGroupChat(conversationId: String, nameGroup: String) {
+        dialogChangeNameGroup = DialogChangeNameGroup.Builder(
+                this, nameGroup
+        ).setListener(object : DialogChangeNameGroup.OnListener {
+            override fun onChangeNameGroupChat(nameGroup: String) {
+                val changeName = ChangeName()
+                changeName.conversationId = conversationId
+                changeName.name = nameGroup.trim()
+                changeNameGroup(groupChat.conversationId, nameGroup.trim())
+            }
+        })
+        dialogChangeNameGroup!!.show()
+    }
+
+    /**
+     * api đổi tên nhóm
+     */
+
+    private fun changeNameGroup(idGroup: String, name: String) {
+        val formatName = AppUtils.fromHtml(name)
+        binding.tvNameGroup.text = formatName
+        EasyHttp.post(this)
+            .api(ChangeNameGroupApi.params(idGroup, binding.tvNameGroup.text.toString()))
+            .request(object : HttpCallbackProxy<HttpData<Any>>(this) {
+                override fun onHttpSuccess(data: HttpData<Any>) {
+                    if (data.isRequestSucceed()) {
+                        groupChat.name = binding.tvNameGroup.text.toString()
+                        toast("Đổi tên nhóm thành công")
+                    } else {
+                        toast(data.getData())
+                    }
+                }
+
+            })
+    }
+
+    /**
+     * api đổi avatar nhóm
+     */
+
+    private fun changeAvatarGroup(idGroup: String, avatar: String) {
+        EasyHttp.post(this).api(ChangeAvatarGroupApi.params(idGroup, avatar))
+            .request(object : HttpCallbackProxy<HttpData<Any>>(this) {
+                override fun onHttpSuccess(data: HttpData<Any>) {
+                    if (data.isRequestSucceed()) {
+                        toast("Đổi avatar nhóm thành công")
+                    } else {
+                        toast(data.getData())
+                    }
+                }
+            })
+    }
+
+    /**
+     * api đổi background nhóm
+     */
+
+    private fun changeBackgroundGroup(idGroup: String, avatar: String) {
+        EasyHttp.post(this).api(ChangeBackgroundGroupApi.params(idGroup, avatar))
+            .request(object : HttpCallbackProxy<HttpData<Any>>(this) {
+                override fun onHttpSuccess(data: HttpData<Any>) {
+                    if (data.isRequestSucceed()) {
+                        toast("Đổi background nhóm thành công")
+                        finish()
+                    } else {
+                        toast(data.getData())
+                    }
+                }
+            })
+    }
 
 
     /**
@@ -395,22 +440,22 @@ class SettingConversationDetailActivity : AppActivity() {
 //                })
 //    }
 
-//    private fun setOutConversation(idGroup: String) {
-//        EasyHttp.post(this).api(OutGroupApi.params(idGroup))
-//                .request(object : HttpCallbackProxy<HttpData<Any>>(this) {
-//                    override fun onHttpSuccess(data: HttpData<Any>) {
-//                        if (data.isRequestSucceed()) {
-//                            EventBus.getDefault().post(CurrentFragmentEventBus(3))
-//                            EventBus.getDefault().post(OutGroupEventBus(idGroup))
-//                            finish()
-//                            startActivity(HomeActivity::class.java)
-//                        } else {
-//                            toast(data.getData())
-//                        }
-//                    }
-//
-//                })
-//    }
+    private fun setOutConversation(idGroup: String) {
+        EasyHttp.post(this).api(OutGroupApi.params(idGroup))
+                .request(object : HttpCallbackProxy<HttpData<Any>>(this) {
+                    override fun onHttpSuccess(data: HttpData<Any>) {
+                        if (data.isRequestSucceed()) {
+                            EventBus.getDefault().post(CurrentFragmentEventBus(3))
+                            EventBus.getDefault().post(OutGroupEventBus(idGroup))
+                            finish()
+                            startActivity(HomeActivity::class.java)
+                        } else {
+                            toast(data.getData())
+                        }
+                    }
+
+                })
+    }
 
     /**
      * api ẩn cuộc trò chuyện
@@ -516,9 +561,9 @@ class SettingConversationDetailActivity : AppActivity() {
                         groupChat.avatar
                 )
 
-//                binding.ivAvatarGroup.setOnClickListener {
-//                    AppUtils.showMediaAvatar(getContext(), groupChat.avatar, 0)
-//                }
+                binding.ivAvatarGroup.setOnClickListener {
+                    AppUtils.showMediaAvatar(getContext(), groupChat.avatar, 0)
+                }
 
 //                binding.itemGroup.swSettingPersonal.setOnClickListener {
 //                    swPinned = !swPinned
@@ -539,25 +584,24 @@ class SettingConversationDetailActivity : AppActivity() {
                     // trưởng nhóm
                     ConversationTypeConstants.OWNER -> {
                         //chon avat
-//                        binding.ivUpdateAvatar.setOnClickListener {
-//                            PhotoPickerUtils.showImagePickerChooseAvatar(
-//                                    this, pickerImageIntent
-//                            )
-//                            PhotoLoadUtils.loadImageAvatarGroupByGlide(
-//                                    binding.ivAvatarGroup,
-//                                    linkAvatar
-//                            )
-//                        }
-//                        //dialog name group
-//                        binding.tvNameGroup.setOnClickListener {
-//                            dialogChangeGroupChat(
-//                                    groupChat.conversationId,
-//                                    groupChat.name.trim()
-//                            )
-//                        }
-//                        binding.itemGroup.llTransferGroupLeader.setOnClickListener {
-//                            dialogReviewNewsFeed()
-//                        }
+                        binding.ivUpdateAvatar.setOnClickListener {
+                            imageType = 1
+                            PhotoPickerUtils.showImagePickerChooseAvatar(
+                                    this, pickerImageIntent
+                            )
+                            PhotoLoadUtils.loadImageAvatarGroupByGlide(
+                                    binding.ivAvatarGroup,
+                                    linkAvatar
+                            )
+                        }
+                        //dialog name group
+                        binding.tvNameGroup.setOnClickListener {
+                            dialogChangeGroupChat(
+                                    groupChat.conversationId,
+                                    groupChat.name.trim()
+                            )
+                        }
+
                         binding.itemPersonal.llPersonalChat.hide()
                         binding.itemGroup.llGroupChat.show()
                         binding.itemGroup.llTransferGroupLeader.show()
@@ -590,13 +634,13 @@ class SettingConversationDetailActivity : AppActivity() {
                             )
                         }
 
-                        //dialog name group
-//                        binding.tvNameGroup.setOnClickListener {
-//                            dialogChangeGroupChat(
-//                                    groupChat.conversationId,
-//                                    groupChat.name.trim()
-//                            )
-//                        }
+//                        dialog name group
+                        binding.tvNameGroup.setOnClickListener {
+                            dialogChangeGroupChat(
+                                    groupChat.conversationId,
+                                    groupChat.name.trim()
+                            )
+                        }
                         binding.itemPersonal.llPersonalChat.hide()
                         binding.itemGroup.llGroupChat.show()
                     }
@@ -615,42 +659,42 @@ class SettingConversationDetailActivity : AppActivity() {
 //                }
 
                 //them member
-//                binding.llAddMember.setOnClickListener {
-//                    val bundle = Bundle()
-//                    val intent = Intent(
-//                            this, Class.forName(ModuleClassConstants.ADD_MEMBER_GROUP)
-//                    )
-//                    bundle.putString(AppConstants.GROUP_DATA, Gson().toJson(groupChat))
-//                    intent.putExtras(bundle)
-//                    startActivity(intent)
-//                }
+                binding.llAddMember.setOnClickListener {
+                    val bundle = Bundle()
+                    val intent = Intent(
+                            this, AddMemberGroupActivity::class.java
+                    )
+                    bundle.putString(AppConstants.GROUP_DATA, Gson().toJson(groupChat))
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+                }
 
-//                binding.itemGroup.llOutGroup.setOnClickListener {
-//                    dialogOutGroup = DialogOutGroup.Builder(
-//                            this,
-//                            getString(R.string.title_out_group),
-//                            getString(R.string.policy_out_group),
-//                            getString(R.string.leave_the_group)
-//                    ).setListener(object : DialogOutGroup.OnListener {
-//                        override fun onPolicyConfirm(next: Int) {
-//                            if (groupChat.myPermission == AppConstants.OWNER) {
-//                                DialogChooseLeaderBeforeOutGroup.Builder(
-//                                        this@SettingConversationDetailActivity,
-//                                        this@SettingConversationDetailActivity,
-//                                        groupChat.conversationId
-//                                ).setOnChangeLeaderListener(object : DialogChooseLeaderBeforeOutGroup.OnChangeLeaderListener {
-//                                    override fun onChangeLeader() {
-//                                        setOutConversation(groupChat.conversationId)
-//                                    }
-//                                }).show()
-//                            } else {
-//                                setOutConversation(groupChat.conversationId)
-//                            }
-//                            dialogOutGroup!!.dismiss()
-//                        }
-//                    })
-//                    dialogOutGroup!!.show()
-//                }
+                binding.itemGroup.llOutGroup.setOnClickListener {
+                    dialogOutGroup = DialogOutGroup.Builder(
+                            this,
+                            getString(R.string.title_out_group),
+                            getString(R.string.policy_out_group),
+                            getString(R.string.leave_the_group)
+                    ).setListener(object : DialogOutGroup.OnListener {
+                        override fun onPolicyConfirm(next: Int) {
+                            if (groupChat.myPermission == ConversationTypeConstants.OWNER) {
+                                DialogChooseLeaderBeforeOutGroup.Builder(
+                                        this@SettingConversationDetailActivity,
+                                        this@SettingConversationDetailActivity,
+                                        groupChat.conversationId
+                                ).setOnChangeLeaderListener(object : DialogChooseLeaderBeforeOutGroup.OnChangeLeaderListener {
+                                    override fun onChangeLeader() {
+                                        setOutConversation(groupChat.conversationId)
+                                    }
+                                }).show()
+                            } else {
+                                setOutConversation(groupChat.conversationId)
+                            }
+                            dialogOutGroup!!.dismiss()
+                        }
+                    })
+                    dialogOutGroup!!.show()
+                }
 
                 binding.itemGroup.llDeleteHistoryChat.setOnClickListener {
                     dialogOutGroup = DialogOutGroup.Builder(

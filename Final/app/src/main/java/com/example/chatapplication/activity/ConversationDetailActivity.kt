@@ -54,6 +54,7 @@ import com.example.chatapplication.constant.SocketChatConstants
 import com.example.chatapplication.databinding.ActivityChatBinding
 import com.example.chatapplication.databinding.ItemChatViewBinding
 import com.example.chatapplication.databinding.ItemChatsBinding
+import com.example.chatapplication.eventbus.EventBusLastMessage
 import com.example.chatapplication.model.HttpData
 import com.example.chatapplication.model.entity.GroupChat
 import com.example.chatapplication.model.entity.JoinAndLeaveRoom
@@ -62,6 +63,7 @@ import com.example.chatapplication.model.entity.MediaList
 import com.example.chatapplication.model.entity.MemberList
 import com.example.chatapplication.model.entity.Message
 import com.example.chatapplication.model.entity.MessageEmit
+import com.example.chatapplication.model.entity.MyItemDecoration
 import com.example.chatapplication.model.entity.Sender
 import com.example.chatapplication.model.entity.Typing
 import com.example.chatapplication.model.entity.TypingOff
@@ -96,6 +98,7 @@ import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
 import okhttp3.Call
+import org.greenrobot.eventbus.EventBus
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
@@ -116,11 +119,8 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
     private var messageAdapter: MessageAdapter? = null
     private var membersList: ArrayList<MemberList> = ArrayList()
     private var dataMemberListTemp: ArrayList<MemberList> = ArrayList()
-
     private var userTypingAdapter: TypingOnAdapter? = null
     private var listTypingUser = ArrayList<Typing>()
-//    private var changeBackgroundAdapter: ChangeBackgroundAdapter? = null
-//    private var listBackground = ArrayList<DataListBackground>()
     private var imageClip: ArrayList<String> = ArrayList()
     private var imageClipAdapter: ImageClipAdapter? = null
     private var aBoolean = false
@@ -131,8 +131,6 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
     private var isTying = false
     private var isLink = false
     private var contentPaste = ""
-    private var countMessagePinned = 0
-//    private var arrayPinned: ArrayList<MessageObjectInteracted> = ArrayList()
     private var scrollOption = ChatConstants.SCROLL_TO_BOTTOM
     private var checkPosition = false
     private var loading = false
@@ -144,38 +142,18 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
     private var mediaPlayer: MediaPlayer? = null
     private var youTubePlayerView: YouTubePlayerView? = null
     private var initializedYouTubePlayer: YouTubePlayer? = null
-//    private var images: ImageClip = ImageClip()
-//    private var medias: ArrayList<Medias> = ArrayList()
     private var idbackground = ""
     private var imageBackground = ""
     private var currentKeyUpload = ChatConstants.EMIT_UPLOAD
 
     private var currentAudioPlay = MediaPlayer()
-    private var mFileName: File? = null
 
     private var messageSend: MessageEmit = MessageEmit()
-//    private var messReply: MessageObjectInteracted = MessageObjectInteracted()
 
-    private var chatSearchList = ArrayList<Message>()
-    private var jumpSearchMessage = ""
-    private var totalResultSearch = 0
     private var connectivityManager: ConnectivityManager? = null
 
-    private var config: MutableMap<String, String> = HashMap()
     private var mediaImage = ArrayList<String>()
-    private var mediaImageLocal = ArrayList<LocalMedia>()
-    private var isMediaManagerInitialized = false
 
-    private fun configCloudinary() {
-
-        config["cloud_name"] = "ds9clp4oy"
-        config["api_key"] = "246469816168789"
-        config["api_secret"] = "tGRwvKzjCbs1jRdgLM4s1rCtuKI"
-        if (!isMediaManagerInitialized) {
-            MediaManager.init(this@ConversationDetailActivity, config)
-            isMediaManagerInitialized = true
-        }
-    }
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
@@ -234,19 +212,9 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
         //Setup header
         ImmersionBar.setTitleBar(this, headerBinding.rltHeader)
 
-//        //set kích thước view mic
-//        val paramsMic = actionBinding.lnMic.layoutParams
-//        paramsMic.height = AppApplication.heightDevice / 3
-//        paramsMic.width = AppApplication.widthDevice
-//        actionBinding.lnMic.layoutParams = paramsMic
-//
-//        //set kích thước view chọn file và các tính năng khác
-//        val paramsExtensions = actionBinding.extensions.layoutParams
-//        paramsExtensions.height = AppApplication.heightDevice / 3
-//        paramsExtensions.width = AppApplication.widthDevice
-//        actionBinding.extensions.layoutParams = paramsExtensions
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun initData() {
         //Set dữ liệu cho chi tiết group trước rồi gọi detail group để cập nhật sau
@@ -262,19 +230,12 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
         initMessageAdapter()
 
         //Khởi tạo userTypingAdapter
-//        initUserTypingAdapter()
+        initUserTypingAdapter()
 
         //Khởi tạo changeBackgroundAdapter
 //        initChangeBackgroundAdapter()
 
-        //Khởi tạo ImageClipAdapter
-//        initImageClipAdapter()
 
-        //Lấy danh sách Background
-//        getApiListBackground()
-
-        //Lấy danh sách tin nhắn ghim
-//        getPinned()
 
         //Phân trang danh sách tin nhắn
         paginateUpDownScroll()
@@ -295,7 +256,6 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        configCloudinary()
         overridePendingTransition(
                 R.anim.right_in_activity,
                 R.anim.right_out_activity
@@ -306,7 +266,7 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
     @SuppressLint("NewApi")
     override fun onResume() {
         super.onResume()
-        getDetailGroup(group.conversationId, jumpToGroup = false)
+        getDetailGroup(group.id, jumpToGroup = false)
 //        if (checkPermissionsFile()) {
 ////            getImageClip()
 //        }
@@ -358,34 +318,7 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-//        actionBinding.inputChat.ibMore.isSelected = false
-//        actionBinding.inputChat.btnMic.isSelected = false
-//        actionBinding.inputChat.ibEmojiSticker.isSelected = false
-//        pauseRecording(0)//Ngưng record và xóa audio
-//        initAudio()
-//        if (!actionBinding.emojiPopupLayout.isShowing &&
-//                !actionBinding.emojiPopupLayout.isKeyboardOpen &&
-//                !actionBinding.extensions.isVisible &&
-//                !actionBinding.lnMic.isVisible &&
-//                !headerBinding.headerSearch.llMessSearch.isVisible
-//        ) {
-//            if (isTaskRoot) {
-//                startActivity(Intent(this, HomeActivity::class.java))
-//                onBackPressed()
-//            } else {
-//                super.onBackPressed()
-//            }
-//        } else if (headerBinding.headerSearch.llMessSearch.isVisible) {
-//            headerBinding.headerSearch.ivBack.performClick()
-//        } else {
-//            hideKeyboard(actionBinding.inputChat.edtChat)
-//            actionBinding.emojiPopupLayout.hidePopupView()
-//            actionBinding.extensions.hide()
-//            actionBinding.lnMic.hide()
-//        }
-    }
+
 
 
     //--------------------------------------Đăng ký và hủy Socket---------------------------------//
@@ -403,18 +336,6 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
         AppApplication.socketChat?.on(SocketChatConstants.ON_TYPING_ON, onTypingOn)
         AppApplication.socketChat?.on(SocketChatConstants.ON_TYPING_OFF, onTypingOff)
         //Vote
-        //Thu hồi tin nhắn
-        AppApplication.socketChat?.on(SocketChatConstants.ON_REVOKE, onRevoke)
-        //Cập nhật tên, avatar, background
-        AppApplication.socketChat?.on(SocketChatConstants.ON_CHANGE_NAME_GROUP, onChangeGroupName)
-        AppApplication.socketChat?.on(
-                SocketChatConstants.ON_CHANGE_AVATAR_GROUP,
-                onChangeGroupAvatar
-        )
-        AppApplication.socketChat?.on(SocketChatConstants.ON_CHANGE_BACKGROUND, onChangeBackground)
-        //Giải tán nhóm
-        AppApplication.socketChat?.on(SocketChatConstants.ON_DISBAND_GROUP, onDisbandGroup)
-
     }
 
     private fun unRegistrySocket() {
@@ -422,63 +343,11 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
         //Listen Socket Error
         AppApplication.socketChat?.off(SocketChatConstants.ON_SOCKET_ERROR, onSocketError)
         //Chat Message
-        AppApplication.socketChat?.off(SocketChatConstants.ON_CHAT_TEXT, onMessage)
-        AppApplication.socketChat?.off(SocketChatConstants.ON_CHAT_IMAGE, onMessage)
-        AppApplication.socketChat?.off(SocketChatConstants.ON_CHAT_VIDEO, onMessage)
-        AppApplication.socketChat?.off(SocketChatConstants.ON_CHAT_FILE, onMessage)
-        AppApplication.socketChat?.off(SocketChatConstants.ON_CHAT_AUDIO, onMessage)
-        AppApplication.socketChat?.off(SocketChatConstants.ON_STICKER, onMessage)
-        AppApplication.socketChat?.off(SocketChatConstants.ON_REPLY, onMessage)
-        //Share tin nhắn
-        AppApplication.socketChat?.off(SocketChatConstants.ON_SHARE_SOCKET, onMessage)
-        //Pin-Remove Pin
-        AppApplication.socketChat?.off(SocketChatConstants.ON_PINNED, onPinned)
-        AppApplication.socketChat?.off(SocketChatConstants.ON_REMOVE_PINNED, onRemovePinned)
-        //Add-Remove Member
-        AppApplication.socketChat?.off(SocketChatConstants.ON_ADD_MEMBER, onAddMember)
-        AppApplication.socketChat?.off(SocketChatConstants.ON_REMOVE_MEMBER, onRemoveMember)
-
-        //Notification
-        AppApplication.socketChat?.off(SocketChatConstants.ON_OUT_GROUP, onChangeNotification)
-        AppApplication.socketChat?.off(
-                SocketChatConstants.ON_UPDATE_PERMISSION_MESSAGE,
-                onChangeNotification
-        )
-        AppApplication.socketChat?.off(
-                SocketChatConstants.ON_UPDATE_OWNER_CONVERSATION,
-                onChangeNotification
-        )
-        AppApplication.socketChat?.off(
-                SocketChatConstants.ON_UPDATE_ADD_DEPUTY_CONVERSATION,
-                onChangeNotification
-        )
-        AppApplication.socketChat?.off(
-                SocketChatConstants.ON_OFF_IS_CONFIRM_CONVERSATION,
-                onChangeNotification
-        )
-        AppApplication.socketChat?.off(
-                SocketChatConstants.ON_WAITING_CONFIRM_CONVERSATION,
-                onChangeNotification
-        )
-        AppApplication.socketChat?.off(
-                SocketChatConstants.ON_UPDATE_REMOVE_DEPUTY_CONVERSATION,
-                onChangeNotification
-        )
+        AppApplication.socketChat?.off(SocketChatConstants.ON_MESSAGE, onMessage)
         //Typing
-//        AppApplication.socketChat?.off(SocketChatConstants.ON_TYPING_ON, onTypingOn)
-//        AppApplication.socketChat?.off(SocketChatConstants.ON_TYPING_OFF, onTypingOff)
-        //Vote
-        //Thu hồi tin nhắn
-        AppApplication.socketChat?.off(SocketChatConstants.ON_REVOKE, onRevoke)
-        //Cập nhật tên, avatar, background
-        AppApplication.socketChat?.off(SocketChatConstants.ON_CHANGE_NAME_GROUP, onChangeGroupName)
-        AppApplication.socketChat?.off(
-                SocketChatConstants.ON_CHANGE_AVATAR_GROUP,
-                onChangeGroupAvatar
-        )
-        AppApplication.socketChat?.off(SocketChatConstants.ON_CHANGE_BACKGROUND, onChangeBackground)
-        //Giải tán nhóm
-        AppApplication.socketChat?.off(SocketChatConstants.ON_DISBAND_GROUP, onDisbandGroup)
+        AppApplication.socketChat?.off(SocketChatConstants.ON_TYPING_ON, onTypingOn)
+        AppApplication.socketChat?.off(SocketChatConstants.ON_TYPING_OFF, onTypingOff)
+
 
     }
 
@@ -495,209 +364,15 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
     }
 
 
-//    private fun initUserTypingAdapter() {
-//        userTypingAdapter = TypingOnAdapter(this)
-//        userTypingAdapter?.setData(listTypingUser)
-//        contentBinding.rcvTypingOn.addItemDecoration(MyItemDecoration(-4)) // here set decoration in recyclerview
-//        contentBinding.rcvTypingOn.layoutManager = LinearLayoutManager(
-//                getContext(), RecyclerView.HORIZONTAL, false
-//        )
-//        contentBinding.rcvTypingOn.adapter = userTypingAdapter
-//    }
-
-//    private fun initChangeBackgroundAdapter() {
-//        changeBackgroundAdapter = ChangeBackgroundAdapter(this)
-//        changeBackgroundAdapter?.setData(listBackground)
-//        changeBackgroundAdapter?.setChangeBackground(this)
-//        AppUtils.initRecyclerViewHorizontal(
-//                contentBinding.headerBackground.rcvImage, changeBackgroundAdapter, 5
-//        )
-//    }
-
-//    @SuppressLint("NotifyDataSetChanged")
-//    private fun initStickerAdapter() {
-//        stickerChatAdapter = StickerChatAdapter(this)
-//        stickerChatAdapter?.setData(stickerList)
-//        stickerChatAdapter?.setDataTemp(stickerList)
-//        stickerChatAdapter?.setOnClickSticker(this)
-//        AppUtils.initRecyclerViewHorizontal(actionBinding.searchSticker, stickerChatAdapter)
-//        val swap: ArrayList<CategorySticker> = UI.categoryStickers as ArrayList<CategorySticker>
-//        for (item in swap) {
-//            stickerList.addAll(item.sticker)
-//        }
-//        stickerChatAdapter?.notifyDataSetChanged()
-//    }
-
-//    private fun initImageClipAdapter() {
-//        imageClipAdapter = ImageClipAdapter(this)
-//        imageClipAdapter?.setData(imageClip)
-//        imageClipAdapter?.setClickImageClip(this)
-//        AppUtils.initRecyclerViewHorizontal(contentBinding.rclListImageClip, imageClipAdapter)
-//    }
-
-//    private fun showInputOrBlockView() {
-//        if (group.type == AppConstants.TYPE_PRIVATE) {
-//            actionBinding.inputChat.llInput.isVisible =
-//                    group.userStatus == AppConstants.STATUS_ACTIVE && group.userBlockType == AppConstants.TYPE_NONE_BLOCK && !headerBinding.headerSearch.llMessSearch.isVisible
-//            if (group.userStatus == AppConstants.STATUS_ACTIVE) {
-//                actionBinding.llDeleteAccountView.hide()
-//                actionBinding.llBlockView.isVisible =
-//                        group.userBlockType != AppConstants.TYPE_NONE_BLOCK && !headerBinding.headerSearch.llMessSearch.isVisible
-//                actionBinding.llMyBlock.isVisible = group.userBlockType == AppConstants.TYPE_MY_BLOCK && !headerBinding.headerSearch.llMessSearch.isVisible
-//                actionBinding.tvTheirBlock.isVisible =
-//                        group.userBlockType == AppConstants.TYPE_THEIR_BLOCK && !headerBinding.headerSearch.llMessSearch.isVisible
-//                actionBinding.tvTitleBlock.text =
-//                        getString(R.string.you_have_block_this_account, group.name)
-//                actionBinding.btnUnlock.setOnClickListener {
-//                    AppUtils.disableClickAction(actionBinding.btnUnlock, 1000)
-//                    callApiUnlock(group.members.first { it != UserCache.getUser().id }.toLong())
-//                }
-//            } else {
-//                actionBinding.llBlockView.hide()
-//                actionBinding.llDeleteAccountView.isVisible = !headerBinding.headerSearch.llMessSearch.isVisible
-//            }
-//        } else {
-//            actionBinding.inputChat.llInput.isVisible = !headerBinding.headerSearch.llMessSearch.isVisible
-//            actionBinding.llBlockView.hide()
-//            actionBinding.llDeleteAccountView.hide()
-//        }
-//
-//        //khởi tạo sự kiện vuốt item chat để reply tin nhắn
-//        onSwipeReply()
-//    }
-
-    //--------------------------------------------------------------------------------------------//
-
-    /**
-     * Unblock user
-     */
-//    private fun callApiUnlock(userId: Long) {
-//        EasyHttp.post(this)
-//                .api(UnlockUserApi.params(userId))
-//                .request(object : HttpCallbackProxy<HttpData<Any>>(this) {
-//                    override fun onHttpStart(call: Call?) {
-//                        //empty
-//                    }
-//
-//                    override fun onHttpEnd(call: Call?) {
-//                        //empty
-//                    }
-//
-//                    override fun onHttpFail(e: java.lang.Exception?) {
-//                        Timber.d(
-//                                "${
-//                                    AppApplication.applicationContext()
-//                                            .getString(vn.techres.line.R.string.error_message)
-//                                } ${e?.message}"
-//                        )
-//                        hideDialog()
-//                    }
-//
-//                    override fun onHttpSuccess(data: HttpData<Any>) {
-//                        if (data.isRequestSucceed()) {
-//                            EventBus.getDefault().post(UnlockUserEventBus(userId, group.conversationId))
-//                            group.userBlockType = AppConstants.TYPE_NONE_BLOCK
-//                            showInputOrBlockView()
-//                        } else {
-//                            if (data.isRequestError()) {
-//                                toast(data.getMessage())
-//                            }
-//                            Timber.d(
-//                                    "${
-//                                        AppApplication.applicationContext()
-//                                                .getString(vn.techres.line.R.string.error_message)
-//                                    } ${data.getMessage()}"
-//                            )
-//                            hideDialog()
-//                        }
-//                    }
-//                })
-//    }
-
-//    private fun getApiListBackground() {
-//        EasyHttp.get(this).api(ListBackgroundApi.params(1, 100))
-//                .request(object : HttpCallbackProxy<HttpData<ArrayList<DataListBackground>>>(this) {
-//                    @SuppressLint("NotifyDataSetChanged")
-//                    override fun onHttpSuccess(data: HttpData<ArrayList<DataListBackground>>) {
-//                        if (data.isRequestSucceed()) {
-//                            listBackground.clear()
-////                        listBackground.add(DataListBackground())//Khi nào mở chọn hình background từ thiết bị thì mở ra
-//                            listBackground.add(DataListBackground(ChatConstants.DEFAULT_BACKGROUND))
-//                            listBackground.addAll(data.getData()!!)
-//                            changeBackgroundAdapter?.notifyDataSetChanged()
-//                        } else {
-//                            if (data.isRequestError()) {
-//                                toast(data.getMessage())
-//                            }
-//                            Timber.e(
-//                                    "${
-//                                        AppApplication.applicationContext()
-//                                                .getString(vn.techres.line.R.string.error_message)
-//                                    } ${data.getMessage()}"
-//                            )
-//                        }
-//                    }
-//
-//                    override fun onHttpFail(e: java.lang.Exception?) {
-//
-//                        Timber.e(
-//                                "${
-//                                    AppApplication.applicationContext()
-//                                            .getString(vn.techres.line.R.string.error_message)
-//                                } ${e?.message}"
-//                        )
-//                    }
-//
-//                    override fun onHttpEnd(call: Call?) {
-//                        //empty
-//                    }
-//
-//                    override fun onHttpStart(call: Call?) {
-//                        //empty
-//                    }
-//                })
-//    }
-
-//    private fun getPinned() {
-//        EasyHttp.get(this).api(PinnedMessageApi.params(group.conversationId, 1, ""))
-//                .request(object :
-//                        HttpCallbackProxy<HttpData<ArrayList<MessageObjectInteracted>>>(this) {
-//                    override fun onHttpStart(call: Call?) {
-//                        //
-//                    }
-//
-//                    @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
-//                    override fun onHttpSuccess(data: HttpData<ArrayList<MessageObjectInteracted>>) {
-//                        if (data.isRequestSucceed()) {
-//                            data.getData()?.let {
-//                                arrayPinned.clear()
-//                                arrayPinned.addAll(it)
-//                                renderDataPinToView()
-//                            }
-//                        } else {
-//                            if (data.isRequestError()) {
-//                                toast(data.getMessage())
-//                            }
-//                            Timber.e(
-//                                    "${
-//                                        AppApplication.applicationContext()
-//                                                .getString(vn.techres.line.R.string.error_message)
-//                                    } ${data.getMessage()}"
-//                            )
-//                        }
-//                    }
-//
-//                    override fun onHttpFail(e: java.lang.Exception?) {
-//
-//                        Timber.e(
-//                                "${
-//                                    AppApplication.applicationContext()
-//                                            .getString(vn.techres.line.R.string.error_message)
-//                                } ${e?.message}"
-//                        )
-//                    }
-//                })
-//    }
+    private fun initUserTypingAdapter() {
+        userTypingAdapter = TypingOnAdapter(this)
+        userTypingAdapter?.setData(listTypingUser)
+        contentBinding.rcvTypingOn.addItemDecoration(MyItemDecoration(-4)) // here set decoration in recyclerview
+        contentBinding.rcvTypingOn.layoutManager = LinearLayoutManager(
+                getContext(), RecyclerView.HORIZONTAL, false
+        )
+        contentBinding.rcvTypingOn.adapter = userTypingAdapter
+    }
 
     private fun paginateUpDownScroll() {
         contentBinding.rcvChat.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -871,19 +546,15 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
             postDelayed({
                 typingOff(group)
             }, 3000)
-            //Tìm kiếm Sticker theo Input
+
             if (s.isEmpty()) {
                 actionBinding.inputChat.ibSend.hide()
-                actionBinding.inputChat.btnMic.show()
                 actionBinding.inputChat.ibMore.show()
                 actionBinding.inputChat.ivGallery.show()
             } else {
                 actionBinding.inputChat.ibSend.show()
-                actionBinding.inputChat.btnMic.hide()
                 actionBinding.inputChat.ibMore.hide()
                 actionBinding.inputChat.ivGallery.hide()
-
-
                 //Lấy dữ liệu từ clipboard
                 contentPaste = ""
                 val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -925,36 +596,6 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
         }
     }
 
-
-
-//    private fun getStartPositionOfTagName(): Int {
-//        // Get the text entered by the user in the EditText
-//        val inputText = actionBinding.inputChat.edtChat.text.toString()
-//        // Get the position of the cursor in the EditText
-//        val cursorPosition = actionBinding.inputChat.edtChat.selectionEnd
-//        // Get the text before the cursor position
-//        val textBeforeCursor = inputText.substring(0, cursorPosition)
-//        // Search for the "@" symbol immediately preceding the cursor position
-//        return textBeforeCursor.lastIndexOf("@")
-//    }
-
-//    private fun checkFinalWord(text: String): Boolean {
-//        // Get the position of the cursor in the EditText
-//        val cursorPosition = actionBinding.inputChat.edtChat.selectionEnd
-//        // Get the text before the cursor position
-//        var textBeforeCursor = text.substring(0, cursorPosition)
-//        alTagged.forEach {
-//            textBeforeCursor = textBeforeCursor.replace("@${it.fullName}", "")
-//        }
-//        return textBeforeCursor.count { it == '@' } == 1
-//    }
-
-
-
-
-    /***
-     * Kiểm tra text là link
-     */
     private fun typingOn(group: GroupChat) {
         val typingOn = TypingOn()
         typingOn.conversationId = group.conversationId
@@ -979,266 +620,8 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
         }
     }
 
-    //-------------------------------Sự kiện swipe reply tin nhắn---------------------------------//
-//    private fun onSwipeReply() {
-//        val simpleCallback: ItemTouchHelper.SimpleCallback =
-//                object :
-//                        ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-//                    override fun onMove(
-//                            recyclerView: RecyclerView,
-//                            viewHolder: RecyclerView.ViewHolder,
-//                            target: RecyclerView.ViewHolder
-//                    ): Boolean {
-//                        return false
-//                    }
-//
-//                    override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
-//                        return Float.MAX_VALUE
-//                    }
-//
-//                    override fun getSwipeVelocityThreshold(defaultValue: Float): Float {
-//                        return Float.MAX_VALUE
-//                    }
-//
-//                    override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
-//                        return Float.MAX_VALUE
-//                    }
-//
-//                    @SuppressLint("SetTextI18n")
-//                    override fun clearView(
-//                            recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder
-//                    ) {
-//                        if (aBoolean) {
-//                            aBoolean = false
-//                            val position = viewHolder.bindingAdapterPosition
-//                            val messages: Message = messageList[position]
-//                            if (group.userStatus == AppConstants.STATUS_ACTIVE && group.userBlockType == AppConstants.TYPE_NONE_BLOCK) {
-//                                if (messages.isErrorMessage || !messages.isServerResponse) {
-//                                    toast(
-//                                            AppApplication.applicationContext()
-//                                                    .getString(R.string.you_can_not_action_this_message)
-//                                    )
-//                                } else {
-//                                    if (messages.type != MessageTypeChatConstants.TEXT && messages.type != MessageTypeChatConstants.IMAGE && messages.type != MessageTypeChatConstants.STICKER && messages.type != MessageTypeChatConstants.VIDEO && messages.type != MessageTypeChatConstants.FILE && messages.type != MessageTypeChatConstants.AUDIO && messages.type != MessageTypeChatConstants.REPLY) {
-//                                        actionBinding.llReplyMessage.hide()
-//                                    } else {
-//                                        isReplyMessage = true
-//                                        actionBinding.emojiPopupLayout.openKeyboard()
-//                                        actionBinding.searchSticker.hide()
-//                                        actionBinding.llReplyMessage.show()
-//                                        actionReply(messages)
-//                                    }
-//                                }
-//                            }
-//                        }
-//                        super.clearView(recyclerView, viewHolder)
-//                    }
-//
-//                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
-//                    override fun onChildDraw(
-//                            c: Canvas,
-//                            recyclerView: RecyclerView,
-//                            viewHolder: RecyclerView.ViewHolder,
-//                            dX: Float,
-//                            dY: Float,
-//                            actionState: Int,
-//                            isCurrentlyActive: Boolean
-//                    ) {
-//                        if (nCurrent != viewHolder.bindingAdapterPosition) {
-//                            nCurrent = viewHolder.bindingAdapterPosition
-//                            aBoolean = false
-//                        }
-//                        val item = viewHolder.itemView
-//                        val f = abs(dX) / item.width * 2
-//                        ChatUtils.translateReboundingView(item, viewHolder, dX)
-//                        onVibratorReply(f)
-//                        getDefaultUIUtil().onDraw(
-//                                c, recyclerView, item, dX / 6, dY, actionState, isCurrentlyActive
-//                        )
-//                    }
-//                }
-//        val itemTouchHelper = ItemTouchHelper(simpleCallback)
-//        itemTouchHelper.attachToRecyclerView(contentBinding.rcvChat)
-//    }
 
-    @SuppressLint("MissingPermission")
-    private fun onVibratorReply(f: Float) {
-        if (f >= 0.8f && !aBoolean) {
-            aBoolean = true
-            val vibrator: Vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                @SuppressLint("WrongConstant") val vibratorManager =
-                        getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-                vibratorManager.defaultVibrator
-            } else {
-                // backward compatibility for Android API < 31,
-                // VibratorManager was only added on API level 31 release.
-                // noinspection deprecation
-                getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-            }
-            if (vibrator.hasVibrator() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val effect = VibrationEffect.createOneShot(30, 2)
-                vibrator.vibrate(effect)
-            }
-        }
-    }
 
-    @SuppressLint("SetTextI18n", "NewApi", "TimberArgCount")
-//    private fun actionReply(messages: Message) {
-//        with(messReply) {
-//            this.messageId = messages.messageId
-//            this.message = messages.message
-//            this.type = messages.type
-//            this.thumb = messages.thumb
-//            this.user = messages.user
-//            this.media = messages.media
-//            this.sticker = messages.sticker
-//            this.tag = messages.tag
-//            this.position = messages.position
-//        }
-//        isReplyMessage = true
-//        actionBinding.llReplyMessage.show()
-//        actionBinding.link.rlnLinkClip.hide()
-//        actionBinding.inputChat.ibMore.isSelected = false
-//        actionBinding.inputChat.btnMic.isSelected = false
-//        actionBinding.inputChat.ibEmojiSticker.isSelected = false
-//
-//        messageReply = MessageEmit()
-//        messageReply.messageReplyId = messages.messageId
-//        messageReply.message = actionBinding.inputChat.edtChat.text.toString()
-//
-//        if (messages.user.userId != UserCache.getUser().id &&
-//                alTagged.all { it.userId != messages.user.userId } &&
-//                dataMemberListTemp.any { it.userId == messages.user.userId }
-//        ) {//Người muốn tag tên chưa được tag lần nào, không phải bản thân mình và là người nằm trong danh sách có thể được tag
-//            alTagged.add(MemberList(messages.user.fullName, messages.user.userId))
-//            if (group.type == AppConstants.TYPE_GROUP) {
-//                val recentText = actionBinding.inputChat.edtChat.text
-//                val tagNameUser =
-//                        ChatUtils.setTagNameFromKeyTagName(messages.message, messages.user)
-//                actionBinding.inputChat.edtChat.removeTextChangedListener(textMessageWatcher)
-//                actionBinding.inputChat.edtChat.text = AXEmojiUtils.replaceWithEmojis(
-//                        this, tagNameUser, 24f
-//                ).append(" ").append(recentText)
-//                actionBinding.inputChat.edtChat.setSelection(actionBinding.inputChat.edtChat.text.length)
-//                actionBinding.inputChat.edtChat.addTextChangedListener(textMessageWatcher)
-//            }
-//        }
-//
-//        if (actionBinding.inputChat.edtChat.text.isNotEmpty()) {
-//            actionBinding.inputChat.ibSend.show()
-//            actionBinding.inputChat.ibMore.hide()
-//            actionBinding.inputChat.btnMic.hide()
-//            actionBinding.inputChat.ivGallery.hide()
-//        } else {
-//            actionBinding.inputChat.ibSend.hide()
-//            actionBinding.inputChat.ibMore.show()
-//            actionBinding.inputChat.btnMic.show()
-//            actionBinding.inputChat.ivGallery.show()
-//        }
-//
-//        when (messages.type) {
-//            MessageTypeChatConstants.TEXT, MessageTypeChatConstants.REPLY -> {
-//                if (messages.thumb.typeSystem == AppConstants.TYPE_SYSTEM_LINK_JOIN) {
-//                    actionBinding.reply.rltThumbContainer.show()
-//                    actionBinding.reply.tvReplyName.text = messages.user.fullName
-//                    actionBinding.reply.imvPlay.hide()
-//                    PhotoLoadUtils.loadImageLinkJoinGroupByGlide(
-//                            actionBinding.reply.imvReply, messages.thumb.logo
-//                    )
-//                    actionBinding.reply.tvReplyMessage.text = Html.fromHtml(
-//                            messages.thumb.url, Html.FROM_HTML_MODE_COMPACT
-//                    )
-//                } else {
-//                    if (messages.thumb.isThumb == 0) {
-//                        actionBinding.reply.rltThumbContainer.hide()
-//                        actionBinding.reply.tvReplyName.text = messages.user.fullName
-//                        actionBinding.reply.tvReplyMessage.text =
-//                                ChatUtils.formatTagNameNotHighLight(messages.message, messages.tag)
-//                    } else {
-//                        actionBinding.reply.rltThumbContainer.show()
-//                        actionBinding.reply.tvReplyName.text = messages.user.fullName
-//                        actionBinding.reply.imvPlay.hide()
-//                        PhotoLoadUtils.loadThumbnail(
-//                                actionBinding.reply.imvReply, messages.thumb.logo
-//                        )
-//                        actionBinding.reply.tvReplyMessage.text = Html.fromHtml(
-//                                messages.thumb.domain, Html.FROM_HTML_MODE_COMPACT
-//                        )
-//                    }
-//                }
-//            }
-//
-//            MessageTypeChatConstants.IMAGE -> {
-//                actionBinding.reply.rltThumbContainer.show()
-//                actionBinding.reply.tvReplyName.text = messages.user.fullName
-//                actionBinding.reply.tvReplyMessage.text = getString(R.string.pinned_image)
-//                actionBinding.reply.imvPlay.hide()
-//
-//                PhotoLoadUtils.loadImageByGlide(
-//                        actionBinding.reply.imvReply, messages.media.first().original.url
-//                )
-//            }
-//
-//            MessageTypeChatConstants.STICKER -> {
-//                actionBinding.reply.rltThumbContainer.show()
-//                actionBinding.reply.tvReplyName.text = messages.user.fullName
-//                actionBinding.reply.tvReplyMessage.text = getString(R.string.pinned_sticker)
-//                actionBinding.reply.imvPlay.hide()
-//
-//                PhotoLoadUtils.loadImageByGlide(
-//                        actionBinding.reply.imvReply, messages.sticker.original.url
-//                )
-//            }
-//
-//            MessageTypeChatConstants.VIDEO -> {
-//                actionBinding.reply.rltThumbContainer.show()
-//                actionBinding.reply.tvReplyName.text = messages.user.fullName
-//                actionBinding.reply.tvReplyMessage.text = getString(R.string.pinned_video)
-//                actionBinding.reply.imvPlay.show()
-//                PhotoLoadUtils.loadImageByGlide(
-//                        actionBinding.reply.imvReply, messages.media.first().thumb.url
-//                )
-//            }
-//
-//            MessageTypeChatConstants.FILE -> {
-//                actionBinding.reply.rltThumbContainer.show()
-//                actionBinding.reply.tvReplyName.text = messages.user.fullName
-//                actionBinding.reply.tvReplyMessage.text = AppUtils.getNameNoType(
-//                        messages.media.first().original.name
-//                )
-//                actionBinding.reply.imvPlay.hide()
-//                actionBinding.reply.imvReply.layoutParams.width =
-//                        AppUtils.dpToPx(baseContext, 24f).toInt()
-//                actionBinding.reply.imvReply.layoutParams.height =
-//                        AppUtils.dpToPx(baseContext, 32f).toInt()
-//                actionBinding.reply.imvReply.requestLayout()
-//                actionBinding.reply.lnCardView.layoutParams.width =
-//                        AppUtils.dpToPx(baseContext, 24f).toInt()
-//                actionBinding.reply.lnCardView.layoutParams.height =
-//                        AppUtils.dpToPx(baseContext, 32f).toInt()
-//                actionBinding.reply.lnCardView.requestLayout()
-//
-//                ChatUtils.setLogoImageToFile(
-//                        actionBinding.reply.imvReply,
-//                        AppUtils.getMimeType(messages.media.first().original.name)
-//                )
-//            }
-//
-//            MessageTypeChatConstants.AUDIO -> {
-//                actionBinding.reply.tvReplyName.text = messages.user.fullName
-//                actionBinding.reply.tvReplyMessage.text = getString(vn.techres.line.R.string.type_audio)
-//
-//                actionBinding.reply.rltThumbContainer.show()
-//                actionBinding.reply.imvPlay.hide()
-//                actionBinding.reply.imvReply.setImageResource(R.drawable.ic_pinned_audio)
-//            }
-//
-//            else -> {
-//                isReplyMessage = false
-//                actionBinding.llReplyMessage.hide()
-//            }
-//        }
-//    }
 
     //--------------------------------------------------------------------------------------------//
 
@@ -1288,9 +671,11 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
                 val typingOn = Gson().fromJson(
                     args.first().toString(), Typing::class.java
                 )
+                typingOn
+                group
                 if (typingOn.conversationId == group.conversationId) {
-                    listTypingUser.removeIf { x -> x.user.userId == typingOn.user.userId }
-                    if (typingOn.user.userId != UserCache.getUser().id) {
+                    listTypingUser.removeIf { x -> x.user.userId == typingOn.userId }
+                    if (typingOn.userId != UserCache.getUser().id) {
                         listTypingUser.add(0, typingOn)
                         userTypingAdapter?.setData(listTypingUser)
                         userTypingAdapter?.notifyDataSetChanged()
@@ -1388,56 +773,10 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
             }
             this.lastMessage = lastMessages
         }
-//        EventBus.getDefault().post(EventBusLastMessage(groupChat))
+        EventBus.getDefault().post(EventBusLastMessage(groupChat))
     }
 
-    @SuppressLint("NotifyDataSetChanged", "SetTextI18n", "NewApi")
-    private val onPinned = Emitter.Listener { args: Array<Any> ->
-        Thread {
-            runOnUiThread {
-                Timber.d("ON PINNED SOCKET: %s", args.first().toString())
-                val message = Gson().fromJson(
-                        args.first().toString(), Message::class.java
-                )
-                if (message.conversation.conversationId == group.conversationId) {
-//                    updatePinOrRemovePin(false, message)
-                }
-            }
-        }.start()
-    }
 
-    @SuppressLint("NotifyDataSetChanged", "SetTextI18n", "NewApi")
-    private val onRemovePinned = Emitter.Listener { args: Array<Any> ->
-        Thread {
-            runOnUiThread {
-                Timber.d("ON REMOVE PINNED SOCKET: %s", args.first().toString())
-                val message = Gson().fromJson(
-                        args.first().toString(), Message::class.java
-                )
-                if (message.conversation.conversationId == group.conversationId) {
-//                    updatePinOrRemovePin(true, message)
-                }
-            }
-        }.start()
-    }
-
-//    private fun updatePinOrRemovePin(isRemovePin: Boolean, message: Message) {
-//        eventHandleNewMessage(message)
-//        arrayPinned.removeIf { x -> x.messageId == message.messageObjectInteracted.messageId }
-//        val changeItem =
-//                messageList.find { it.messageVote.messageVoteId == message.messageObjectInteracted.messageId }
-//        if (!isRemovePin) {
-//            arrayPinned.add(0, message.messageObjectInteracted)
-//            if (changeItem != null) {
-//                changeItem.messageVote.isPinned = 1
-//            }
-//        } else {
-//            if (changeItem != null) {
-//                changeItem.messageVote.isPinned = 0
-//            }
-//        }
-//        renderDataPinToView()
-//    }
 
 //    private fun renderDataPinToView() {
 //        countMessagePinned = arrayPinned.size
@@ -2298,7 +1637,6 @@ class ConversationDetailActivity : AppActivity(), MessageAdapter.ChatHandle, Mes
             PhotoPickerUtils.showImagePickerChat(this, imagePickerLauncher)
         }
 
-        actionBinding.lnMic.hide()
     }
 
     @SuppressLint("NotifyDataSetChanged")

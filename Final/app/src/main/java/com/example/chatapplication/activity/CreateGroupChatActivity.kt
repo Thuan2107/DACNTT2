@@ -14,6 +14,7 @@ import com.example.chatapplication.adapter.MyFriendAdapter
 import com.example.chatapplication.api.CreateGroupApi
 import com.example.chatapplication.api.GetListFriend
 import com.example.chatapplication.api.GroupApi
+import com.example.chatapplication.api.GroupPinnedApi
 import com.example.chatapplication.app.AppActivity
 import com.example.chatapplication.app.AppApplication
 import com.example.chatapplication.cache.UserCache
@@ -51,6 +52,7 @@ class CreateGroupChatActivity : AppActivity(), MyFriendAdapter.ChooseItemListene
     private var friendList: ArrayList<Friend> = ArrayList()
     private var chooseFriendList: ArrayList<Friend> = ArrayList()
     private var medias: ArrayList<Medias> = ArrayList()
+    private var groupDataList: ArrayList<GroupChat> = ArrayList()
     private var localMedia: LocalMedia? = null
     private var myFriendAdapter: MyFriendAdapter? = null
     private var chooseFriendAdapter: ChooseFriendAdapter? = null
@@ -96,7 +98,7 @@ class CreateGroupChatActivity : AppActivity(), MyFriendAdapter.ChooseItemListene
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initData() {
-        getFriend(0, "")
+        getGroupChatPinned("")
         search()
         setOnClickListener(
             binding.ibCreate,
@@ -170,7 +172,7 @@ class CreateGroupChatActivity : AppActivity(), MyFriendAdapter.ChooseItemListene
                     selected()
                     friendList.clear()
                     myFriendAdapter!!.notifyDataSetChanged()
-                    getGroupChat("")
+                    getGroupChatPinned("")
                 }
             }
 
@@ -342,17 +344,54 @@ class CreateGroupChatActivity : AppActivity(), MyFriendAdapter.ChooseItemListene
      * Gọi api lấy danh sách cuộc trò chuyện
      */
     @SuppressLint("HardwareIds")
-    private fun getGroupChat(position: String) {
-        EasyHttp.get(this).api(GroupApi.params(position, "", limit))
+    private fun getGroupChatPinned(position: String) {
+        EasyHttp.get(this).api(GroupPinnedApi.params(position, "", 100))
             .request(/* listener = */ object : HttpCallbackProxy<HttpData<List<GroupChat>>>(this) {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onHttpSuccess(data: HttpData<List<GroupChat>>) {
                     if (data.isRequestSucceed()) {
+                        val index = data.getData()!!.size
+                        groupDataList.clear()
+                        groupDataList.addAll(data.getData()!!)
+                        getGroupChat(position, index)
+                    }
+                }
+
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onHttpFail(throwable: Throwable?) {
+                    loading = false
+                }
+
+                override fun onHttpStart(call: okhttp3.Call?) {
+                    super.onHttpStart(call)
+                }
+
+                override fun onHttpEnd(call: okhttp3.Call?) {
+                    super.onHttpEnd(call)
+                }
+
+            })
+    }
+
+
+
+    /**
+     * Gọi api lấy danh sách cuộc trò chuyện
+     */
+    @SuppressLint("HardwareIds")
+    private fun getGroupChat(position: String, index: Int) {
+        EasyHttp.get(this).api(GroupApi.params(position, "", 100))
+            .request(/* listener = */ object : HttpCallbackProxy<HttpData<List<GroupChat>>>(this) {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onHttpSuccess(data: HttpData<List<GroupChat>>) {
+                    if (data.isRequestSucceed()) {
+                        groupDataList.addAll(index, data.getData()!!)
+                        val data = groupDataList.filter { it.type == 2 }
                         loading = false
                         binding.sflMyFriend.hide()
                         binding.sflMyFriend.stopShimmer()
                         binding.rcvMyFriend.show()
-                        data.getData()?.let { response ->
+                        data?.let { response ->
                             isLoadMore = response.size >= limit
                             paginate?.setHasMoreDataToLoad(isLoadMore)
                             for (i in response.indices) {
@@ -378,26 +417,13 @@ class CreateGroupChatActivity : AppActivity(), MyFriendAdapter.ChooseItemListene
                                 binding.lnEmpty.hide()
                             }
                         }
-                    } else {
-                        Timber.e(
-                            "${
-                                AppApplication.applicationContext()
-                                    .getString(R.string.error_message)
-                            } ${data.getMessage()}"
-                        )
-                        hideDialog()
                     }
+
                 }
 
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onHttpFail(throwable: Throwable?) {
-                    Timber.e(
-                        "${
-                            AppApplication.applicationContext()
-                                .getString(R.string.error_message)
-                        } ${throwable}"
-                    )
-                    hideDialog()
+                    loading = false
                 }
 
                 override fun onHttpStart(call: okhttp3.Call?) {
@@ -410,6 +436,7 @@ class CreateGroupChatActivity : AppActivity(), MyFriendAdapter.ChooseItemListene
 
             })
     }
+
 
     @SuppressLint("NotifyDataSetChanged")
     override fun clickChooseItem(position: Int, isChecked: Boolean, item: Friend) {

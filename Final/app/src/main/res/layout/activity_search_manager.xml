@@ -16,7 +16,7 @@
             android:id="@+id/lnHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/gray_300"
+            android:background="@color/main_bg"
             android:orientation="horizontal"
             tools:ignore="UselessParent">
 
@@ -32,8 +32,8 @@
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/svSearch"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_32"
+                android:layout_width="353dp"
+                android:layout_height="31dp"
                 android:layout_marginVertical="@dimen/dp_8"
                 android:layout_marginEnd="@dimen/dp_16"
                 android:layout_weight="1"

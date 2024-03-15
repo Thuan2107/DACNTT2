@@ -85,7 +85,6 @@ class AddMemberGroupActivity : AppActivity(), MyFriendAdapter.ChooseItemListener
 
     override fun onDestroy() {
         super.onDestroy()
-        socketChat?.off(SocketChatConstants.ON_ADD_MEMBER, onAddMember)
     }
 
     override fun initView() {
@@ -119,7 +118,6 @@ class AddMemberGroupActivity : AppActivity(), MyFriendAdapter.ChooseItemListener
                 )
             }
         }
-        socketChat?.on(SocketChatConstants.ON_ADD_MEMBER, onAddMember)
         binding.itemViewToAddMember.llNameGroup.hide()
         setOnClickListener(
             binding.ibCreate,
@@ -180,9 +178,9 @@ class AddMemberGroupActivity : AppActivity(), MyFriendAdapter.ChooseItemListener
         }
 
     private fun onAddMember() {
-        val addMemberGroup = ArrayList<Int>()
+        val addMemberGroup = ArrayList<String>()
         for (i in chooseFriendList.indices) {
-            addMemberGroup.add(chooseFriendList[i].userId.toInt())
+            addMemberGroup.add(chooseFriendList[i].userId)
         }
 
         EasyHttp.post(this).api(AddMemberApi.params(group.conversationId, addMemberGroup))

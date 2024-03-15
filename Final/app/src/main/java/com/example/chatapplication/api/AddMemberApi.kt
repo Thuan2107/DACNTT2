@@ -15,10 +15,10 @@ class AddMemberApi : BaseApi() {
     var id: String = ""
 
     @HttpRename("members")
-    var members: ArrayList<Int> = ArrayList()
+    var members: ArrayList<String> = ArrayList()
 
     companion object {
-        fun params(id: String, members: ArrayList<Int>): BaseApi {
+        fun params(id: String, members: ArrayList<String>): BaseApi {
             val data = AddMemberApi()
             data.authorization = UserCache.getAccessToken()
             data.members = members

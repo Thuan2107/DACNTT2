@@ -3,6 +3,9 @@ package com.example.chatapplication.model.entity
 import com.google.gson.annotations.SerializedName
 
 class GroupChat {
+    @SerializedName("_id")
+    var id: String = ""
+
     @SerializedName("conversation_id")
     var conversationId: String = ""
 

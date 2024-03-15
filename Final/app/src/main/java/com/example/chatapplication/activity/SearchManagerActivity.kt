@@ -15,6 +15,7 @@ import com.example.chatapplication.databinding.ActivitySearchManagerBinding
 import com.example.chatapplication.model.HttpData
 import com.example.chatapplication.model.entity.GroupChat
 import com.example.chatapplication.model.entity.GroupId
+import com.example.chatapplication.model.entity.ProfileCustomerNodeData
 import com.example.chatapplication.model.entity.SearchUser
 import com.example.chatapplication.model.entity.User
 import com.example.chatapplication.utils.AppUtils.hide
@@ -29,7 +30,7 @@ import timber.log.Timber
 
 class SearchManagerActivity : AppActivity() {
     private lateinit var binding: ActivitySearchManagerBinding
-    private var userFind = User()
+    private var userFind = ProfileCustomerNodeData()
 
     companion object {
         var keySearch: String = ""
@@ -77,10 +78,10 @@ class SearchManagerActivity : AppActivity() {
             val bundle = Bundle()
             val intent = Intent(
                 this@SearchManagerActivity,
-                PeopleInformationActivity::class.java
+                InfoCustomerActivity::class.java
             )
             bundle.putString(
-                AppConstants.USER_DATA, Gson().toJson(userFind)
+                AppConstants.ID_USER, userFind.userId
             )
             intent.putExtras(bundle)
             startActivity(intent)
@@ -132,8 +133,8 @@ class SearchManagerActivity : AppActivity() {
             })
     }
 
-    private fun createGroup(user: User) {
-        EasyHttp.post(this).api(CreateConversationApi.params(user.id))
+    private fun createGroup(user: ProfileCustomerNodeData) {
+        EasyHttp.post(this).api(CreateConversationApi.params(user.userId))
             .request(object : HttpCallbackProxy<HttpData<GroupId>>(this) {
                 @SuppressLint("IntentWithNullActionLaunch")
                 override fun onHttpSuccess(data: HttpData<GroupId>) {

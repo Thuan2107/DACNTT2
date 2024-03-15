@@ -306,7 +306,7 @@
     <string name="set_password_successful" translatable="false">Đặt lại mật khẩu thành công</string>
     <string name="login" translatable="false">Đăng nhập</string>
     <string name="note_no_account" translatable="false">Bạn chưa có tài khoản?</string>
-    <string name="register" translatable="false">Tạo tài khoản mới</string>
+    <string name="register" translatable="false">Đăng ký</string>
     <string name="register_successful" translatable="false">Đăng ký thành công</string>
     <string name="hint_last_name_member" translatable="false">Họ và tên</string>
     <string name="choose_birthday" translatable="false">Ngày sinh</string>
@@ -493,4 +493,37 @@
     <string name="max_size_image_video">Kích thước của hình ảnh hoặc video quá lớn, tối đa là 100MB</string>
     <string name="type_image">[Hình ảnh]</string>
     <string name="type_video">[Video]</string>
+    <string name="edit_info" translatable="false">Thay đổi thông tin</string>
+    <string name="save" translatable="false">Lưu</string>
+    <string name="text_no_data_update" translatable="false">Chưa cập nhật</string>
+    <string name="birthday" translatable="false">Sinh nhật</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="no_data_address" translatable="false">Số nhà, Đường </string>
+    <string name="address_edit" translatable="false">Địa chỉ</string>
+    <string name="choose_gender" translatable="false">Chọn giới tính</string>
+    <string name="select_min_hint">至少要选择 %d 项</string>
+    <string name="select_max_hint">最多只能选择 %d 项</string>
+    <string name="common_year">Năm</string>
+    <string name="common_month">Tháng</string>
+    <string name="common_day">Ngày</string>
+    <string name="time_title">Vui lòng chọn thời gian</string>
+    <string name="date_title">Vui lòng chọn ngày</string>
+    <string name="validate_birthday_server" translatable="false">Ngày sinh phải nhỏ hơn hôm nay!</string>
+    <string name="validate_birthday" translatable="false">Ngày sinh phải từ hôm nay trở về trước</string>
+    <string name="validate_birthday_null" translatable="false">Ngày sinh không được phép rỗng</string>
+    <string name="post_update_avatar_error" translatable="false">Lỗi đăng bài cập nhật ảnh đại diện</string>
+    <string name="update_avatar" translatable="false">Đã cập nhật ảnh đại diện</string>
+    <string name="update_profile_info" translatable="false"> Cập nhật thông tin thành công</string>
+    <string name="string_min_max" translatable="false">Biệt danh từ 2 đến 50 ký tự</string>
+    <string name="string_min_max_name" translatable="false">Họ tên từ 2 đến 50 ký tự</string>
+    <string name="validate_email">Email chưa đúng định dạng</string>
+    <string name="introduce">Giới thiệu</string>
+    <string name="detail">Chi tiết</string>
+    <string name="you_do_not_have_permission_to_view_this_content">Bạn hiện không xem được nội dung này</string>
+    <string name="street" translatable="false">Số nhà, Đường </string>
+    <string name="off_text" translatable="false">******</string>
+    <string name="no_update" translatable="false">Chưa cập nhật</string>
+    <string name="not_update">Chưa cập nhật</string>
+    <string name="feedback" translatable="false">Phản hồi</string>
+
 </resources>

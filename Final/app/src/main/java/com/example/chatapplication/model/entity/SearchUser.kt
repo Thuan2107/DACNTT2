@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 
 class SearchUser {
     @SerializedName("user")
-    var user = User()
+    var user = ProfileCustomerNodeData()
 }

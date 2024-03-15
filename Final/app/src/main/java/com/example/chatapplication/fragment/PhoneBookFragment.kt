@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.chatapplication.R
 import com.example.chatapplication.activity.ConversationDetailActivity
 import com.example.chatapplication.activity.HomeActivity
+import com.example.chatapplication.activity.InfoCustomerActivity
 import com.example.chatapplication.activity.PeopleInformationActivity
 import com.example.chatapplication.activity.RequestFriendActivity
 import com.example.chatapplication.adapter.ContactAdapter
@@ -142,7 +143,7 @@ class PhoneBookFragment : AppFragment<HomeActivity>(), BaseAdapter.OnItemClickLi
                         val intent = Intent(requireContext(), ConversationDetailActivity::class.java)
                         val group = GroupChat()
                         with(group) {
-                            conversationId = data.getData()!!.conversationId
+                            id = data.getData()!!.conversationId
                             type = AppConstants.TYPE_PRIVATE
                             name = dataList[position].fullName
                             avatar = dataList[position].avatar
@@ -375,16 +376,16 @@ class PhoneBookFragment : AppFragment<HomeActivity>(), BaseAdapter.OnItemClickLi
     }
 
     override fun clickWall(position: Int) {
-//        val bundle = Bundle()
-//        val intent = Intent(
-//            requireContext(),
-//            PeopleInformationActivity::class.java
-//        )
-//        bundle.putString(
-//            AppConstants.USER_DATA, Gson().toJson(dataList[position].userId)
-//        )
-//        intent.putExtras(bundle)
-//        startActivity(intent)
+        val bundle = Bundle()
+        val intent = Intent(
+            requireContext(),
+            InfoCustomerActivity::class.java
+        )
+        bundle.putString(
+            AppConstants.ID_USER, Gson().toJson(dataList[position].userId)
+        )
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
     override fun clickMessage(position: Int) {

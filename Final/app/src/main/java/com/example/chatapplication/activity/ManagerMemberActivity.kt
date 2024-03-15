@@ -110,12 +110,6 @@ class ManagerMemberActivity : AppActivity(),
 
         paginate()
 
-        /**
-         * Permission
-         */
-        AppApplication.socketChat?.on(
-            String.format("%s", SocketChatConstants.ON_UPDATE_PERMISSION), onChangePermission
-        )
 
         binding.ivBack.setOnClickListener {
             finish()

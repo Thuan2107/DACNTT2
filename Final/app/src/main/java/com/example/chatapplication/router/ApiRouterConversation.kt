@@ -25,6 +25,10 @@ object ApiRouterConversation {
         return "$CONVERSATION"
     }
 
+    fun API_GET_CONVERSATION_PINNED(): String {
+        return "$CONVERSATION/pinned"
+    }
+
     fun API_HIDE_GROUP(idGroup: String): String {
         return "$CONVERSATION/$idGroup/hidden"
     }
@@ -43,7 +47,7 @@ object ApiRouterConversation {
     }
 
     fun API_OUT_GROUP(id: String): String {
-        return "$CONVERSATION_GROUP/out-group/${id}"
+        return "$CONVERSATION_GROUP/${id}/leave"
     }
 
 
@@ -64,15 +68,15 @@ object ApiRouterConversation {
     }
 
     fun API_CHANGE_NAME_GROUP(id: String): String {
-        return "$CONVERSATION_GROUP/${id}/update-name"
+        return "$CONVERSATION/${id}/update-name"
     }
 
     fun API_CHANGE_AVATAR_GROUP(id: String): String {
-        return "$CONVERSATION_GROUP/${id}/update-avatar"
+        return "$CONVERSATION/${id}/update-avatar"
     }
 
     fun API_CHANGE_BACKGROUND_GROUP(id: String): String {
-        return "$CONVERSATION_GROUP/${id}/update-background"
+        return "$CONVERSATION/${id}/update-background"
     }
 
     fun API_DIS_BRAND(idGroup: String): String {
